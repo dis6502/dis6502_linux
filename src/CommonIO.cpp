@@ -1,4 +1,4 @@
-#include "IO.h"
+#include "CommonIO.h"
 #include "Strings.h"
 
 wstring IOException::GetText() const {

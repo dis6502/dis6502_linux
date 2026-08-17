@@ -18,7 +18,7 @@ SRC_DIR  := src
 OBJ_DIR  := obj
 GSL_INC  ?= lib/GSL-main/include
 
-INCLUDES := -I$(SRC_DIR) -I$(SRC_DIR)/systems -I$(GSL_INC) -I.
+INCLUDES := -I$(SRC_DIR) -I$(SRC_DIR)/systems -I$(SRC_DIR)/systems/atari5200 -I$(SRC_DIR)/systems/atari800 -I$(SRC_DIR)/systems/c64 -I$(SRC_DIR)/systems/oric -I$(SRC_DIR)/systems/unknown -I$(GSL_INC) -I.
 CXXFLAGS := $(CXXSTD) $(INCLUDES) -Wall -Wextra -Wno-unused-parameter
 
 # Every core engine source file (src/*.cpp and src/systems/**/*.cpp).

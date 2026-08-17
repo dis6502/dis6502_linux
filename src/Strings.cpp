@@ -1,8 +1,8 @@
-#include "String.h"
 #include "PlatformCompat.h"
+#include "Strings.h"
 #include <algorithm>
-#include <sstream>
 #include <format>
+#include <sstream>
 #ifdef _WIN32
 #include <Windows.h>
 #endif

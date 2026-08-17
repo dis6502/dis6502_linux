@@ -3,16 +3,16 @@
 // used by the (originally Win32) core engine. Windows builds should
 // never include this header (guarded so it's a no-op there).
 
-#ifndef _WIN32
+#ifndef WIN32
 
-#include <cstring>
+#include <cerrno>
+#include <cstdint>
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <cwchar>
 #include <cwctype>
 #include <string>
-#include <cstdint>
-#include <cerrno>
-#include <cstdlib>
 
 #define _TRUNCATE ((size_t)-1)
 
@@ -55,14 +55,17 @@ inline std::string WStringToUtf8Compat(std::wstring_view str) {
         char32_t cp = static_cast<char32_t>(wc);
         if (cp <= 0x7F) {
             result.push_back(static_cast<char>(cp));
-        } else if (cp <= 0x7FF) {
+        }
+        else if (cp <= 0x7FF) {
             result.push_back(static_cast<char>(0xC0 | (cp >> 6)));
             result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
-        } else if (cp <= 0xFFFF) {
+        }
+        else if (cp <= 0xFFFF) {
             result.push_back(static_cast<char>(0xE0 | (cp >> 12)));
             result.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
             result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
-        } else {
+        }
+        else {
             result.push_back(static_cast<char>(0xF0 | (cp >> 18)));
             result.push_back(static_cast<char>(0x80 | ((cp >> 12) & 0x3F)));
             result.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
@@ -83,6 +86,7 @@ inline std::filesystem::path ToPath(std::wstring_view s) {
 
 // ---- _stat/_fstat/_fileno: Windows CRT file-stat functions -> POSIX ----
 #include <sys/stat.h>
+#include <stdio.h>
 #define _stat stat
 inline int _fstat(int fd, struct stat* buf) { return fstat(fd, buf); }
 inline int _fileno(FILE* f) { return fileno(f); }
@@ -268,7 +272,7 @@ inline void* _memccpy(void* dest, const void* src, int c, size_t n) {
 // explicit (dest, destSize, src, count) form with _TRUNCATE. ----
 
 template <size_t N>
-inline int strncpy_s(char (&dest)[N], const char* src, size_t count) {
+inline int strncpy_s(char(&dest)[N], const char* src, size_t count) {
     size_t n = (count < N - 1) ? count : N - 1;
     std::strncpy(dest, src, n);
     dest[n] = '\0';
