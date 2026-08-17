@@ -1,0 +1,48 @@
+mads 2.1.5 build 3 (21 Feb 22)
+Source: C:\jac\system\Windows\Programming\Tools\dis6502\tst\suite\disassembly\unit002\in\multisegment.asm
+     1 				;	Multi-Segment Test Field
+     2
+     3 					org $2000
+     4 					
+     5 FFFF> 2000-2054> A9 41		lda #'A'
+     6 2002 A9 30			lda #'0'
+     7 2004 AD 34 12			lda $1234
+     8 2007 8D 78 56			sta $5678
+     9 200A 20 16 20			jsr read
+    10 200D AD 0B D4		loop	lda $d40b
+    11 2010 8D 1A D0			sta $d01a
+    12 2013 4C 0D 20			jmp loop
+    13 					
+    14 2016 A2 00		read	ldx #0
+    15 2018 9D 2B 20			sta decimal,x
+    16 201B 9D 35 20			sta hexinv,x
+    17 201E 9D 3F 20			sta ascii,x
+    18 2021 9D 44 20			sta screen,x
+    19 2024 9D 4A 20			sta iascii,x
+    20 2027 9D 4F 20			sta iscreen,x
+    21 202A 60				rts
+    22 					
+    23 202B 01 02 03 04 05 06 + decimal	.byte 1,2,3,4,5,6,7,8,9,10
+    24 2035 81 82 83 84 85 86 + hexinv	.byte $81,$82,$83,$84,$85,$86,$87,$88,$89,$8A
+    25 203F 41 53 43 49 49	ascii	.by 'ASCII'
+    26 2044 33 23 32 25 25 2E	screen	.sb 'SCREEN'
+    27 204A C1 D3 C3 C9 C9	iascii	.by +$80 'ASCII'
+    28 204F B3 A3 B2 A5 A5 AE	iscreen	.sb +$80 'SCREEN'
+    29
+    30 2055				org $3000
+    31 					
+    32 3000-3006> AD 34 12		lda $1234
+    33 3003 8D 78 56			sta $5678
+    34 3006 60				rts
+    35 					
+    36 02E2-02E3> 00 30			ini $3000
+    37 					
+    38 3007				org $4000
+    39
+    40 4000-4006> AD 34 12		lda $1234
+    41 4003 8D 78 56			sta $5678
+    42 4006 60				rts
+    43
+    44 02E2-02E3> 00 40			ini $4000
+    45
+    46 02E0-02E1> 00 20			run $2000

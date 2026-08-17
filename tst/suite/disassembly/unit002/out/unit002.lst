@@ -1,0 +1,677 @@
+mads 2.1.0 build 4 (27 Oct 19)
+Source: unit002.asm
+     1 				;
+     2 				        icl 'unit002.inc'
+Source: unit002.inc
+     1 				;
+     2 				; System equates
+     3 				;
+     4 				; OS EQUATES
+     5 				; ----------
+     6 				;
+     7 				; Syntax:
+     8 				; Use '=' for addresses
+     9 				; and '<' for read addresses (ex: KBCODE)
+    10 				; and '>' for write addresses (ex: STIMER)
+    11 				; and '#' for values
+    12
+    13 				;
+    14 				; IO EQUATES
+    15 				;
+    16 = 0000			ICHID       equ $0000
+    17 = 0001			ICDNO       equ $0001
+    18 = 0002			ICCOM       equ $0002
+    19 = 0003			ICSTA       equ $0003
+    20 = 0004			ICBAL       equ $0004
+    21 = 0005			ICBAH       equ $0005
+    22 = 0006			ICPTL       equ $0006
+    23 = 0007			ICPTH       equ $0007
+    24 = 0008			ICBLL       equ $0008
+    25 = 0009			ICBLH       equ $0009
+    26 = 000A			ICAX1       equ $000A
+    27 = 000B			ICAX2       equ $000B
+    28 = 000C			ICAX3       equ $000C
+    29 = 000D			ICAX4       equ $000D
+    30 = 000E			ICAX5       equ $000E
+    31 = 000F			ICAX6       equ $000F
+    32
+    33 				;
+    34 				; DISPLAY LIST EQUATES
+    35 				;
+    36 = 0080			ADLI        equ $0080; ANTIC display list interrupt mask
+    37 = 0040			AVB         equ $0040; ANTIC vertical blank mask
+    38 = 0040			ALMS        equ $0040; ANTIC load memory scan
+    39 = 0020			AVSCR       equ $0020; ANTIC vertical scroll mask
+    40 = 0010			AHSCR       equ $0010; ANTIC horizontal scroll mask
+    41 = 0001			AJMP        equ $0001; ANTIC jump
+    42 = 0000			AEMPTY1     equ $0000; ANTIC 1 empty scanline
+    43 = 0010			AEMPTY2     equ $0010; ANTIC 2 empty scanlines
+    44 = 0020			AEMPTY3     equ $0020; ANTIC 3 empty scanlines
+    45 = 0030			AEMPTY4     equ $0030; ANTIC 4 empty scanlines
+    46 = 0040			AEMPTY5     equ $0040; ANTIC 5 empty scanlines
+    47 = 0050			AEMPTY6     equ $0050; ANTIC 6 empty scanlines
+    48 = 0060			AEMPTY7     equ $0060; ANTIC 7 empty scanlines
+    49 = 0070			AEMPTY8     equ $0070; ANTIC 8 empty scanlines
+    50
+    51 				;
+    52 				; OS VARIABLES FOR XL/XE
+    53 				;
+    54
+    55 				;
+    56 				; PAGE 0
+    57 				;
+    58 = 0001			NGFLAG      equ $0001
+    59 = 0002			CASINI      equ $0002
+    60 = 0004			RAMLO       equ $0004
+    61 = 0006			TRAMSZ      equ $0006
+    62 = 0007			CMCMD       equ $0007
+    63 = 0008			WARMST      equ $0008
+    64 = 0009			BOOT        equ $0009
+    65 = 000A			DOSVEC      equ $000A
+    66 = 000C			DOSINI      equ $000C
+    67 = 000E			APPMHI      equ $000E
+    68 = 0010			POKMSK      equ $0010
+    69 = 0011			BRKKEY      equ $0011
+    70 = 0012			RTCLOK      equ $0012
+    71 = 0015			BUFADR      equ $0015
+    72 = 0017			ICCOMT      equ $0017
+    73 = 0018			DSKFMS      equ $0018
+    74 = 001A			DSKUTL      equ $001A
+    75 = 001C			ABUFPT      equ $001C
+    76 = 0020			ICHIDZ      equ $0020
+    77 = 0021			ICDNOZ      equ $0021
+    78 = 0022			ICCOMZ      equ $0022
+    79 = 0023			ICSTAZ      equ $0023
+    80 = 0024			ICBALZ      equ $0024
+    81 = 0025			ICBAHZ      equ $0025
+    82 = 0026			ICPTLZ      equ $0026
+    83 = 0027			ICPTHZ      equ $0027
+    84 = 0028			ICBLLZ      equ $0028
+    85 = 0029			ICBLHZ      equ $0029
+    86 = 002A			ICAX1Z      equ $002A
+    87 = 002B			ICAX2Z      equ $002B
+    88 = 002C			ICAX3Z      equ $002C
+    89 = 002D			ICAX4Z      equ $002D
+    90 = 002E			ICAX5Z      equ $002E
+    91 = 002F			ICAX6Z      equ $002F
+    92 				; STATUS   =   $30 Commented out for compatibility with SDX
+    93 = 0031			CHKSUM      equ $0031
+    94 = 0032			BUFRLO      equ $0032
+    95 = 0033			BUFRHI      equ $0033
+    96 = 0034			BFENLO      equ $0034
+    97 = 0035			BFENHI      equ $0035
+    98 = 0036			LTEMP       equ $0036
+    99 = 0038			BUFRFL      equ $0038
+   100 = 0039			RECVDN      equ $0039
+   101 = 003A			XMTDON      equ $003A
+   102 = 003B			CHKSNT      equ $003B
+   103 = 003C			NOCKSM      equ $003C
+   104 = 003D			BPTR        equ $003D
+   105 = 003E			FTYPE       equ $003E
+   106 = 003F			FEOF        equ $003F
+   107 = 0040			FREQ        equ $0040
+   108 = 0041			SOUNDR      equ $0041
+   109 = 0042			CRITIC      equ $0042
+   110 = 0043			FMSZPG      equ $0043
+   111 = 004A			ZCHAIN      equ $004A
+   112 = 004C			DSTAT       equ $004C
+   113 = 004D			ATRACT      equ $004D
+   114 = 004E			DRKMSK      equ $004E
+   115 = 004F			COLRSH      equ $004F
+   116 = 0050			TEMPCHR     equ $0050
+   117 = 0051			HOLD1       equ $0051
+   118 = 0052			LMARGN      equ $0052
+   119 = 0053			RMARGN      equ $0053
+   120 = 0054			ROWCRS      equ $0054
+   121 = 0055			COLCRS      equ $0055
+   122 = 0057			DINDEX      equ $0057
+   123 = 0058			SAVMSC      equ $0058
+   124 = 005A			OLDROW      equ $005A
+   125 = 005B			OLDCOL      equ $005B
+   126 = 005D			OLDCHR      equ $005D
+   127 = 005E			OLDADR      equ $005E
+   128 = 0060			FKDEF       equ $0060
+   129 = 0062			PALNTS      equ $0062
+   130 = 0063			LOGCOL      equ $0063
+   131 = 0064			ADRESS      equ $0064
+   132 = 0066			MLTTMP      equ $0066
+   133 = 0068			SAVADR      equ $0068
+   134 = 006A			RAMTOP      equ $006A; RAM TOP
+   135 = 006B			BUFCNT      equ $006B
+   136 = 006C			BUFSTR      equ $006C
+   137 = 006E			BITMSK      equ $006E
+   138 = 006F			SHFAMT      equ $006F
+   139 = 0070			ROWAC       equ $0070
+   140 = 0072			COLAC       equ $0072
+   141 = 0074			ENDPT       equ $0074
+   142 = 0076			DELTAR      equ $0076
+   143 = 0077			DELTAC      equ $0077
+   144 = 0079			KEYDEF      equ $0079
+   145 = 007B			SWPFLG      equ $007B
+   146 = 007C			HOLDCH      equ $007C
+   147 = 007D			INSDAT      equ $007D
+   148 = 007E			COUNTR      equ $007E
+   149 = 0080			LOMEM       equ $0080
+   150
+   151 				;
+   152 				; PAGE 2
+   153 				;
+   154 = 0200			VDSLST      equ $0200
+   155 = 0202			VPRCED      equ $0202
+   156 = 0204			VINTER      equ $0204
+   157 = 0206			VBREAK      equ $0206
+   158 = 0208			VKEYBD      equ $0208
+   159 = 020A			VSERIN      equ $020A
+   160 = 020C			VSEROR      equ $020C
+   161 = 020E			VSEROC      equ $020E
+   162 = 0210			VTIMR1      equ $0210
+   163 = 0212			VTIMR2      equ $0212
+   164 = 0214			VTIMR4      equ $0214
+   165 = 0216			VIMIRQ      equ $0216
+   166 = 0218			CDTMV1      equ $0218
+   167 = 021A			CDTMV2      equ $021A
+   168 = 021C			CDTMV3      equ $021C
+   169 = 021E			CDTMV4      equ $021E
+   170 = 0220			CDTMV5      equ $0220
+   171 = 0222			VVBLKI      equ $0222
+   172 = 0224			VVBLKD      equ $0224
+   173 = 0226			CDTMA1      equ $0226
+   174 = 0228			CDTMA2      equ $0228
+   175 = 022A			CDTMF3      equ $022A
+   176 = 022B			SRTIMR      equ $022B
+   177 = 022C			CDTMF4      equ $022C
+   178 = 022D			INTEMP      equ $022D
+   179 = 022E			CDTMF5      equ $022E
+   180 = 022F			SDMCTL      equ $022F
+   181 = 0230			SDLSTL      equ $0230
+   182 = 0231			SDLSTH      equ $0231
+   183 = 0232			SSKCTL      equ $0232
+   184 = 0233			SPARE       equ $0233
+   185 = 0234			LPENH       equ $0234
+   186 = 0235			LPENV       equ $0235
+   187 = 0236			BRKKY       equ $0236
+   188 = 0238			VPIRQ       equ $0238
+   189 = 023A			CDEVIC      equ $023A
+   190 = 023B			CCOMND      equ $023B
+   191 = 023C			CAUX1       equ $023C
+   192 = 023D			CAUX2       equ $023D
+   193 = 023E			TMPSIO      equ $023E
+   194 = 023F			ERRFLG      equ $023F
+   195 = 0240			DFLAGS      equ $0240
+   196 = 0241			DBSECT      equ $0241
+   197 = 0242			BOOTAD      equ $0242
+   198 = 0244			COLDST      equ $0244
+   199 = 0245			RECLEN      equ $0245
+   200 = 0246			DSKTIM      equ $0246
+   201 = 0247			PDVMSK      equ $0247
+   202 = 0248			SHPDVS      equ $0248
+   203 = 0249			PDMSK       equ $0249
+   204 = 024A			RELADR      equ $024A
+   205 = 024C			PPTMPA      equ $024C
+   206 = 024D			PPTMPX      equ $024D
+   207 = 026B			CHSALT      equ $026B
+   208 = 026C			VSFLAG      equ $026C
+   209 = 026D			KEYDIS      equ $026D
+   210 = 026E			FINE        equ $026E
+   211 = 026F			GPRIOR      equ $026F
+   212 = 0270			PADDL0      equ $0270
+   213 = 0271			PADDL1      equ $0271
+   214 = 0272			PADDL2      equ $0272
+   215 = 0273			PADDL3      equ $0273
+   216 = 0274			PADDL4      equ $0274
+   217 = 0275			PADDL5      equ $0275
+   218 = 0276			PADDL6      equ $0276
+   219 = 0277			PADDL7      equ $0277
+   220 = 0278			STICK0      equ $0278
+   221 = 0279			STICK1      equ $0279
+   222 = 027A			STICK2      equ $027A
+   223 = 027B			STICK3      equ $027B
+   224 = 027C			PTRIG0      equ $027C
+   225 = 027D			PTRIG1      equ $027D
+   226 = 027E			PTRIG2      equ $027E
+   227 = 027F			PTRIG3      equ $027F
+   228 = 0280			PTRIG4      equ $0280
+   229 = 0281			PTRIG5      equ $0281
+   230 = 0282			PTRIG6      equ $0282
+   231 = 0283			PTRIG7      equ $0283
+   232 = 0284			STRIG0      equ $0284
+   233 = 0285			STRIG1      equ $0285
+   234 = 0286			STRIG2      equ $0286
+   235 = 0287			STRIG3      equ $0287
+   236 = 0288			HIBYTE      equ $0288
+   237 = 0289			WMODE       equ $0289
+   238 = 028A			BLIM        equ $028A
+   239 = 028B			IMASK       equ $028B
+   240 = 028C			JVECK       equ $028C
+   241 = 028E			NEWADR      equ $028E
+   242 = 0290			TXTROW      equ $0290
+   243 = 0291			TXTCOL      equ $0291
+   244 = 0293			TINDEX      equ $0293
+   245 = 0294			TXTMSC      equ $0294
+   246 = 0296			TXTOLD      equ $0296
+   247 = 029C			CRETRY      equ $029C
+   248 = 029D			HOLD3       equ $029D
+   249 = 029E			SUBTMP      equ $029E
+   250 = 029F			HOLD2       equ $029F
+   251 = 02A0			DMASK       equ $02A0
+   252 = 02A1			TMPLBT      equ $02A1
+   253 = 02A2			ESCFLG      equ $02A2
+   254 = 02A3			TABMAP      equ $02A3
+   255 = 02B2			LOGMAP      equ $02B2
+   256 = 02B6			INVFLG      equ $02B6
+   257 = 02B7			FILFLG      equ $02B7
+   258 = 02B8			TMPROW      equ $02B8
+   259 = 02B9			TMPCOL      equ $02B9
+   260 = 02BB			SCRFLG      equ $02BB
+   261 = 02BC			HOLD4       equ $02BC
+   262 = 02BD			DRETRY      equ $02BD
+   263 = 02BE			SHFLOC      equ $02BE
+   264 = 02BF			BOTSCR      equ $02BF
+   265 = 02C0			PCOLR0      equ $02C0
+   266 = 02C1			PCOLR1      equ $02C1
+   267 = 02C2			PCOLR2      equ $02C2
+   268 = 02C3			PCOLR3      equ $02C3
+   269 = 02C4			COLOR0      equ $02C4
+   270 = 02C5			COLOR1      equ $02C5
+   271 = 02C6			COLOR2      equ $02C6
+   272 = 02C7			COLOR3      equ $02C7
+   273 = 02C8			COLOR4      equ $02C8
+   274 = 02C9			RUNADR      equ $02C9
+   275 = 02CB			HIUSED      equ $02CB
+   276 = 02CD			ZHIUSE      equ $02CD
+   277 = 02CF			GBYTEA      equ $02CF
+   278 = 02D1			LOADAD      equ $02D1
+   279 = 02D3			ZLOADA      equ $02D3
+   280 = 02D5			DSCTLN      equ $02D5
+   281 = 02D7			ACMISR      equ $02D7
+   282 = 02D9			KRPDER      equ $02D9
+   283 = 02DA			KEYREP      equ $02DA
+   284 = 02DB			NOCLIK      equ $02DB
+   285 = 02DC			HELPFG      equ $02DC
+   286 = 02DD			DMASAV      equ $02DD
+   287 = 02DE			PBPNT       equ $02DE
+   288 = 02DF			PBUFSZ      equ $02DF
+   289 = 02E0			RUNAD       equ $02E0
+   290 = 02E2			INITAD      equ $02E2
+   291 = 02E4			RAMSIZ      equ $02E4
+   292 = 02E5			MEMTOP      equ $02E5
+   293 = 02E7			MEMLO       equ $02E7
+   294 = 02E9			HNDLOD      equ $02E9
+   295 = 02EA			DVSTAT      equ $02EA
+   296 = 02EE			CBAUDL      equ $02EE
+   297 = 02EF			CBAUDH      equ $02EF
+   298 = 02F0			CRSINH      equ $02F0
+   299 = 02F1			KEYDEL      equ $02F1
+   300 = 02F2			CH1         equ $02F2
+   301 = 02F3			CHACT       equ $02F3
+   302 = 02F4			CHBAS       equ $02F4
+   303 = 02F5			NEWROW      equ $02F5
+   304 = 02F6			NEWCOL      equ $02F6
+   305 = 02F8			ROWINC      equ $02F8
+   306 = 02F9			COLINC      equ $02F9
+   307 = 02FA			CHAR        equ $02FA
+   308 = 02FB			ATACHR      equ $02FB
+   309 = 02FC			CH          equ $02FC
+   310 = 02FD			FILDAT      equ $02FD
+   311 = 02FE			DSPFLG      equ $02FE
+   312 = 02FF			SSFLAG      equ $02FF
+   313
+   314 				;
+   315 				; PAGE 3
+   316 				;
+   317 = 0300			DDEVIC      equ $0300
+   318 = 0301			DUNIT       equ $0301
+   319 = 0302			DCOMND      equ $0302
+   320 = 0303			DSTATS      equ $0303
+   321 = 0304			DBUFLO      equ $0304
+   322 = 0305			DBUFHI      equ $0305
+   323 = 0306			DTIMLO      equ $0306
+   324 = 0307			DUNUSE      equ $0307
+   325 = 0308			DBYTLO      equ $0308
+   326 = 0309			DBYTHI      equ $0309
+   327 = 030A			DAUX1       equ $030A
+   328 = 030B			DAUX2       equ $030B
+   329 = 030C			TIMER1      equ $030C
+   330 = 030E			ADDCOR      equ $030E
+   331 = 030F			CASFLG      equ $030F
+   332 = 0310			TIMER2      equ $0310
+   333 = 0312			TEMP1       equ $0312
+   334 = 0314			TEMP2       equ $0314
+   335 = 0315			TEMP3       equ $0315
+   336 = 0316			SAVIO       equ $0316
+   337 = 0317			TIMFLG      equ $0317
+   338 = 0318			STACKP      equ $0318
+   339 = 0319			TSTAT       equ $0319
+   340 = 031A			HATABS      equ $031A
+   341 = 033D			PUPBT1      equ $033D
+   342 = 033E			PUPBT2      equ $033E
+   343 = 033F			PUPBT3      equ $033F
+   344 = 0340			IOCB0       equ $0340
+   345 = 0350			IOCB1       equ $0350
+   346 = 0360			IOCB2       equ $0360
+   347 = 0370			IOCB3       equ $0370
+   348 = 0380			IOCB4       equ $0380
+   349 = 0390			IOCB5       equ $0390
+   350 = 03A0			IOCB6       equ $03A0
+   351 = 03B0			IOCB7       equ $03B0
+   352 = 03C0			PRNBUF      equ $03C0
+   353 = 03E8			SUPERF      equ $03E8
+   354 = 03E9			CKEY        equ $03E9
+   355 = 03EA			CASSBT      equ $03EA
+   356 = 03EB			CARTCK      equ $03EB
+   357 = 03EC			DERRF       equ $03EC
+   358 = 03ED			ACMVAR      equ $03ED
+   359 = 03F8			BASICF      equ $03F8
+   360 = 03F9			MINTLK      equ $03F9
+   361 = 03FA			GINTLK      equ $03FA
+   362 = 03FB			CHLINK      equ $03FB
+   363 = 03FD			CASBUF      equ $03FD
+   364
+   365 				;
+   366 				; HARDWARE REGISTERS
+   367 				;
+   368 				; GTIA
+   369 				;
+   370 = D000			M0PF        equ $D000
+   371 = D000			HPOSP0      equ $D000
+   372 = D001			M1PF        equ $D001
+   373 = D001			HPOSP1      equ $D001
+   374 = D002			M2PF        equ $D002
+   375 = D002			HPOSP2      equ $D002
+   376 = D003			M3PF        equ $D003
+   377 = D003			HPOSP3      equ $D003
+   378 = D004			P0PF        equ $D004
+   379 = D004			HPOSM0      equ $D004
+   380 = D005			P1PF        equ $D005
+   381 = D005			HPOSM1      equ $D005
+   382 = D006			P2PF        equ $D006
+   383 = D006			HPOSM2      equ $D006
+   384 = D007			P3PF        equ $D007
+   385 = D007			HPOSM3      equ $D007
+   386 = D008			M0PL        equ $D008
+   387 = D008			SIZEP0      equ $D008
+   388 = D009			M1PL        equ $D009
+   389 = D009			SIZEP1      equ $D009
+   390 = D00A			M2PL        equ $D00A
+   391 = D00A			SIZEP2      equ $D00A
+   392 = D00B			M3PL        equ $D00B
+   393 = D00B			SIZEP3      equ $D00B
+   394 = D00C			P0PL        equ $D00C
+   395 = D00C			SIZEM       equ $D00C
+   396 = D00D			P1PL        equ $D00D
+   397 = D00D			GRAFP0      equ $D00D
+   398 = D00E			P2PL        equ $D00E
+   399 = D00E			GRAFP1      equ $D00E
+   400 = D00F			P3PL        equ $D00F
+   401 = D00F			GRAFP2      equ $D00F
+   402 = D010			TRIG0       equ $D010
+   403 = D010			GRAFP3      equ $D010
+   404 = D011			TRIG1       equ $D011
+   405 = D011			GRAFM       equ $D011
+   406 = D012			TRIG2       equ $D012
+   407 = D012			COLPM0      equ $D012
+   408 = D013			TRIG3       equ $D013
+   409 = D013			COLPM1      equ $D013
+   410 = D014			PAL         equ $D014
+   411 = D014			COLPM2      equ $D014
+   412 = D015			COLPM3      equ $D015
+   413 = D016			COLPF0      equ $D016
+   414 = D017			COLPF1      equ $D017
+   415 = D018			COLPF2      equ $D018
+   416 = D019			COLPF3      equ $D019
+   417 = D01A			COLBK       equ $D01A
+   418 = D01B			PRIOR       equ $D01B
+   419 = D01C			VDELAY      equ $D01C
+   420 = D01D			GRACTL      equ $D01D
+   421 = D01E			HITCLR      equ $D01E
+   422 = D01F			CONSOL      equ $D01F
+   423
+   424 				;
+   425 				; POKEY
+   426 				;
+   427 = D200			POT0        equ $D200
+   428 = D200			AUDF1       equ $D200
+   429 = D201			POT1        equ $D201
+   430 = D201			AUDC1       equ $D201
+   431 = D202			POT2        equ $D202
+   432 = D202			AUDF2       equ $D202
+   433 = D203			POT3        equ $D203
+   434 = D203			AUDC2       equ $D203
+   435 = D204			POT4        equ $D204
+   436 = D204			AUDF3       equ $D204
+   437 = D205			POT5        equ $D205
+   438 = D205			AUDC3       equ $D205
+   439 = D206			POT6        equ $D206
+   440 = D206			AUDF4       equ $D206
+   441 = D207			POT7        equ $D207
+   442 = D207			AUDC4       equ $D207
+   443 = D208			ALLPOT      equ $D208
+   444 = D208			AUDCTL      equ $D208
+   445 = D209			KBCODE      equ $D209
+   446 = D209			STIMER      equ $D209
+   447 = D20A			RANDOM      equ $D20A
+   448 = D20A			SKREST      equ $D20A
+   449 = D20B			POTGO       equ $D20B
+   450 = D20D			SERIN       equ $D20D
+   451 = D20D			SEROUT      equ $D20D
+   452 = D20E			IRQST       equ $D20E
+   453 = D20E			IRQEN       equ $D20E
+   454 = D20F			SKSTAT      equ $D20F
+   455 = D20F			SKCTL       equ $D20F
+   456
+   457 				;
+   458 				; PIA
+   459 				;
+   460 = D300			PORTA       equ $D300
+   461 = D301			PORTB       equ $D301
+   462 = D302			PACTL       equ $D302
+   463 = D303			PBCTL       equ $D303
+   464 				;
+   465 				; ANTIC
+   466 				;
+   467 = D400			DMACLT      equ $D400
+   468 = D401			CHACTL      equ $D401
+   469 = D402			DLISTL      equ $D402
+   470 = D403			DLISTH      equ $D403
+   471 = D404			HSCROL      equ $D404
+   472 = D405			VSCROL      equ $D405
+   473 = D407			PMBASE      equ $D407
+   474 = D409			CHBASE      equ $D409
+   475 = D40A			WSYNC       equ $D40A
+   476 = D40B			VCOUNT      equ $D40B
+   477 = D40C			PENH        equ $D40C
+   478 = D40D			PENV        equ $D40D
+   479 = D40E			NMIEN       equ $D40E
+   480 = D40F			NMIST       equ $D40F
+   481 = D40F			NMIRES      equ $D40F
+   482
+   483 				;
+   484 				; FLOATING POINT ROUTINES
+   485 				;
+   486 = D800			AFP         equ $D800
+   487 = D8E6			FASC        equ $D8E6
+   488 = D9AA			IFP         equ $D9AA
+   489 = D9D2			FPI         equ $D9D2
+   490 = DA44			ZFR0        equ $DA44
+   491 = DA46			ZF1         equ $DA46
+   492 = DA60			FSUB        equ $DA60
+   493 = DA66			FADD        equ $DA66
+   494 = DADB			FMUL        equ $DADB
+   495 = DB28			FDIV        equ $DB28
+   496 = DD40			PLYEVL      equ $DD40
+   497 = DD89			FLD0R       equ $DD89
+   498 = DD8D			FLD0P       equ $DD8D
+   499 = DD98			FLD1R       equ $DD98
+   500 = DD9C			FLD1P       equ $DD9C
+   501 = DDA7			FSTOR       equ $DDA7
+   502 = DDAB			FSTOP       equ $DDAB
+   503 = DDB6			FMOVE       equ $DDB6
+   504 = DDC0			EXP         equ $DDC0
+   505 = DDCC			EXP10       equ $DDCC
+   506 = DECD			LOG         equ $DECD
+   507 = DED1			LOG10       equ $DED1
+   508
+   509 				;
+   510 				; ROM VECTORS
+   511 				;
+   512 = E453			DSKINV      equ $E453
+   513 = E456			CIOV        equ $E456
+   514 = E459			SIOV        equ $E459
+   515 = E45C			SETVBV      equ $E45C
+   516 = E45F			SYSVBV      equ $E45F
+   517 = E462			XITVBV      equ $E462
+   518 = E465			SIOINV      equ $E465
+   519 = E468			SENDEV      equ $E468
+   520 = E46B			INTINV      equ $E46B
+   521 = E46E			CIOINV      equ $E46E
+   522 = E471			SELFSV      equ $E471
+   523 = E474			WARMSV      equ $E474
+   524 = E477			COLDSV      equ $E477
+   525 = E47A			RBLOKV      equ $E47A
+   526 = E47D			CSOPIV      equ $E47D
+   527 = E480			PUPDIV      equ $E480
+   528 = E483			SELFTSV     equ $E483
+   529 = E486			PENTV       equ $E486
+   530 = E489			PHUNLV      equ $E489
+   531 = E48C			PHINIV      equ $E48C
+   532 = E48F			GPDVV       equ $E48F
+   533 				;
+   534 				; SpartaDos X equates
+   535 				;
+   536 = 0700			S_FLAG      equ $0700
+   537 = 0701			SDXVER      equ $0701
+   538 = 0702			SDXREV      equ $0702
+   539 = 0703			JKERNEL     equ $0703
+   540 = 0706			BLOCK_IO    equ $0706
+   541 = 0709			JMISC       equ $0709
+   542 = 070C			JLSIO       equ $070C
+   543 = 0715			JHWCTRL     equ $0715
+   544 = 0718			SIOHAND     equ $0718
+   545 = 0720			SLVTAB      equ $0720
+   546 = 0730			LDFTAB      equ $0730
+   547 = 0740			DEVTAB      equ $0740
+   548 = 0750			HANDTAB     equ $0750
+   549 = 0760			FHANDLE     equ $0760
+   550 = 0760			SIOCBIDX    equ $0760
+   551 = 0761			DEVICE      equ $0761
+   552 = 0762			NAME        equ $0762
+   553 = 076D			NAMES       equ $076D
+   554 = 0778			FMODE       equ $0778
+   555 = 0778			OPMODE      equ $0778
+   556 = 0779			FATR1       equ $0779
+   557 = 077A			FATR2       equ $077A
+   558 = 077B			DATE        equ $077B
+   559 = 077E			TIME        equ $077E
+   560 = 0781			DATESET     equ $0781
+   561 = 0782			FAUX1       equ $0782
+   562 = 0783			FAUX2       equ $0783
+   563 = 0784			FAUX3       equ $0784
+   564 = 0785			FAUX4       equ $0785
+   565 = 0786			FAUX5       equ $0786
+   566 = 0787			SYSCALL     equ $0787
+   567 = 0789			DIRBUF      equ $0789
+   568 = 0789			DIRFATR     equ $0789
+   569 = 078A			DIRF1SEC    equ $078A
+   570 = 078C			DIRFLEN     equ $078C
+   571 = 078F			DIRFNAME    equ $078F
+   572 = 079A			DIRFDATE    equ $079A
+   573 = 079D			DIRFTIME    equ $079D
+   574 = 07A0			PATH        equ $07A0
+   575 = 07E0			JHDOSINI    equ $07E0
+   576 = 07E3			VDOS        equ $07E3
+   577 = 07E5			VCIO        equ $07E5
+   578 = 07E7			VEDIT       equ $07E7
+   579 = 07E9			VCRUNCH     equ $07E9
+   580 = 07EB			JFSYMBOL    equ $07EB
+   581 = 07EE			JMDVECT     equ $07EE
+   582 = 07F1			JEXT_ON     equ $07F1
+   583 = 07F4			JEXT_OFF    equ $07F4
+   584 = 07F7			JEXT_SW     equ $07F7
+   585 = 07FA			JCAR_SW     equ $07FA
+   586 = 07FD			JCAR_OLD    equ $07FD
+   587 = FFC0			JGETTD      equ $FFC0
+   588 = FFC3			JSETTD      equ $FFC3
+   589 = FFC6			JTDON       equ $FFC6
+   590 = FFC9			JFMTTD      equ $FFC9
+   591 = FFD2			JXCOMLI     equ $FFD2
+   592 = FFD5			JKEYON      equ $FFD5
+   593 				;
+   594 				; Code equates
+   595 				;
+   596 = 0082			L0082       equ $0082
+   597 = 0085			L0085       equ $0085
+   598 = 0087			L0087       equ $0087
+   599 = 00A5			L00A5       equ $00A5
+   600 = 1234			L1234       equ $1234
+   601 = 5678			L5678       equ $5678
+   602 = D3C1			LD3C1       equ $D3C1
+     3 				;
+     4 				; Start of code
+     5 				;
+     6
+     7 				            org $2000
+     8 				;
+     9 FFFF> 2000-2054> A9 41	L2000       lda #$41
+    10 2002 A9 30		            lda #$30
+    11 2004 AD 34 12		            lda L1234
+    12 2007 8D 78 56		            sta L5678
+    13 200A 20 16 20		            jsr L2016
+    14 200D AD 0B D4		L200D       lda VCOUNT
+    15 2010 8D 1A D0		            sta COLBK
+    16 2013 4C 0D 20		            jmp L200D
+    17 2016 A2 00		L2016       ldx #$00
+    18 2018 9D 2B 20		            sta L202B,X
+    19 201B 9D 35 20		            sta L2035,X
+    20 201E 9D 3F 20		            sta L203F,X
+    21 2021 9D 44 20		            sta L2044,X
+    22 2024 9D 4A 20		            sta L2049+1,X
+    23 2027 9D 4F 20		            sta L204F,X
+    24 202A 60			            rts
+    25 202B 01 02		L202B       ora (CASINI,X)
+    26 202D 03 04		            .byte $03,$04
+    27 202F 05 06		            ora TRAMSZ
+    28 2031 07			            .byte $07
+    29 2032 08			            php
+    30 2033 09 0A		            ora #$0A
+    31 2035 81 82		L2035       sta (L0082,X)
+    32 2037 83			            .byte $83
+    33 2038 84 85		            sty L0085
+    34 203A 86 87		            stx L0087
+    35 203C 88			            dey
+    36 203D 89			            .byte $89
+    37 203E 8A			            txa
+    38 203F 41 53		L203F       eor (RMARGN,X)
+    39 2041 43			            .byte $43
+    40 2042 49 49		            eor #$49
+    41 2044 33 23 32		L2044       .byte $33,$23,$32
+    42 2047 25 25		            and ICBAHZ
+    43 2049 2E C1 D3		L2049       rol LD3C1
+    44 204C C3			            .byte $C3
+    45 204D C9 C9		            cmp #$C9
+    46 204F B3 A3 B2		L204F       .byte $B3,$A3,$B2
+    47 2052 A5 A5		            lda L00A5
+    48 2054 AE			            .byte $AE
+    49
+    50 2055			            org $3000
+    51 				;
+    52 3000-3006> AD 34 12	L3000       lda L1234
+    53 3003 8D 78 56		            sta L5678
+    54 3006 60			            rts
+    55
+    56 3007			            org $02E2
+    57 				;
+    58 02E2-02E3> 00 30		            .word L3000
+    59
+    60 02E4			            org $4000
+    61 				;
+    62 4000-4006> AD 34 12	L4000       lda L1234
+    63 4003 8D 78 56		            sta L5678
+    64 4006 60			            rts
+    65
+    66 4007			            org $02E2
+    67 				;
+    68 02E2-02E3> 00 40		            .word L4000
+    69
+    70 02E4			            org $02E0
+    71 				;
+    72 02E0-02E1> 00 20		            .word L2000

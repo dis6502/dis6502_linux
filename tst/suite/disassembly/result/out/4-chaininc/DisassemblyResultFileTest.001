@@ -1,0 +1,12 @@
+; Line number = 11, section User equates, address 0x0 
+; Line number = 12, section User equates, address 0x1 
+; Line number = 13, section User equates, address 0x2 
+; Line number = 14, section User equates, address 0x3 
+; Line number = 15, section User equates, address 0x4 
+; Line number = 16, section User equates, address 0x5 
+; Line number = 17, section User equates, address 0x6 
+; Line number = 18, section User equates, address 0x7 
+; Line number = 19, section User equates, address 0x8 
+; Line number = 20, section User equates, address 0x9 
+;
+        icl 'DisassemblyResultFileTest.002'

@@ -1,0 +1,5 @@
+SDX example Fast Assembler
+DIS6502 fails here, because SDX uses relocateable code blocks assembled relative to address $0000.
+As a result, code address overlap zeropage address and lead to wrong results.
+DS6502 would have to learn that the same of address can have different types and labels, depending of the usage.
+Similar to the difference betweee read, write and constant access.

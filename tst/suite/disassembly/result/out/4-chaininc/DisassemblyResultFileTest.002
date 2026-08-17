@@ -1,0 +1,12 @@
+; Line number = 21, section Code equates, address 0x0 
+; Line number = 22, section Code equates, address 0x1 
+; Line number = 23, section Code equates, address 0x2 
+; Line number = 24, section Code equates, address 0x3 
+; Line number = 25, section Code equates, address 0x4 
+; Line number = 26, section Code equates, address 0x5 
+; Line number = 27, section Code equates, address 0x6 
+; Line number = 28, section Code equates, address 0x7 
+; Line number = 29, section Code equates, address 0x8 
+; Line number = 30, section Code equates, address 0x9 
+;
+        icl 'DisassemblyResultFileTest.003'

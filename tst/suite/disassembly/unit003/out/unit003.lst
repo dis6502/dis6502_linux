@@ -1,0 +1,1243 @@
+mads 2.1.0 build 4 (27 Oct 19)
+Source: unit003.asm
+     1 				;
+     2 				        icl 'unit003.inc'
+Source: unit003.inc
+     1 				;
+     2 				; System equates
+     3 				;
+     4 				; OS EQUATES
+     5 				; ----------
+     6 				;
+     7 				; Syntax:
+     8 				; Use '=' for addresses
+     9 				; and '<' for read addresses (ex: KBCODE)
+    10 				; and '>' for write addresses (ex: STIMER)
+    11 				; and '#' for values
+    12
+    13 				;
+    14 				; IO EQUATES
+    15 				;
+    16 = 0000			ICHID       equ $0000
+    17 = 0001			ICDNO       equ $0001
+    18 = 0002			ICCOM       equ $0002
+    19 = 0003			ICSTA       equ $0003
+    20 = 0004			ICBAL       equ $0004
+    21 = 0005			ICBAH       equ $0005
+    22 = 0006			ICPTL       equ $0006
+    23 = 0007			ICPTH       equ $0007
+    24 = 0008			ICBLL       equ $0008
+    25 = 0009			ICBLH       equ $0009
+    26 = 000A			ICAX1       equ $000A
+    27 = 000B			ICAX2       equ $000B
+    28 = 000C			ICAX3       equ $000C
+    29 = 000D			ICAX4       equ $000D
+    30 = 000E			ICAX5       equ $000E
+    31 = 000F			ICAX6       equ $000F
+    32
+    33 				;
+    34 				; DISPLAY LIST EQUATES
+    35 				;
+    36 = 0080			ADLI        equ $0080; ANTIC display list interrupt mask
+    37 = 0040			AVB         equ $0040; ANTIC vertical blank mask
+    38 = 0040			ALMS        equ $0040; ANTIC load memory scan
+    39 = 0020			AVSCR       equ $0020; ANTIC vertical scroll mask
+    40 = 0010			AHSCR       equ $0010; ANTIC horizontal scroll mask
+    41 = 0001			AJMP        equ $0001; ANTIC jump
+    42 = 0000			AEMPTY1     equ $0000; ANTIC 1 empty scanline
+    43 = 0010			AEMPTY2     equ $0010; ANTIC 2 empty scanlines
+    44 = 0020			AEMPTY3     equ $0020; ANTIC 3 empty scanlines
+    45 = 0030			AEMPTY4     equ $0030; ANTIC 4 empty scanlines
+    46 = 0040			AEMPTY5     equ $0040; ANTIC 5 empty scanlines
+    47 = 0050			AEMPTY6     equ $0050; ANTIC 6 empty scanlines
+    48 = 0060			AEMPTY7     equ $0060; ANTIC 7 empty scanlines
+    49 = 0070			AEMPTY8     equ $0070; ANTIC 8 empty scanlines
+    50
+    51 				;
+    52 				; OS VARIABLES FOR XL/XE
+    53 				;
+    54
+    55 				;
+    56 				; PAGE 0
+    57 				;
+    58 = 0001			NGFLAG      equ $0001
+    59 = 0002			CASINI      equ $0002
+    60 = 0004			RAMLO       equ $0004
+    61 = 0006			TRAMSZ      equ $0006
+    62 = 0007			CMCMD       equ $0007
+    63 = 0008			WARMST      equ $0008
+    64 = 0009			BOOT        equ $0009
+    65 = 000A			DOSVEC      equ $000A
+    66 = 000C			DOSINI      equ $000C
+    67 = 000E			APPMHI      equ $000E
+    68 = 0010			POKMSK      equ $0010
+    69 = 0011			BRKKEY      equ $0011
+    70 = 0012			RTCLOK      equ $0012
+    71 = 0015			BUFADR      equ $0015
+    72 = 0017			ICCOMT      equ $0017
+    73 = 0018			DSKFMS      equ $0018
+    74 = 001A			DSKUTL      equ $001A
+    75 = 001C			ABUFPT      equ $001C
+    76 = 0020			ICHIDZ      equ $0020
+    77 = 0021			ICDNOZ      equ $0021
+    78 = 0022			ICCOMZ      equ $0022
+    79 = 0023			ICSTAZ      equ $0023
+    80 = 0024			ICBALZ      equ $0024
+    81 = 0025			ICBAHZ      equ $0025
+    82 = 0026			ICPTLZ      equ $0026
+    83 = 0027			ICPTHZ      equ $0027
+    84 = 0028			ICBLLZ      equ $0028
+    85 = 0029			ICBLHZ      equ $0029
+    86 = 002A			ICAX1Z      equ $002A
+    87 = 002B			ICAX2Z      equ $002B
+    88 = 002C			ICAX3Z      equ $002C
+    89 = 002D			ICAX4Z      equ $002D
+    90 = 002E			ICAX5Z      equ $002E
+    91 = 002F			ICAX6Z      equ $002F
+    92 				; STATUS   =   $30 Commented out for compatibility with SDX
+    93 = 0031			CHKSUM      equ $0031
+    94 = 0032			BUFRLO      equ $0032
+    95 = 0033			BUFRHI      equ $0033
+    96 = 0034			BFENLO      equ $0034
+    97 = 0035			BFENHI      equ $0035
+    98 = 0036			LTEMP       equ $0036
+    99 = 0038			BUFRFL      equ $0038
+   100 = 0039			RECVDN      equ $0039
+   101 = 003A			XMTDON      equ $003A
+   102 = 003B			CHKSNT      equ $003B
+   103 = 003C			NOCKSM      equ $003C
+   104 = 003D			BPTR        equ $003D
+   105 = 003E			FTYPE       equ $003E
+   106 = 003F			FEOF        equ $003F
+   107 = 0040			FREQ        equ $0040
+   108 = 0041			SOUNDR      equ $0041
+   109 = 0042			CRITIC      equ $0042
+   110 = 0043			FMSZPG      equ $0043
+   111 = 004A			ZCHAIN      equ $004A
+   112 = 004C			DSTAT       equ $004C
+   113 = 004D			ATRACT      equ $004D
+   114 = 004E			DRKMSK      equ $004E
+   115 = 004F			COLRSH      equ $004F
+   116 = 0050			TEMPCHR     equ $0050
+   117 = 0051			HOLD1       equ $0051
+   118 = 0052			LMARGN      equ $0052
+   119 = 0053			RMARGN      equ $0053
+   120 = 0054			ROWCRS      equ $0054
+   121 = 0055			COLCRS      equ $0055
+   122 = 0057			DINDEX      equ $0057
+   123 = 0058			SAVMSC      equ $0058
+   124 = 005A			OLDROW      equ $005A
+   125 = 005B			OLDCOL      equ $005B
+   126 = 005D			OLDCHR      equ $005D
+   127 = 005E			OLDADR      equ $005E
+   128 = 0060			FKDEF       equ $0060
+   129 = 0062			PALNTS      equ $0062
+   130 = 0063			LOGCOL      equ $0063
+   131 = 0064			ADRESS      equ $0064
+   132 = 0066			MLTTMP      equ $0066
+   133 = 0068			SAVADR      equ $0068
+   134 = 006A			RAMTOP      equ $006A; RAM TOP
+   135 = 006B			BUFCNT      equ $006B
+   136 = 006C			BUFSTR      equ $006C
+   137 = 006E			BITMSK      equ $006E
+   138 = 006F			SHFAMT      equ $006F
+   139 = 0070			ROWAC       equ $0070
+   140 = 0072			COLAC       equ $0072
+   141 = 0074			ENDPT       equ $0074
+   142 = 0076			DELTAR      equ $0076
+   143 = 0077			DELTAC      equ $0077
+   144 = 0079			KEYDEF      equ $0079
+   145 = 007B			SWPFLG      equ $007B
+   146 = 007C			HOLDCH      equ $007C
+   147 = 007D			INSDAT      equ $007D
+   148 = 007E			COUNTR      equ $007E
+   149 = 0080			LOMEM       equ $0080
+   150
+   151 				;
+   152 				; PAGE 2
+   153 				;
+   154 = 0200			VDSLST      equ $0200
+   155 = 0202			VPRCED      equ $0202
+   156 = 0204			VINTER      equ $0204
+   157 = 0206			VBREAK      equ $0206
+   158 = 0208			VKEYBD      equ $0208
+   159 = 020A			VSERIN      equ $020A
+   160 = 020C			VSEROR      equ $020C
+   161 = 020E			VSEROC      equ $020E
+   162 = 0210			VTIMR1      equ $0210
+   163 = 0212			VTIMR2      equ $0212
+   164 = 0214			VTIMR4      equ $0214
+   165 = 0216			VIMIRQ      equ $0216
+   166 = 0218			CDTMV1      equ $0218
+   167 = 021A			CDTMV2      equ $021A
+   168 = 021C			CDTMV3      equ $021C
+   169 = 021E			CDTMV4      equ $021E
+   170 = 0220			CDTMV5      equ $0220
+   171 = 0222			VVBLKI      equ $0222
+   172 = 0224			VVBLKD      equ $0224
+   173 = 0226			CDTMA1      equ $0226
+   174 = 0228			CDTMA2      equ $0228
+   175 = 022A			CDTMF3      equ $022A
+   176 = 022B			SRTIMR      equ $022B
+   177 = 022C			CDTMF4      equ $022C
+   178 = 022D			INTEMP      equ $022D
+   179 = 022E			CDTMF5      equ $022E
+   180 = 022F			SDMCTL      equ $022F
+   181 = 0230			SDLSTL      equ $0230
+   182 = 0231			SDLSTH      equ $0231
+   183 = 0232			SSKCTL      equ $0232
+   184 = 0233			SPARE       equ $0233
+   185 = 0234			LPENH       equ $0234
+   186 = 0235			LPENV       equ $0235
+   187 = 0236			BRKKY       equ $0236
+   188 = 0238			VPIRQ       equ $0238
+   189 = 023A			CDEVIC      equ $023A
+   190 = 023B			CCOMND      equ $023B
+   191 = 023C			CAUX1       equ $023C
+   192 = 023D			CAUX2       equ $023D
+   193 = 023E			TMPSIO      equ $023E
+   194 = 023F			ERRFLG      equ $023F
+   195 = 0240			DFLAGS      equ $0240
+   196 = 0241			DBSECT      equ $0241
+   197 = 0242			BOOTAD      equ $0242
+   198 = 0244			COLDST      equ $0244
+   199 = 0245			RECLEN      equ $0245
+   200 = 0246			DSKTIM      equ $0246
+   201 = 0247			PDVMSK      equ $0247
+   202 = 0248			SHPDVS      equ $0248
+   203 = 0249			PDMSK       equ $0249
+   204 = 024A			RELADR      equ $024A
+   205 = 024C			PPTMPA      equ $024C
+   206 = 024D			PPTMPX      equ $024D
+   207 = 026B			CHSALT      equ $026B
+   208 = 026C			VSFLAG      equ $026C
+   209 = 026D			KEYDIS      equ $026D
+   210 = 026E			FINE        equ $026E
+   211 = 026F			GPRIOR      equ $026F
+   212 = 0270			PADDL0      equ $0270
+   213 = 0271			PADDL1      equ $0271
+   214 = 0272			PADDL2      equ $0272
+   215 = 0273			PADDL3      equ $0273
+   216 = 0274			PADDL4      equ $0274
+   217 = 0275			PADDL5      equ $0275
+   218 = 0276			PADDL6      equ $0276
+   219 = 0277			PADDL7      equ $0277
+   220 = 0278			STICK0      equ $0278
+   221 = 0279			STICK1      equ $0279
+   222 = 027A			STICK2      equ $027A
+   223 = 027B			STICK3      equ $027B
+   224 = 027C			PTRIG0      equ $027C
+   225 = 027D			PTRIG1      equ $027D
+   226 = 027E			PTRIG2      equ $027E
+   227 = 027F			PTRIG3      equ $027F
+   228 = 0280			PTRIG4      equ $0280
+   229 = 0281			PTRIG5      equ $0281
+   230 = 0282			PTRIG6      equ $0282
+   231 = 0283			PTRIG7      equ $0283
+   232 = 0284			STRIG0      equ $0284
+   233 = 0285			STRIG1      equ $0285
+   234 = 0286			STRIG2      equ $0286
+   235 = 0287			STRIG3      equ $0287
+   236 = 0288			HIBYTE      equ $0288
+   237 = 0289			WMODE       equ $0289
+   238 = 028A			BLIM        equ $028A
+   239 = 028B			IMASK       equ $028B
+   240 = 028C			JVECK       equ $028C
+   241 = 028E			NEWADR      equ $028E
+   242 = 0290			TXTROW      equ $0290
+   243 = 0291			TXTCOL      equ $0291
+   244 = 0293			TINDEX      equ $0293
+   245 = 0294			TXTMSC      equ $0294
+   246 = 0296			TXTOLD      equ $0296
+   247 = 029C			CRETRY      equ $029C
+   248 = 029D			HOLD3       equ $029D
+   249 = 029E			SUBTMP      equ $029E
+   250 = 029F			HOLD2       equ $029F
+   251 = 02A0			DMASK       equ $02A0
+   252 = 02A1			TMPLBT      equ $02A1
+   253 = 02A2			ESCFLG      equ $02A2
+   254 = 02A3			TABMAP      equ $02A3
+   255 = 02B2			LOGMAP      equ $02B2
+   256 = 02B6			INVFLG      equ $02B6
+   257 = 02B7			FILFLG      equ $02B7
+   258 = 02B8			TMPROW      equ $02B8
+   259 = 02B9			TMPCOL      equ $02B9
+   260 = 02BB			SCRFLG      equ $02BB
+   261 = 02BC			HOLD4       equ $02BC
+   262 = 02BD			DRETRY      equ $02BD
+   263 = 02BE			SHFLOC      equ $02BE
+   264 = 02BF			BOTSCR      equ $02BF
+   265 = 02C0			PCOLR0      equ $02C0
+   266 = 02C1			PCOLR1      equ $02C1
+   267 = 02C2			PCOLR2      equ $02C2
+   268 = 02C3			PCOLR3      equ $02C3
+   269 = 02C4			COLOR0      equ $02C4
+   270 = 02C5			COLOR1      equ $02C5
+   271 = 02C6			COLOR2      equ $02C6
+   272 = 02C7			COLOR3      equ $02C7
+   273 = 02C8			COLOR4      equ $02C8
+   274 = 02C9			RUNADR      equ $02C9
+   275 = 02CB			HIUSED      equ $02CB
+   276 = 02CD			ZHIUSE      equ $02CD
+   277 = 02CF			GBYTEA      equ $02CF
+   278 = 02D1			LOADAD      equ $02D1
+   279 = 02D3			ZLOADA      equ $02D3
+   280 = 02D5			DSCTLN      equ $02D5
+   281 = 02D7			ACMISR      equ $02D7
+   282 = 02D9			KRPDER      equ $02D9
+   283 = 02DA			KEYREP      equ $02DA
+   284 = 02DB			NOCLIK      equ $02DB
+   285 = 02DC			HELPFG      equ $02DC
+   286 = 02DD			DMASAV      equ $02DD
+   287 = 02DE			PBPNT       equ $02DE
+   288 = 02DF			PBUFSZ      equ $02DF
+   289 = 02E0			RUNAD       equ $02E0
+   290 = 02E2			INITAD      equ $02E2
+   291 = 02E4			RAMSIZ      equ $02E4
+   292 = 02E5			MEMTOP      equ $02E5
+   293 = 02E7			MEMLO       equ $02E7
+   294 = 02E9			HNDLOD      equ $02E9
+   295 = 02EA			DVSTAT      equ $02EA
+   296 = 02EE			CBAUDL      equ $02EE
+   297 = 02EF			CBAUDH      equ $02EF
+   298 = 02F0			CRSINH      equ $02F0
+   299 = 02F1			KEYDEL      equ $02F1
+   300 = 02F2			CH1         equ $02F2
+   301 = 02F3			CHACT       equ $02F3
+   302 = 02F4			CHBAS       equ $02F4
+   303 = 02F5			NEWROW      equ $02F5
+   304 = 02F6			NEWCOL      equ $02F6
+   305 = 02F8			ROWINC      equ $02F8
+   306 = 02F9			COLINC      equ $02F9
+   307 = 02FA			CHAR        equ $02FA
+   308 = 02FB			ATACHR      equ $02FB
+   309 = 02FC			CH          equ $02FC
+   310 = 02FD			FILDAT      equ $02FD
+   311 = 02FE			DSPFLG      equ $02FE
+   312 = 02FF			SSFLAG      equ $02FF
+   313
+   314 				;
+   315 				; PAGE 3
+   316 				;
+   317 = 0300			DDEVIC      equ $0300
+   318 = 0301			DUNIT       equ $0301
+   319 = 0302			DCOMND      equ $0302
+   320 = 0303			DSTATS      equ $0303
+   321 = 0304			DBUFLO      equ $0304
+   322 = 0305			DBUFHI      equ $0305
+   323 = 0306			DTIMLO      equ $0306
+   324 = 0307			DUNUSE      equ $0307
+   325 = 0308			DBYTLO      equ $0308
+   326 = 0309			DBYTHI      equ $0309
+   327 = 030A			DAUX1       equ $030A
+   328 = 030B			DAUX2       equ $030B
+   329 = 030C			TIMER1      equ $030C
+   330 = 030E			ADDCOR      equ $030E
+   331 = 030F			CASFLG      equ $030F
+   332 = 0310			TIMER2      equ $0310
+   333 = 0312			TEMP1       equ $0312
+   334 = 0314			TEMP2       equ $0314
+   335 = 0315			TEMP3       equ $0315
+   336 = 0316			SAVIO       equ $0316
+   337 = 0317			TIMFLG      equ $0317
+   338 = 0318			STACKP      equ $0318
+   339 = 0319			TSTAT       equ $0319
+   340 = 031A			HATABS      equ $031A
+   341 = 033D			PUPBT1      equ $033D
+   342 = 033E			PUPBT2      equ $033E
+   343 = 033F			PUPBT3      equ $033F
+   344 = 0340			IOCB0       equ $0340
+   345 = 0350			IOCB1       equ $0350
+   346 = 0360			IOCB2       equ $0360
+   347 = 0370			IOCB3       equ $0370
+   348 = 0380			IOCB4       equ $0380
+   349 = 0390			IOCB5       equ $0390
+   350 = 03A0			IOCB6       equ $03A0
+   351 = 03B0			IOCB7       equ $03B0
+   352 = 03C0			PRNBUF      equ $03C0
+   353 = 03E8			SUPERF      equ $03E8
+   354 = 03E9			CKEY        equ $03E9
+   355 = 03EA			CASSBT      equ $03EA
+   356 = 03EB			CARTCK      equ $03EB
+   357 = 03EC			DERRF       equ $03EC
+   358 = 03ED			ACMVAR      equ $03ED
+   359 = 03F8			BASICF      equ $03F8
+   360 = 03F9			MINTLK      equ $03F9
+   361 = 03FA			GINTLK      equ $03FA
+   362 = 03FB			CHLINK      equ $03FB
+   363 = 03FD			CASBUF      equ $03FD
+   364
+   365 				;
+   366 				; HARDWARE REGISTERS
+   367 				;
+   368 				; GTIA
+   369 				;
+   370 = D000			M0PF        equ $D000
+   371 = D000			HPOSP0      equ $D000
+   372 = D001			M1PF        equ $D001
+   373 = D001			HPOSP1      equ $D001
+   374 = D002			M2PF        equ $D002
+   375 = D002			HPOSP2      equ $D002
+   376 = D003			M3PF        equ $D003
+   377 = D003			HPOSP3      equ $D003
+   378 = D004			P0PF        equ $D004
+   379 = D004			HPOSM0      equ $D004
+   380 = D005			P1PF        equ $D005
+   381 = D005			HPOSM1      equ $D005
+   382 = D006			P2PF        equ $D006
+   383 = D006			HPOSM2      equ $D006
+   384 = D007			P3PF        equ $D007
+   385 = D007			HPOSM3      equ $D007
+   386 = D008			M0PL        equ $D008
+   387 = D008			SIZEP0      equ $D008
+   388 = D009			M1PL        equ $D009
+   389 = D009			SIZEP1      equ $D009
+   390 = D00A			M2PL        equ $D00A
+   391 = D00A			SIZEP2      equ $D00A
+   392 = D00B			M3PL        equ $D00B
+   393 = D00B			SIZEP3      equ $D00B
+   394 = D00C			P0PL        equ $D00C
+   395 = D00C			SIZEM       equ $D00C
+   396 = D00D			P1PL        equ $D00D
+   397 = D00D			GRAFP0      equ $D00D
+   398 = D00E			P2PL        equ $D00E
+   399 = D00E			GRAFP1      equ $D00E
+   400 = D00F			P3PL        equ $D00F
+   401 = D00F			GRAFP2      equ $D00F
+   402 = D010			TRIG0       equ $D010
+   403 = D010			GRAFP3      equ $D010
+   404 = D011			TRIG1       equ $D011
+   405 = D011			GRAFM       equ $D011
+   406 = D012			TRIG2       equ $D012
+   407 = D012			COLPM0      equ $D012
+   408 = D013			TRIG3       equ $D013
+   409 = D013			COLPM1      equ $D013
+   410 = D014			PAL         equ $D014
+   411 = D014			COLPM2      equ $D014
+   412 = D015			COLPM3      equ $D015
+   413 = D016			COLPF0      equ $D016
+   414 = D017			COLPF1      equ $D017
+   415 = D018			COLPF2      equ $D018
+   416 = D019			COLPF3      equ $D019
+   417 = D01A			COLBK       equ $D01A
+   418 = D01B			PRIOR       equ $D01B
+   419 = D01C			VDELAY      equ $D01C
+   420 = D01D			GRACTL      equ $D01D
+   421 = D01E			HITCLR      equ $D01E
+   422 = D01F			CONSOL      equ $D01F
+   423
+   424 				;
+   425 				; POKEY
+   426 				;
+   427 = D200			POT0        equ $D200
+   428 = D200			AUDF1       equ $D200
+   429 = D201			POT1        equ $D201
+   430 = D201			AUDC1       equ $D201
+   431 = D202			POT2        equ $D202
+   432 = D202			AUDF2       equ $D202
+   433 = D203			POT3        equ $D203
+   434 = D203			AUDC2       equ $D203
+   435 = D204			POT4        equ $D204
+   436 = D204			AUDF3       equ $D204
+   437 = D205			POT5        equ $D205
+   438 = D205			AUDC3       equ $D205
+   439 = D206			POT6        equ $D206
+   440 = D206			AUDF4       equ $D206
+   441 = D207			POT7        equ $D207
+   442 = D207			AUDC4       equ $D207
+   443 = D208			ALLPOT      equ $D208
+   444 = D208			AUDCTL      equ $D208
+   445 = D209			KBCODE      equ $D209
+   446 = D209			STIMER      equ $D209
+   447 = D20A			RANDOM      equ $D20A
+   448 = D20A			SKREST      equ $D20A
+   449 = D20B			POTGO       equ $D20B
+   450 = D20D			SERIN       equ $D20D
+   451 = D20D			SEROUT      equ $D20D
+   452 = D20E			IRQST       equ $D20E
+   453 = D20E			IRQEN       equ $D20E
+   454 = D20F			SKSTAT      equ $D20F
+   455 = D20F			SKCTL       equ $D20F
+   456
+   457 				;
+   458 				; PIA
+   459 				;
+   460 = D300			PORTA       equ $D300
+   461 = D301			PORTB       equ $D301
+   462 = D302			PACTL       equ $D302
+   463 = D303			PBCTL       equ $D303
+   464 				;
+   465 				; ANTIC
+   466 				;
+   467 = D400			DMACLT      equ $D400
+   468 = D401			CHACTL      equ $D401
+   469 = D402			DLISTL      equ $D402
+   470 = D403			DLISTH      equ $D403
+   471 = D404			HSCROL      equ $D404
+   472 = D405			VSCROL      equ $D405
+   473 = D407			PMBASE      equ $D407
+   474 = D409			CHBASE      equ $D409
+   475 = D40A			WSYNC       equ $D40A
+   476 = D40B			VCOUNT      equ $D40B
+   477 = D40C			PENH        equ $D40C
+   478 = D40D			PENV        equ $D40D
+   479 = D40E			NMIEN       equ $D40E
+   480 = D40F			NMIST       equ $D40F
+   481 = D40F			NMIRES      equ $D40F
+   482
+   483 				;
+   484 				; FLOATING POINT ROUTINES
+   485 				;
+   486 = D800			AFP         equ $D800
+   487 = D8E6			FASC        equ $D8E6
+   488 = D9AA			IFP         equ $D9AA
+   489 = D9D2			FPI         equ $D9D2
+   490 = DA44			ZFR0        equ $DA44
+   491 = DA46			ZF1         equ $DA46
+   492 = DA60			FSUB        equ $DA60
+   493 = DA66			FADD        equ $DA66
+   494 = DADB			FMUL        equ $DADB
+   495 = DB28			FDIV        equ $DB28
+   496 = DD40			PLYEVL      equ $DD40
+   497 = DD89			FLD0R       equ $DD89
+   498 = DD8D			FLD0P       equ $DD8D
+   499 = DD98			FLD1R       equ $DD98
+   500 = DD9C			FLD1P       equ $DD9C
+   501 = DDA7			FSTOR       equ $DDA7
+   502 = DDAB			FSTOP       equ $DDAB
+   503 = DDB6			FMOVE       equ $DDB6
+   504 = DDC0			EXP         equ $DDC0
+   505 = DDCC			EXP10       equ $DDCC
+   506 = DECD			LOG         equ $DECD
+   507 = DED1			LOG10       equ $DED1
+   508
+   509 				;
+   510 				; ROM VECTORS
+   511 				;
+   512 = E453			DSKINV      equ $E453
+   513 = E456			CIOV        equ $E456
+   514 = E459			SIOV        equ $E459
+   515 = E45C			SETVBV      equ $E45C
+   516 = E45F			SYSVBV      equ $E45F
+   517 = E462			XITVBV      equ $E462
+   518 = E465			SIOINV      equ $E465
+   519 = E468			SENDEV      equ $E468
+   520 = E46B			INTINV      equ $E46B
+   521 = E46E			CIOINV      equ $E46E
+   522 = E471			SELFSV      equ $E471
+   523 = E474			WARMSV      equ $E474
+   524 = E477			COLDSV      equ $E477
+   525 = E47A			RBLOKV      equ $E47A
+   526 = E47D			CSOPIV      equ $E47D
+   527 = E480			PUPDIV      equ $E480
+   528 = E483			SELFTSV     equ $E483
+   529 = E486			PENTV       equ $E486
+   530 = E489			PHUNLV      equ $E489
+   531 = E48C			PHINIV      equ $E48C
+   532 = E48F			GPDVV       equ $E48F
+   533 				;
+   534 				; SpartaDos X equates
+   535 				;
+   536 = 0700			S_FLAG      equ $0700
+   537 = 0701			SDXVER      equ $0701
+   538 = 0702			SDXREV      equ $0702
+   539 = 0703			JKERNEL     equ $0703
+   540 = 0706			BLOCK_IO    equ $0706
+   541 = 0709			JMISC       equ $0709
+   542 = 070C			JLSIO       equ $070C
+   543 = 0715			JHWCTRL     equ $0715
+   544 = 0718			SIOHAND     equ $0718
+   545 = 0720			SLVTAB      equ $0720
+   546 = 0730			LDFTAB      equ $0730
+   547 = 0740			DEVTAB      equ $0740
+   548 = 0750			HANDTAB     equ $0750
+   549 = 0760			FHANDLE     equ $0760
+   550 = 0760			SIOCBIDX    equ $0760
+   551 = 0761			DEVICE      equ $0761
+   552 = 0762			NAME        equ $0762
+   553 = 076D			NAMES       equ $076D
+   554 = 0778			FMODE       equ $0778
+   555 = 0778			OPMODE      equ $0778
+   556 = 0779			FATR1       equ $0779
+   557 = 077A			FATR2       equ $077A
+   558 = 077B			DATE        equ $077B
+   559 = 077E			TIME        equ $077E
+   560 = 0781			DATESET     equ $0781
+   561 = 0782			FAUX1       equ $0782
+   562 = 0783			FAUX2       equ $0783
+   563 = 0784			FAUX3       equ $0784
+   564 = 0785			FAUX4       equ $0785
+   565 = 0786			FAUX5       equ $0786
+   566 = 0787			SYSCALL     equ $0787
+   567 = 0789			DIRBUF      equ $0789
+   568 = 0789			DIRFATR     equ $0789
+   569 = 078A			DIRF1SEC    equ $078A
+   570 = 078C			DIRFLEN     equ $078C
+   571 = 078F			DIRFNAME    equ $078F
+   572 = 079A			DIRFDATE    equ $079A
+   573 = 079D			DIRFTIME    equ $079D
+   574 = 07A0			PATH        equ $07A0
+   575 = 07E0			JHDOSINI    equ $07E0
+   576 = 07E3			VDOS        equ $07E3
+   577 = 07E5			VCIO        equ $07E5
+   578 = 07E7			VEDIT       equ $07E7
+   579 = 07E9			VCRUNCH     equ $07E9
+   580 = 07EB			JFSYMBOL    equ $07EB
+   581 = 07EE			JMDVECT     equ $07EE
+   582 = 07F1			JEXT_ON     equ $07F1
+   583 = 07F4			JEXT_OFF    equ $07F4
+   584 = 07F7			JEXT_SW     equ $07F7
+   585 = 07FA			JCAR_SW     equ $07FA
+   586 = 07FD			JCAR_OLD    equ $07FD
+   587 = FFC0			JGETTD      equ $FFC0
+   588 = FFC3			JSETTD      equ $FFC3
+   589 = FFC6			JTDON       equ $FFC6
+   590 = FFC9			JFMTTD      equ $FFC9
+   591 = FFD2			JXCOMLI     equ $FFD2
+   592 = FFD5			JKEYON      equ $FFD5
+   593 				;
+   594 				; Code equates
+   595 				;
+   596 = 0000			L0000       equ $0000
+   597 = 009B			L009B       equ $009B
+   598 = 00B0			L00B0       equ $00B0
+   599 = 00B1			L00B1       equ $00B1
+   600 = 00B7			L00B7       equ $00B7
+   601 = 00BE			L00BE       equ $00BE
+   602 = 00BF			L00BF       equ $00BF
+   603 = 00C0			L00C0       equ $00C0
+   604 = 00D4			L00D4       equ $00D4
+   605 = 00D5			L00D5       equ $00D5
+   606 = 0400			L0400       equ $0400
+   607 = 0402			L0402       equ $0402
+   608 = 0700			L0700       equ $0700
+   609 = 0738			L0738       equ $0738
+   610 = 075B			L075B       equ $075B
+   611 = 0765			L0765       equ $0765
+   612 = 076C			L076C       equ $076C
+   613 = 0785			L0785       equ $0785
+   614 = 0789			L0789       equ $0789
+   615 = 078A			L078A       equ $078A
+   616 = 078F			L078F       equ $078F
+   617 = 0796			L0796       equ $0796
+   618 = 07A4			L07A4       equ $07A4
+   619 = 07A5			L07A5       equ $07A5
+   620 = 07AB			L07AB       equ $07AB
+   621 = 07B1			L07B1       equ $07B1
+   622 = 07D5			L07D5       equ $07D5
+   623 = 07E7			L07E7       equ $07E7
+   624 = 07E8			L07E8       equ $07E8
+   625 = 07E9			L07E9       equ $07E9
+   626 = 07EC			L07EC       equ $07EC
+   627 = 07EF			L07EF       equ $07EF
+   628 = 0800			L0800       equ $0800
+   629 = 0801			L0801       equ $0801
+   630 = 0802			L0802       equ $0802
+   631 = 0803			L0803       equ $0803
+   632 = 087D			L087D       equ $087D
+   633 = 087E			L087E       equ $087E
+   634 = 087F			L087F       equ $087F
+   635 = 1D2A			L1D2A       equ $1D2A
+   636 = 1D31			L1D31       equ $1D31
+   637 = 1DA1			L1DA1       equ $1DA1
+   638 = 1DB0			L1DB0       equ $1DB0
+   639 = 1DB5			L1DB5       equ $1DB5
+   640 = 1DBD			L1DBD       equ $1DBD
+   641 = 1DC1			L1DC1       equ $1DC1
+   642 = 1DC2			L1DC2       equ $1DC2
+   643 = 1DCD			L1DCD       equ $1DCD
+   644 = 1DD3			L1DD3       equ $1DD3
+   645 = 2600			L2600       equ $2600
+   646 = 2601			L2601       equ $2601
+   647 = 2603			L2603       equ $2603
+   648 = 2604			L2604       equ $2604
+   649 = 2605			L2605       equ $2605
+   650 = 260D			L260D       equ $260D
+   651 = 267D			L267D       equ $267D
+   652 = 267E			L267E       equ $267E
+   653 = 267F			L267F       equ $267F
+   654 = 4147			L4147       equ $4147
+   655 = 4228			L4228       equ $4228
+   656 = 4320			L4320       equ $4320
+   657 = 4920			L4920       equ $4920
+   658 = 4F28			L4F28       equ $4F28
+   659 = 5245			L5245       equ $5245
+   660 = 5345			L5345       equ $5345
+   661 = E1B1			LE1B1       equ $E1B1
+     3 				;
+     4 				; Start of code
+     5 				;
+     6
+     7 				            org $2000
+     8 				;
+     9 FFFF> 2000-25FF> 20 28 + L2000       jsr L2128
+    10 2003 A2 30		            ldx #$30
+    11 2005 20 0D 21		            jsr L210D
+    12 2008 A0 0F		            ldy #$0F
+    13 200A A2 3B		            ldx #$3B
+    14 200C 20 EE 20		            jsr L20EE
+    15 200F 30 EF		            bmi L2000
+    16 2011 A9 00		L2011       lda #$00
+    17 2013 8D B6 02		            sta INVFLG
+    18 2016 A9 40		            lda #$40
+    19 2018 8D BE 02		            sta SHFLOC
+    20 201B A9 FF		            lda #$FF
+    21 201D 8D FC 02		            sta CH
+    22 2020 A0 15		L2020       ldy #$15
+    23 2022 A2 39		            ldx #$39
+    24 2024 20 EE 20		            jsr L20EE
+    25 2027 30 E8		            bmi L2011
+    26 2029 C9 20		            cmp #$20
+    27 202B D0 1A		            bne L2047
+    28 202D AD 0A 03		            lda DAUX1
+    29 2030 C9 71		            cmp #$71
+    30 2032 B0 CC		            bcs L2000
+    31 2034 A4 B1		            ldy L00B1
+    32 2036 B9 00 26		            lda L2600,Y
+    33 2039 F0 C5		            beq L2000
+    34 203B 20 15 21		            jsr L2115
+    35 203E A9 00		            lda #$00
+    36 2040 85 B0		            sta L00B0
+    37 2042 20 0D 22		            jsr L220D
+    38 2045 10 CA		L2045       bpl L2011
+    39 2047 C9 44		L2047       cmp #$44
+    40 2049 F0 13		            beq L205E
+    41 204B A6 06		            ldx TRAMSZ
+    42 204D F0 04		            beq L2053
+    43 204F C9 42		            cmp #$42
+    44 2051 F0 0B		            beq L205E
+    45 2053 38			L2053       sec
+    46 2054 E9 30		            sbc #$30
+    47 2056 F0 B9		            beq L2011
+    48 2058 C5 B0		            cmp L00B0
+    49 205A F0 02		            beq L205E
+    50 205C B0 B3		            bcs L2011
+    51 205E 85 B1		L205E       sta L00B1
+    52 2060 A2 30		            ldx #$30
+    53 2062 20 0D 21		            jsr L210D
+    54 2065 A2 40		            ldx #$40
+    55 2067 20 0D 21		            jsr L210D
+    56 206A A5 B1		            lda L00B1
+    57 206C C9 42		            cmp #$42
+    58 206E D0 01		            bne L2071
+    59 2070 60			            rts
+    60 2071 C9 44		L2071       cmp #$44
+    61 2073 D0 03		            bne L2078
+    62 2075 6C 0A 00		L2075       jmp (DOSVEC)
+    63 2078 A5 B1		L2078       lda L00B1
+    64 207A 0A			            asl
+    65 207B AA			            tax
+    66 207C B5 BE		            lda L00BE,X
+    67 207E 8D 0A 03		            sta DAUX1
+    68 2081 B5 BF		            lda L00BF,X
+    69 2083 8D 0B 03		            sta DAUX2
+    70 2086 20 53 E4		            jsr DSKINV
+    71 2089 30 EA		            bmi L2075
+    72 208B A2 24		            ldx #$24
+    73 208D A0 1D		            ldy #$1D
+    74 208F AD 00 26		            lda L2600
+    75 2092 0D 01 26		            ora L2601
+    76 2095 F0 10		            beq L20A7
+    77 2097 A6 B1		            ldx L00B1
+    78 2099 D6 B7		            dec L00B7,X
+    79 209B D0 06		L209B       bne L20A3
+    80 209D A2 23		            ldx #$23
+    81 209F A0 23		            ldy #$23
+    82 20A1 D0 04		            bne L20A7
+    83 20A3 A2 25		L20A3       ldx #$25
+    84 20A5 A0 07		            ldy #$07
+    85 20A7 8E B1 20		L20A7       stx L20AF+2
+    86 20AA 8C B4 20		            sty L20B2+2
+    87 20AD A2 00		            ldx #$00
+    88 20AF BD 00 25		L20AF       lda L2500,X
+    89 20B2 9D 00 07		L20B2       sta L0700,X
+    90 20B5 E8			            inx
+    91 20B6 D0 F7		            bne L20AF
+    92 20B8 A2 0F		            ldx #$0F
+    93 20BA BD 00 03		L20BA       lda DDEVIC,X
+    94 20BD 95 C0		            sta L00C0,X
+    95 20BF A9 00		            lda #$00
+    96 20C1 95 B0		            sta L00B0,X
+    97 20C3 CA			            dex
+    98 20C4 10 F4		            bpl L20BA
+    99 20C6 C0 07		            cpy #$07
+   100 20C8 F0 06		            beq L20D0
+   101 20CA 8C CF 20		            sty L20CD+2
+   102 20CD 4C 00 23		L20CD       jmp L2300
+   103 20D0 A9 01		L20D0       lda #$01
+   104 20D2 85 09		            sta BOOT
+   105 20D4 A9 00		            lda #$00
+   106 20D6 8D 44 02		            sta COLDST
+   107 20D9 A9 00		            lda #$00
+   108 20DB 85 0C		            sta DOSINI
+   109 20DD A9 07		            lda #$07
+   110 20DF 85 0D		            sta DOSINI+1
+   111 20E1 4C 74 E4		            jmp WARMSV
+   112 20E4 8E 8F 22		L20E4       stx L228F
+   113 20E7 8C 90 22		            sty L2290
+   114 20EA A0 1B		            ldy #$1B
+   115 20EC A2 49		            ldx #$49
+   116 20EE 20 F7 20		L20EE       jsr L20F7
+   117 20F1 20 56 E4		            jsr CIOV
+   118 20F4 60			            rts
+   119 20F5 CA			L20F5       dex
+   120 20F6 88			            dey
+   121 20F7 B9 77 22		L20F7       lda L2277,Y
+   122 20FA 9D 40 03		            sta IOCB0,X
+   123 20FD 8A			            txa
+   124 20FE 29 0F		            and #$0F
+   125 2100 C9 08		            cmp #$08
+   126 2102 D0 02		            bne L2106
+   127 2104 CA			            dex
+   128 2105 CA			            dex
+   129 2106 C9 02		L2106       cmp #$02
+   130 2108 D0 EB		            bne L20F5
+   131 210A CA			            dex
+   132 210B CA			            dex
+   133 210C 60			            rts
+   134 210D A9 0C		L210D       lda #$0C
+   135 210F 9D 42 03		            sta IOCB0+ICCOM,X
+   136 2112 4C 56 E4		            jmp CIOV
+   137 2115 A9 00		L2115       lda #$00
+   138 2117 85 54		            sta ROWCRS
+   139 2119 A2 32		            ldx #$32
+   140 211B A0 22		            ldy #$22
+   141 211D 20 E4 20		            jsr L20E4
+   142 2120 A2 43		            ldx #$43
+   143 2122 A0 22		            ldy #$22
+   144 2124 20 E4 20		            jsr L20E4
+   145 2127 60			            rts
+   146 2128 A2 40		L2128       ldx #$40
+   147 212A 20 0D 21		            jsr L210D
+   148 212D A0 07		            ldy #$07
+   149 212F A2 4B		            ldx #$4B
+   150 2131 20 EE 20		            jsr L20EE
+   151 2134 10 01		            bpl L2137
+   152 2136 60			            rts
+   153 2137 A9 00		L2137       lda #$00
+   154 2139 8D C8 02		            sta COLOR4
+   155 213C A9 B6		            lda #$B6
+   156 213E 8D C4 02		            sta COLOR0
+   157 2141 A9 0A		            lda #$0A
+   158 2143 8D C5 02		            sta COLOR1
+   159 2146 20 15 21		            jsr L2115
+   160 2149 A9 00		            lda #$00
+   161 214B A2 1F		            ldx #$1F
+   162 214D 95 B0		L214D       sta L00B0,X
+   163 214F CA			            dex
+   164 2150 10 FB		            bpl L214D
+   165 2152 A2 0B		            ldx #$0B
+   166 2154 BD 93 22		L2154       lda L2293,X
+   167 2157 9D 00 03		            sta DDEVIC,X
+   168 215A CA			            dex
+   169 215B 10 F7		            bpl L2154
+   170 215D 20 53 E4		L215D       jsr DSKINV
+   171 2160 10 0E		            bpl L2170
+   172 2162 A9 0A		            lda #$0A
+   173 2164 85 54		            sta ROWCRS
+   174 2166 A2 56		            ldx #$56
+   175 2168 A0 22		            ldy #$22
+   176 216A 20 E4 20		            jsr L20E4
+   177 216D 4C 26 22		L216D       jmp L2226
+   178 2170 A9 00		L2170       lda #$00
+   179 2172 85 B1		            sta L00B1
+   180 2174 A4 B1		L2174       ldy L00B1
+   181 2176 B9 00 26		            lda L2600,Y
+   182 2179 F0 F2		            beq L216D
+   183 217B 29 7F		            and #$7F
+   184 217D F0 21		            beq L21A0
+   185 217F B9 0D 26		            lda L260D,Y
+   186 2182 A2 00		            ldx #$00
+   187 2184 C9 42		            cmp #$42
+   188 2186 F0 16		            beq L219E
+   189 2188 C9 20		            cmp #$20
+   190 218A F0 12		            beq L219E
+   191 218C C9 4F		            cmp #$4F
+   192 218E F0 13		            beq L21A3
+   193 2190 C9 52		            cmp #$52
+   194 2192 F0 10		            beq L21A4
+   195 2194 C9 43		            cmp #$43
+   196 2196 F0 0C		            beq L21A4
+   197 2198 C9 45		            cmp #$45
+   198 219A F0 08		            beq L21A4
+   199 219C D0 69		            bne L2207
+   200 219E A5 06		L219E       lda TRAMSZ
+   201 21A0 F0 65		L21A0       beq L2207
+   202 21A2 E8			            inx
+   203 21A3 E8			L21A3       inx
+   204 21A4 8A			L21A4       txa
+   205 21A5 E6 B0		            inc L00B0
+   206 21A7 A6 B0		            ldx L00B0
+   207 21A9 95 B7		            sta L00B7,X
+   208 21AB 48			            pha
+   209 21AC A9 20		            lda #$20
+   210 21AE A2 20		            ldx #$20
+   211 21B0 9D 00 04		L21B0       sta L0400,X
+   212 21B3 CA			            dex
+   213 21B4 10 FA		            bpl L21B0
+   214 21B6 A5 B0		            lda L00B0
+   215 21B8 09 10		            ora #$10
+   216 21BA 8D 02 04		            sta L0402
+   217 21BD A5 B0		            lda L00B0
+   218 21BF 0A			            asl
+   219 21C0 AA			            tax
+   220 21C1 B9 03 26		            lda L2603,Y
+   221 21C4 95 BE		            sta L00BE,X
+   222 21C6 B9 04 26		            lda L2604,Y
+   223 21C9 95 BF		            sta L00BF,X
+   224 21CB A9 05		            lda #$05
+   225 21CD 8D D3 21		            sta L21D2+1
+   226 21D0 A2 04		            ldx #$04
+   227 21D2 B9 05 26		L21D2       lda L2605,Y
+   228 21D5 C9 20		            cmp #$20
+   229 21D7 F0 0B		            beq L21E4
+   230 21D9 9D 00 04		            sta L0400,X
+   231 21DC EE D3 21		            inc L21D2+1
+   232 21DF E8			            inx
+   233 21E0 E0 0C		            cpx #$0C
+   234 21E2 90 EE		            bcc L21D2
+   235 21E4 68			L21E4       pla
+   236 21E5 F0 14		            beq L21FB
+   237 21E7 A0 00		            ldy #$00
+   238 21E9 C9 01		            cmp #$01
+   239 21EB F0 02		            beq L21EF
+   240 21ED A0 07		            ldy #$07
+   241 21EF B9 63 22		L21EF       lda L2263,Y
+   242 21F2 30 07		            bmi L21FB
+   243 21F4 9D 00 04		            sta L0400,X
+   244 21F7 C8			            iny
+   245 21F8 E8			            inx
+   246 21F9 10 F4		            bpl L21EF
+   247 21FB A9 9B		L21FB       lda #$9B
+   248 21FD 9D 00 04		            sta L0400,X
+   249 2200 A2 00		            ldx #$00
+   250 2202 A0 04		            ldy #$04
+   251 2204 20 E4 20		            jsr L20E4
+   252 2207 A5 B0		L2207       lda L00B0
+   253 2209 C9 08		            cmp #$08
+   254 220B B0 19		            bcs L2226
+   255 220D A5 B1		L220D       lda L00B1
+   256 220F 18			            clc
+   257 2210 69 10		            adc #$10
+   258 2212 85 B1		            sta L00B1
+   259 2214 30 03		            bmi L2219
+   260 2216 4C 74 21		            jmp L2174
+   261 2219 EE 0A 03		L2219       inc DAUX1
+   262 221C AD 0A 03		            lda DAUX1
+   263 221F C9 71		            cmp #$71
+   264 2221 B0 03		            bcs L2226
+   265 2223 4C 5D 21		            jmp L215D
+   266 2226 A9 0B		L2226       lda #$0B
+   267 2228 85 54		            sta ROWCRS
+   268 222A A2 44		            ldx #$44
+   269 222C A0 22		            ldy #$22
+   270 222E 20 E4 20		            jsr L20E4
+   271 2231 60			            rts
+   272 2232 7D 20 20		            adc L2020,X
+   273 2235 20 47 41		            jsr L4147
+   274 2238 4D 45 20		            eor L2045
+   275 223B 46 49		            lsr FMSZPG+6
+   276 223D 4C 45 53		            jmp L5345
+   277 2240 20 B1 E1		            jsr LE1B1
+   278 2243 9B			            .byte $9B
+   279 2244 20 20 43		            jsr L4320
+   280 2247 48			            pha
+   281 2248 4F 4F 53		            .byte $4F,$4F,$53
+   282 224B 45 20		            eor ICHIDZ
+   283 224D 41 20		            eor (ICHIDZ,X)
+   284 224F 23			            .byte $23
+   285 2250 20 9B 20		            jsr L209B
+   286 2253 20 20 20		            jsr L2020
+   287 2256 20 20 49		            jsr L4920
+   288 2259 2F 4F		            .byte $2F,$4F
+   289 225B 20 45 52		            jsr L5245
+   290 225E 52 4F 52		            .byte $52,$4F,$52
+   291 2261 21 9B		            and (L009B,X)
+   292 2263 20 28 4F		L2263       jsr L4F28
+   293 2266 42			            .byte $42
+   294 2267 4A			            lsr
+   295 2268 29 9B		            and #$9B
+   296 226A 20 28 42		            jsr L4228
+   297 226D 41 53		            eor (RMARGN,X)
+   298 226F 29 9B		            and #$9B
+   299 2271 4B 3A 9B 53 3A 9B	            .byte $4B,$3A,$9B,$53,$3A,$9B
+   300 2277 03 00 74 22 00 00	L2277       .byte $03,$00,$74,$22,$00,$00
+   301 227D 08			            php
+   302 227E 02 03 00		            .byte $02,$03,$00
+   303 2281 71 22		            adc (ICCOMZ),Y
+   304 2283 00 00 04 00 07 00 +             .byte $00,$00,$04,$00,$07,$00,$00,$00,$00,$00
+   305 228D 09 00		            ora #$00
+   306 228F 00			L228F       .byte $00
+   307 2290 04 80 00		L2290       .byte $04,$80,$00
+   308 2293 31 01		L2293       and (NGFLAG),Y
+   309 2295 52 00 00		            .byte $52,$00,$00
+   310 2298 26 00		            rol L0000
+   311 229A 00 00 00		            .byte $00,$00,$00
+   312 229D 69 01		            adc #$01
+   313 229F 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   314 22AF 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   315 22BF 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   316 22CF 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   317 22DF 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   318 22EF 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   319 22FF 00			            .byte $00
+   320 2300 AD 00 26		L2300       lda L2600
+   321 2303 8D 2A 23		            sta L2329+1
+   322 2306 AD 01 26		            lda L2601
+   323 2309 8D 23 23		            sta L2322+1
+   324 230C AD 7F 26		            lda L267F
+   325 230F 29 7F		            and #$7F
+   326 2311 8D 5A 23		            sta L2359+1
+   327 2314 A2 FF		            ldx #$FF
+   328 2316 20 58 23		L2316       jsr L2358
+   329 2319 8D 3D 23		            sta L233C+1
+   330 231C 20 58 23		            jsr L2358
+   331 231F 8D 3E 23		            sta L233C+2
+   332 2322 C9 FF		L2322       cmp #$FF
+   333 2324 D0 07		            bne L232D
+   334 2326 AD 3D 23		            lda L233C+1
+   335 2329 C9 FF		L2329       cmp #$FF
+   336 232B F0 E9		            beq L2316
+   337 232D 20 58 23		L232D       jsr L2358
+   338 2330 8D 4A 23		            sta L2349+1
+   339 2333 20 58 23		            jsr L2358
+   340 2336 8D 43 23		            sta L2342+1
+   341 2339 20 58 23		L2339       jsr L2358
+   342 233C 8D 00 04		L233C       sta L0400
+   343 233F AD 3E 23		            lda L233C+2
+   344 2342 C9 00		L2342       cmp #$00
+   345 2344 D0 07		            bne L234D
+   346 2346 AD 3D 23		            lda L233C+1
+   347 2349 C9 00		L2349       cmp #$00
+   348 234B F0 C9		            beq L2316
+   349 234D EE 3D 23		L234D       inc L233C+1
+   350 2350 D0 E7		            bne L2339
+   351 2352 EE 3E 23		            inc L233C+2
+   352 2355 4C 39 23		            jmp L2339
+   353 2358 E8			L2358       inx
+   354 2359 E0 7D		L2359       cpx #$7D
+   355 235B B0 04		            bcs L2361
+   356 235D BD 00 26		            lda L2600,X
+   357 2360 60			            rts
+   358 2361 AD 7D 26		L2361       lda L267D
+   359 2364 29 03		            and #$03
+   360 2366 8D 0B 03		            sta DAUX2
+   361 2369 AD 7E 26		            lda L267E
+   362 236C 8D 0A 03		            sta DAUX1
+   363 236F 0D 0B 03		            ora DAUX2
+   364 2372 F0 11		            beq L2385
+   365 2374 20 53 E4		            jsr DSKINV
+   366 2377 30 0C		            bmi L2385
+   367 2379 AD 7F 26		            lda L267F
+   368 237C 29 7F		            and #$7F
+   369 237E 8D 5A 23		            sta L2359+1
+   370 2381 A2 FF		            ldx #$FF
+   371 2383 D0 D3		            bne L2358
+   372 2385 68			L2385       pla
+   373 2386 68			            pla
+   374 2387 4C 00 20		            jmp L2000
+   375 238A 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   376 239A 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   377 23AA 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   378 23BA 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   379 23CA 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   380 23DA 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   381 23EA 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   382 23FA 00 00 00 00 00 00	            .byte $00,$00,$00,$00,$00,$00
+   383 2400 A2 7F		            ldx #$7F
+   384 2402 A9 00		            lda #$00
+   385 2404 95 80		L2404       sta LOMEM,X
+   386 2406 CA			            dex
+   387 2407 10 FB		            bpl L2404
+   388 2409 AD 0A 03		            lda DAUX1
+   389 240C 8D 2A 1D		            sta L1D2A
+   390 240F AD 0B 03		            lda DAUX2
+   391 2412 8D 31 1D		            sta L1D31
+   392 2415 A9 69		            lda #$69
+   393 2417 8D 0A 03		            sta DAUX1
+   394 241A A9 01		            lda #$01
+   395 241C 8D 0B 03		            sta DAUX2
+   396 241F 20 53 E4		L241F       jsr DSKINV
+   397 2422 30 21		            bmi L2445
+   398 2424 A0 00		            ldy #$00
+   399 2426 B9 03 26		L2426       lda L2603,Y
+   400 2429 C9 00		            cmp #$00
+   401 242B D0 07		            bne L2434
+   402 242D B9 04 26		            lda L2604,Y
+   403 2430 C9 00		            cmp #$00
+   404 2432 F0 14		            beq L2448
+   405 2434 98			L2434       tya
+   406 2435 18			            clc
+   407 2436 69 10		            adc #$10
+   408 2438 A8			            tay
+   409 2439 10 EB		            bpl L2426
+   410 243B EE 0A 03		            inc DAUX1
+   411 243E AD 0A 03		            lda DAUX1
+   412 2441 C9 71		            cmp #$71
+   413 2443 90 DA		            bcc L241F
+   414 2445 4C 00 20		L2445       jmp L2000
+   415 2448 A2 00		L2448       ldx #$00
+   416 244A B9 05 26		L244A       lda L2605,Y
+   417 244D C9 20		            cmp #$20
+   418 244F F0 04		            beq L2455
+   419 2451 9D D3 1D		            sta L1DD3,X
+   420 2454 E8			            inx
+   421 2455 C8			L2455       iny
+   422 2456 98			            tya
+   423 2457 29 0F		            and #$0F
+   424 2459 C9 08		            cmp #$08
+   425 245B D0 08		            bne L2465
+   426 245D A9 2E		            lda #$2E
+   427 245F 9D D3 1D		            sta L1DD3,X
+   428 2462 E8			            inx
+   429 2463 D0 E5		            bne L244A
+   430 2465 C9 0B		L2465       cmp #$0B
+   431 2467 90 E1		            bcc L244A
+   432 2469 A9 9B		            lda #$9B
+   433 246B 9D D3 1D		            sta L1DD3,X
+   434 246E AE 40 03		            ldx IOCB0
+   435 2471 BD 1B 03		            lda HATABS+1,X
+   436 2474 85 D4		            sta L00D4
+   437 2476 8D B0 1D		            sta L1DB0
+   438 2479 BD 1C 03		            lda HATABS+2,X
+   439 247C 85 D5		            sta L00D5
+   440 247E 8D B5 1D		            sta L1DB5
+   441 2481 A0 0F		            ldy #$0F
+   442 2483 B1 D4		L2483       lda (L00D4),Y
+   443 2485 99 BD 1D		            sta L1DBD,Y
+   444 2488 88			            dey
+   445 2489 10 F8		            bpl L2483
+   446 248B A9 9F		            lda #$9F
+   447 248D 8D C1 1D		            sta L1DC1
+   448 2490 A9 1D		            lda #$1D
+   449 2492 8D C2 1D		            sta L1DC2
+   450 2495 A9 BD		            lda #$BD
+   451 2497 9D 1B 03		            sta HATABS+1,X
+   452 249A A9 1D		            lda #$1D
+   453 249C 9D 1C 03		            sta HATABS+2,X
+   454 249F 60			            rts
+   455 24A0 A2 FF		            ldx #$FF
+   456 24A2 E8			            inx
+   457 24A3 8E A1 1D		            stx L1DA1
+   458 24A6 BD CD 1D		            lda L1DCD,X
+   459 24A9 10 0F		            bpl L24BA
+   460 24AB 48			            pha
+   461 24AC AE 40 03		            ldx IOCB0
+   462 24AF A9 00		            lda #$00
+   463 24B1 9D 1B 03		            sta HATABS+1,X
+   464 24B4 A9 00		            lda #$00
+   465 24B6 9D 1C 03		            sta HATABS+2,X
+   466 24B9 68			            pla
+   467 24BA A0 01		L24BA       ldy #$01
+   468 24BC 60			            rts
+   469 24BD 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   470 24CD 52			            .byte $52
+   471 24CE 55 4E		            eor DRKMSK,X
+   472 24D0 22 44 3A 00 00 00 +             .byte $22,$44,$3A,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   473 24E0 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   474 24F0 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   475 2500 A2 7F		L2500       ldx #$7F
+   476 2502 BD 00 26		L2502       lda L2600,X
+   477 2505 9D 00 08		            sta L0800,X
+   478 2508 A9 00		            lda #$00
+   479 250A 95 80		            sta LOMEM,X
+   480 250C CA			            dex
+   481 250D 10 F3		            bpl L2502
+   482 250F 85 08		            sta WARMST
+   483 2511 AD 00 08		            lda L0800
+   484 2514 8D 6C 07		            sta L076C
+   485 2517 AD 01 08		            lda L0801
+   486 251A 8D 65 07		            sta L0765
+   487 251D AD 02 08		            lda L0802
+   488 2520 8D E7 07		            sta L07E7
+   489 2523 AD 03 08		            lda L0803
+   490 2526 8D E8 07		            sta L07E8
+   491 2529 A9 B1		            lda #$B1
+   492 252B 8D E0 02		            sta RUNAD
+   493 252E A9 07		            lda #$07
+   494 2530 8D E1 02		            sta RUNAD+1
+   495 2533 A9 00		L2533       lda #$00
+   496 2535 AA			            tax
+   497 2536 9D 00 04		L2536       sta L0400,X
+   498 2539 E8			            inx
+   499 253A D0 FA		            bne L2536
+   500 253C EE 38 07		L253C       inc L0738
+   501 253F AD 38 07		            lda L0738
+   502 2542 C9 07		            cmp #$07
+   503 2544 F0 F6		            beq L253C
+   504 2546 C9 08		            cmp #$08
+   505 2548 F0 F2		            beq L253C
+   506 254A CD E6 02		            cmp MEMTOP+1
+   507 254D 90 E4		            bcc L2533
+   508 254F 20 D5 07		            jsr L07D5
+   509 2552 4C 5B 07		            jmp L075B
+   510 2555 20 E9 07		L2555       jsr L07E9
+   511 2558 20 A4 07		L2558       jsr L07A4
+   512 255B 8D 89 07		            sta L0789
+   513 255E 20 A4 07		            jsr L07A4
+   514 2561 8D 8A 07		            sta L078A
+   515 2564 C9 FF		            cmp #$FF
+   516 2566 D0 07		            bne L256F
+   517 2568 AD 89 07		            lda L0789
+   518 256B C9 FF		            cmp #$FF
+   519 256D F0 E9		            beq L2558
+   520 256F 20 A4 07		L256F       jsr L07A4
+   521 2572 8D 96 07		            sta L0796
+   522 2575 20 A4 07		            jsr L07A4
+   523 2578 8D 8F 07		            sta L078F
+   524 257B A9 B1		            lda #$B1
+   525 257D 8D E2 02		            sta INITAD
+   526 2580 A9 07		            lda #$07
+   527 2582 8D E3 02		            sta INITAD+1
+   528 2585 20 A4 07		L2585       jsr L07A4
+   529 2588 8D 00 04		            sta L0400
+   530 258B AD 8A 07		            lda L078A
+   531 258E C9 00		            cmp #$00
+   532 2590 D0 07		            bne L2599
+   533 2592 AD 89 07		            lda L0789
+   534 2595 C9 00		            cmp #$00
+   535 2597 F0 BC		            beq L2555
+   536 2599 EE 89 07		L2599       inc L0789
+   537 259C D0 E7		            bne L2585
+   538 259E EE 8A 07		            inc L078A
+   539 25A1 4C 85 07		            jmp L0785
+   540 25A4 A2 FF		            ldx #$FF
+   541 25A6 E8			L25A6       inx
+   542 25A7 8E A5 07		            stx L07A5
+   543 25AA E0 7D		            cpx #$7D
+   544 25AC B0 04		            bcs L25B2
+   545 25AE BD 00 08		            lda L0800,X
+   546 25B1 60			            rts
+   547 25B2 AD 7D 08		L25B2       lda L087D
+   548 25B5 29 03		            and #$03
+   549 25B7 8D 0B 03		            sta DAUX2
+   550 25BA AD 7E 08		            lda L087E
+   551 25BD 8D 0A 03		            sta DAUX1
+   552 25C0 0D 0B 03		            ora DAUX2
+   553 25C3 F0 1C		            beq L25E1
+   554 25C5 A2 05		            ldx #$05
+   555 25C7 BD EF 07		L25C7       lda L07EF,X
+   556 25CA 9D 00 03		            sta DDEVIC,X
+   557 25CD CA			            dex
+   558 25CE 10 F7		            bpl L25C7
+   559 25D0 20 53 E4		            jsr DSKINV
+   560 25D3 30 0C		            bmi L25E1
+   561 25D5 AD 7F 08		            lda L087F
+   562 25D8 29 7F		            and #$7F
+   563 25DA 8D AB 07		            sta L07AB
+   564 25DD A2 FF		            ldx #$FF
+   565 25DF D0 C5		            bne L25A6
+   566 25E1 68			L25E1       pla
+   567 25E2 68			            pla
+   568 25E3 20 EC 07		            jsr L07EC
+   569 25E6 4C B1 07		            jmp L07B1
+   570 25E9 6C E2 02		            jmp (INITAD)
+   571 25EC 6C E0 02		            jmp (RUNAD)
+   572 25EF 31 01		            and (NGFLAG),Y
+   573 25F1 52 00 00		            .byte $52,$00,$00
+   574 25F4 08			            php
+   575 25F5 00 00 00 00 00 00 +             .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   576
+   577 2600			            org $02E2
+   578 				;
+   579 02E2-02E3> 00 20		            .word L2000
