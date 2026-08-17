@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Strings.h"
 #include "Syntax.h"
-#include "String.h"
 
 class IOException : public std::exception {
 public:

@@ -7,7 +7,7 @@
 #include <Windows.h>
 #endif
 
-#include "Assert.h"
+#include "Assertions.h"
 
 
 void strclr(char* szString) {

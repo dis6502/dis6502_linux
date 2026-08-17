@@ -42,7 +42,7 @@ std::unique_ptr<DefaultFolders> DefaultFoldersLogic::CreateDefaultFolders(const 
 	folderPath = ::g_Application->GetModuleFilePath(L"profiles");
 	defaultFolders->SetFolderPath(FolderType::PROFILE_FILES, folderPath);
 
-	return std::move(defaultFolders);
+	return defaultFolders;
 }
 
 void DefaultFoldersLogic::Load(DefaultFolders& defaultFolders) {
