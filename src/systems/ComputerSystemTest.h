@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Syntax.h"
-#include "../TestUnit.h"
+#include "Syntax.h"
+#include "TestUnit.h"
 
 class ComputerSystemFactory;
 class ComputerSystem;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../FileIO.h"
-#include "../../FileType.h"
+#include "FileIO.h"
+#include "FileType.h"
 
 class ComputerSystem;
 class InputStream;

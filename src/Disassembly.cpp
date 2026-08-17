@@ -6,12 +6,11 @@
 #include "Disassembly.h"
 #include "PlatformCompat.h"
 
+#include "DatatypeUtility.h"
 #include <algorithm>
 #include <string.h>
-#include "DatatypeUtility.h"
 
 #include "Application.h"
-#include "systems/ComputerSystem.h"
 #include "Debug.h"
 #include "DisassemblyLine.h"
 #include "DisassemblyProgressMonitor.h"
@@ -29,7 +28,7 @@
 #include "InstructionSet.h"
 #include "Segment.h"
 #include "SegmentList.h"
-#include "String.h"
+#include "Strings.h"
 #include "Workspace.h"
 #include "Pass1.h"
 

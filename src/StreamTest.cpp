@@ -2,7 +2,7 @@
 
 #include "Byte.h"
 #include "InputStream.h"
-#include "Assert.h"
+#include "Assertions.h"
 
 void StreamTest::AssertInputStreamsEqual(InputStream& actualInputStream, InputStream& expectedInputStream, Stream::stream_size expectedStreamSize) {
     for (InputStream::stream_offset position = 0; position < expectedStreamSize; position++) {

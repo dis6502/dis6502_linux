@@ -1,10 +1,10 @@
+#include "InputStream.h"
+#include "MemoryBlock.h"
+#include "Segment.h"
+#include "SegmentList.h"
+#include "SegmentListInserter.h"
+#include "Strings.h"
 #include "C64.h"
-#include "../../InputStream.h"
-#include "../../SegmentListInserter.h"
-#include "../../Segment.h"
-#include "../../String.h"
-#include "../../SegmentList.h"
-#include "../../MemoryBlock.h"
 #include <set>
 
 C64::C64(const ComputerSystemTypeInfo& computerSystemTypeInfo) : ComputerSystem(computerSystemTypeInfo) {

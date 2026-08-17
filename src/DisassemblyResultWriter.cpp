@@ -1,10 +1,10 @@
 #include "DisassemblyResultWriter.h"
 
-#include "FileIO.h"
-#include "File.h"
 #include "Encoding.h"
-#include "String.h"
+#include "File.h"
+#include "FileIO.h"
 #include "OutputStream.h"
+#include "Strings.h"
 
 DisassemblyResultWriter::DisassemblyResultWriter(const Profile& profile) :
     profile(&profile), file(), outputStream(nullptr), lineNumber(0) {

@@ -1,11 +1,12 @@
 #pragma once
 
+#include "ByteArray.h"
+#include "CommonIO.h"
 #include "Syntax.h"
-#include "IO.h"
+
 #include "PlatformCompat.h"
 #include <cstdint>
 #include <vector>
-#include "ByteArray.h"
 
 // Include standard IO flags
 #include <fstream>

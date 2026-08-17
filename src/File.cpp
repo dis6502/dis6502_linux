@@ -1,6 +1,6 @@
 #include "File.h"
 #include "FileIO.h"
-#include "String.h"
+#include "Strings.h"
 #ifdef _WIN32
 #include <Windows.h>
 #endif

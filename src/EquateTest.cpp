@@ -1,5 +1,5 @@
 #include "EquateTest.h"
-#include "Assert.h"
+#include "Assertions.h"
 #include "Equate.h"
 #include "EquateType.h"
 #include "LabelAccess.h"

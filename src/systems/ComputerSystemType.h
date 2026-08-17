@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Syntax.h"
+#include "Syntax.h"
 
 enum class ComputerSystemType {
     ATARI5200,

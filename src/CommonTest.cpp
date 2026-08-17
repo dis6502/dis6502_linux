@@ -1,11 +1,11 @@
 #include <cstring>
-#include "CommonTest.h"
-#include "Assert.h"
+#include "Assertions.h"
 #include "ByteArray.h"
+#include "CommonTest.h"
 #include "DatatypeUtility.h"
-#include "String.h"
-#include <vector>
 #include "Debug.h"
+#include "Strings.h"
+#include <vector>
 
 long Allocatable::instanceCount;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ComputerSystem.h"
+#include "ComputerSystem.h"
 
 class Oric final : public ComputerSystem {
 public:

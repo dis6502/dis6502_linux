@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ComputerSystem.h"
+#include "ComputerSystem.h"
 
 class Atari5200 final : public ComputerSystem {
 public:

@@ -1,13 +1,13 @@
-#include "DisassemblyResultTest.h"
-#include "DisassemblyResult.h"
 #include "DisassemblyBuffer.h"
 #include "DisassemblyLine.h"
+#include "DisassemblyResult.h"
+#include "DisassemblyResultTest.h"
 
-#include "DisassemblySectionType.h"
 #include "DisassemblySection.h"
-#include "String.h"
+#include "DisassemblySectionType.h"
+#include "Strings.h"
 
-#include "Assert.h"
+#include "Assertions.h"
 
 void DisassemblyResultTest::TestDisassemblyResult() {
     DisassemblyResult result;

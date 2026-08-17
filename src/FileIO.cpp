@@ -1,6 +1,6 @@
 #include "FileIO.h"
+#include "Strings.h"
 #include "Text.h"
-#include "String.h"
 #include <filesystem>
 #include <gsl/gsl>
 #include "PlatformCompat.h"
@@ -105,7 +105,13 @@ void FileIO::CloseFile(FILE* fd) {
 }
 
 void FileIO::SetCurrentWorkingDirectory(wstring_view folderPath) {
+#ifdef WIN32
     if (::SetCurrentDirectory(wstring(folderPath).c_str()) == 0) {
         throw IOException(String::Format(L"Cannot set folder path '{0}' as current directory", folderPath));
     }
+#else 
+    if (chdir(wstring(folderPath).c_str()) != 0) {
+        throw IOException(String::Format(L"Cannot set folder path '{0}' as current directory", folderPath));
+    }
+#endif
 }

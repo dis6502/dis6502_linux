@@ -1,11 +1,11 @@
+#include "AddressLabel.h"
 #include "Comment.h"
 #include "FileHeader.h"
 #include "FileInputStream.h"
 #include "Fixup.h"
-#include "String.h"
-#include "AddressLabel.h"
-#include "Symbol.h"
 #include "Segment.h"
+#include "Strings.h"
+#include "Symbol.h"
 // #include <algorithm> // TODO For sorting, should be in each list
 #ifdef _WIN32
 #include <Windows.h>

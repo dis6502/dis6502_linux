@@ -6,7 +6,7 @@
 #include "FileIO.h"
 #include "InputStream.h"
 #include "OutputStream.h"
-#include "String.h"
+#include "Strings.h"
 #include "Workspace1X.h"
 
 // Constants from workspace version 1X

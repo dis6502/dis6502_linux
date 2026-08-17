@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Syntax.h"
-#include "../../FileIO.h"
+#include "Syntax.h"
+#include "FileIO.h"
 
 class AtariDiskImageTest {
 public:

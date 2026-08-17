@@ -2,7 +2,7 @@
 
 #include "Syntax.h"
 
-// Model of an 8-bit memory with 16 bit address space and little endian byte order.
+// Model of an 8-bit memory with a 16 bit address space and little endian byte order.
 class Memory final {
 
 public:

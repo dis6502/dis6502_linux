@@ -1,12 +1,12 @@
 #include "Atari5200.h"
 
-#include "../../String.h"
-#include "../../FileType.h"
-#include "../../Segment.h"
-#include "../../SegmentListInserter.h"
-#include "../../Workspace.h"
-#include "../../FileInputStream.h"
-#include "../../OutputStream.h"
+#include "FileInputStream.h"
+#include "FileType.h"
+#include "OutputStream.h"
+#include "Segment.h"
+#include "SegmentListInserter.h"
+#include "Strings.h"
+#include "Workspace.h"
 #include <set>
 
 Atari5200::Atari5200(const ComputerSystemTypeInfo& computerSystemTypeInfo) : ComputerSystem(computerSystemTypeInfo) {

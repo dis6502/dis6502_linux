@@ -9,17 +9,17 @@
 #include "Application.h"
 #include "Byte.h"
 #include "ByteArray.h"
-#include "FileIO.h"
-#include "String.h"
 #include "FileInputStream.h"
+#include "FileIO.h"
+#include "FileType.h"
 #include "OutputStream.h"
 #include "SegmentList.h"
+#include "SegmentListInserter.h"
+#include "Strings.h"
+#include "systems/ComputerSystem.h"
 #include "Workspace.h"
 #include "Workspace1X.h"
 #include "XML.h"
-#include "FileType.h"
-#include "SegmentListInserter.h"
-#include "systems/ComputerSystem.h"
 #include <sstream>
 
 extern std::unique_ptr<Application> g_Application;

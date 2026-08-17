@@ -1,6 +1,6 @@
 #include "Unknown.h"
 
-#include "../../FileType.h"
+#include "FileType.h"
 
 
 namespace systems { // TODO: Use namespace systems also for other systems

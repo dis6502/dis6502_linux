@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../Syntax.h"
+#include "Syntax.h"
 #include "ComputerSystemType.h"
-#include "atari5200/Atari5200.h"
-#include "atari800/Atari800.h"
-#include "c64/C64.h"
-#include "oric/Oric.h"
-#include "unknown/Unknown.h"
+#include "Atari5200.h"
+#include "Atari800.h"
+#include "C64.h"
+#include "Oric.h"
+#include "Unknown.h"
 
 class ComputerSystem;
 

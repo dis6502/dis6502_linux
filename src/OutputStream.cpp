@@ -4,10 +4,12 @@
 #include "Encoding.h"
 #include "File.h"
 #include "FileIO.h"
-#include "String.h"
+#include "Strings.h"
 #include "Text.h"
-#include <sys/stat.h>
 #include <filesystem>
+#include <io.h>
+#include <sys/stat.h>
+#include <vector>
 
 gsl::not_null<OutputStream*> OutputStream::OpenFile(wstring_view filePath, Encoding encoding) {
     if (encoding == Encoding::UNKNOWN) {
@@ -51,7 +53,8 @@ void OutputStream::WriteString(wstring_view stringView) {
         throw IOException(L"Cannot write strings if encoding is binary");
     }
     case Encoding::ASCII: {
-        char buffer[stringView.size()];
+        std::vector<char> buffer;
+        buffer.resize(stringView.size());
         for (size_t i = 0; i < stringView.size(); i++) {
             wchar_t c = stringView.at(i);
             if ((c == 10) || (32 <= c && c <= 127)) {
@@ -61,11 +64,12 @@ void OutputStream::WriteString(wstring_view stringView) {
                 throw IOException(wstringstream() << "Character '" << c << "' (" << (unsigned int)c << ") at position " << i << " of string '" << stringView << "' is no ASCII character and cannot be written in ASCII encoding mode.");
             }
         }
-        Write(buffer, stringView.length());
+        Write(buffer.data(), stringView.length());
         break;
     }
     case Encoding::ATASCII: {
-        char buffer[stringView.size()];
+        std::vector<char> buffer;
+        buffer.resize(stringView.size());
         for (size_t i = 0; i < stringView.size(); i++) {
             wchar_t c = stringView.at(i);
             if (c <= 2555) {
@@ -75,7 +79,7 @@ void OutputStream::WriteString(wstring_view stringView) {
                 throw IOException(wstringstream() << "Character '" << c << "' (" << (unsigned int)c << ") at position " << i << " of string '" << stringView << "' is no ASCII character and cannot be written in ATASCII encoding mode.");
             }
         }
-        Write(buffer, stringView.length());
+        Write(buffer.data(), stringView.length());
         break;
     }
     case Encoding::UTF8: {

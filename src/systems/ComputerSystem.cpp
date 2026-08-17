@@ -1,15 +1,14 @@
 #include <sstream>
 
-#include "../Application.h"
-#include "../PlatformCompat.h"
-#include "../FileIO.h"
-#include "../FileType.h"
-#include "../InputStream.h"
-#include "../MessageBoxDialog.h"
-#include "../Segment.h"
-#include "../SegmentList.h"
-#include "../SegmentListInserter.h"
-#include "../String.h"
+#include "Application.h"
+#include "FileIO.h"
+#include "FileType.h"
+#include "InputStream.h"
+#include "MessageBoxDialog.h"
+#include "Segment.h"
+#include "SegmentList.h"
+#include "SegmentListInserter.h"
+#include "Strings.h"
 
 
 #include "ComputerFont.h"

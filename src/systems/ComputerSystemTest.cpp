@@ -1,7 +1,7 @@
 #include "ComputerSystemTest.h"
 
 #include "atari800/Atari800Test.h"
-#include "../TestPaths.h"
+#include "TestPaths.h"
 #include "ComputerSystemFactory.h"
 #include "ComputerSystem.h"
 

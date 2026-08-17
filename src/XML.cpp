@@ -1,6 +1,6 @@
-#include "XML.h"
-#include "String.h"
 #include "DatatypeUtility.h"
+#include "Strings.h"
+#include "XML.h"
 
 gsl::not_null<XML::Element*> XML::AddChildElement(Element& element, wstring_view elementName) {
     auto childElement = element.GetDocument()->NewElement(StringToUTF8String(elementName).c_str());

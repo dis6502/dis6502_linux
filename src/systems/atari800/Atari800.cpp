@@ -1,14 +1,14 @@
 #include "Atari800.h"
 
-#include "../../Debug.h"
-#include "../../FileHeader.h"
-#include "../../String.h"
-#include "../../Fixup.h"
-#include "../../InputStream.h"
-#include "../../OutputStream.h"
-#include "../../Segment.h"
-#include "../../SegmentList.h"
-#include "../../SegmentListInserter.h"
+#include "Debug.h"
+#include "FileHeader.h"
+#include "Fixup.h"
+#include "InputStream.h"
+#include "OutputStream.h"
+#include "Segment.h"
+#include "SegmentList.h"
+#include "SegmentListInserter.h"
+#include "Strings.h"
 #include <set>
 #include <sstream>
 

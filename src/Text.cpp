@@ -1,5 +1,6 @@
 #include "Text.h"
-#include "String.h"
+
+#include "Strings.h"
 
 // Portable placeholder for Win32 LoadString()-based resource lookup.
 // The .rc file's actual English strings live in dis6502.rc and would need

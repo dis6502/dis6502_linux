@@ -1,11 +1,11 @@
 #include "Oric.h"
 
-#include "../../FileType.h"
-#include "../../InputStream.h"
-#include "../../OutputStream.h"
-#include "../../Segment.h"
-#include "../../SegmentListInserter.h"
-#include "../../Workspace.h"
+#include "FileType.h"
+#include "InputStream.h"
+#include "OutputStream.h"
+#include "Segment.h"
+#include "SegmentListInserter.h"
+#include "Workspace.h"
 #include <set>
 
 

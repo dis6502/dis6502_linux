@@ -1,7 +1,7 @@
 #pragma once
 #include "Syntax.h"
 
-#include "Assert.h"
+#include "Assertions.h"
 
 class MemoryInspectorTest  {
 public:

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Resource.h"
 #include "Syntax.h"
-#include "resource.h"
 
 /**
 * Format texts from application's resource file.

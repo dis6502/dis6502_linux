@@ -3,25 +3,25 @@
 #include <cassert>
 
 #include "Application.h"
+#include "Comment.h"
 #include "Debug.h"
 #include "DisassemblySectionType.h"
-#include "Comment.h"
+#include "Equate.h"
+#include "EquateList.h"
 #include "FileHeader.h"
 #include "Fixup.h"
-#include "Equate.h"
-#include "String.h"
-#include "EquateList.h"
 #include "InstructionSet.h"
 #include "Memory.h"
 #include "Segment.h"
+#include "Strings.h"
 #include "Workspace.h"
 #include <gsl/util>
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
-#include "SegmentListInserter.h"
 #include "SegmentListChangedListener.h"
+#include "SegmentListInserter.h"
 
 SegmentList::SegmentList(Workspace* workspace) {
     this->workspace = workspace;

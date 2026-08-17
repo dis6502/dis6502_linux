@@ -1,10 +1,10 @@
-#include "DisassemblyResultFileTest.h"
 #include "DisassemblyResultFile.h"
+#include "DisassemblyResultFileTest.h"
 #include "DisassemblyResultTest.h"
 
-#include "Assert.h"
+#include "Assertions.h"
 #include "FileIO.h"
-#include "String.h"
+#include "Strings.h"
 
 void DisassemblyResultFileTest::TestDisassemblyResultFile(File folder) {
 

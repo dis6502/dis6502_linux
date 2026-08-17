@@ -1,14 +1,14 @@
 #pragma once
 
-#include "../Syntax.h"
-#include "../Byte.h"
-#include "../FileIO.h"
-#include "../FileType.h"
-#include "../FileHeader.h"
-#include "../Memory.h"
-#include "../SegmentTypes.h"
+#include "Byte.h"
 #include "ComputerFont.h"
 #include "ComputerSystemType.h"
+#include "FileHeader.h"
+#include "FileIO.h"
+#include "FileType.h"
+#include "Memory.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
 #include <gsl/pointers>
 #include <vector>
 

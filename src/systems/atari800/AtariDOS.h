@@ -5,12 +5,12 @@
 #pragma once
 
 
-#include "../../DatatypeUtility.h"
+#include "DatatypeUtility.h"
+#include "FileIO.h"
+#include "Memory.h"
+#include "Strings.h"
+#include "Syntax.h"
 #include <cstdint>
-#include "../../FileIO.h"
-#include "../../Memory.h"
-#include "../../String.h"
-#include "../../Syntax.h"
 
 #include <gsl/pointers>
 
@@ -50,7 +50,7 @@ public:
     using sector_size = uint16_t;      // two bytes
     using sector_offset = uint16_t;    // two bytes
 
-    using directory_index = int;       // -1 means invvalid, value values are 0..63
+    using directory_index = int;       // -1 means invalid, value values are 0..63
 
     using file_size = uint32_t;
 

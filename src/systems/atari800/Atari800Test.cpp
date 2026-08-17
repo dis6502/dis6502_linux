@@ -1,20 +1,20 @@
 #include "Atari800Test.h"
 
+#include "Assertions.h"
+#include "InputStream.h"
+#include "OutputStream.h"
 #include <sstream>
-#include "../../Assert.h"
-#include "../../InputStream.h"
-#include "../../OutputStream.h"
 
-#include "../../SegmentList.h"
-#include "../../SegmentListInserter.h"
+#include "SegmentList.h"
+#include "SegmentListInserter.h"
 
-#include "../ComputerSystem.h"
-#include "../ComputerSystemFactory.h"
-#include "../../InputStream.h"
-#include "../../FileInputStream.h"
-#include "../../XML.h"
-#include "../../FileIOTest.h"
+#include "ComputerSystem.h"
+#include "ComputerSystemFactory.h"
 #include "DiskImageFileInputStream.h"
+#include "FileInputStream.h"
+#include "FileIOTest.h"
+#include "InputStream.h"
+#include "XML.h"
 
 
 void Atari800Test::AssertSegmentListEquals(const ComputerSystem& computerSystem, FileType fileType, wstring_view filePath, wstring_view outFilePath) {

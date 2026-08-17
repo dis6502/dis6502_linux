@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "../ComputerSystem.h"
+#include "ComputerSystem.h"
 
-#include "../../Memory.h"
+#include "Memory.h"
 
 class C64 final : public ComputerSystem {
 public:

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Syntax.h"
+#include "Syntax.h"
 
-#include "../../FileInputStream.h"
+#include "FileInputStream.h"
 
 #include "AtariDOS.h"
 

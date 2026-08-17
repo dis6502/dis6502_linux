@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ComputerSystem.h"
+#include "ComputerSystem.h"
 
 
 namespace systems {

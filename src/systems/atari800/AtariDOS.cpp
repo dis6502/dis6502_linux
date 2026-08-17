@@ -1,5 +1,5 @@
 #include "AtariDOS.h"
-#include "../../PlatformCompat.h"
+#include "PlatformCompat.h"
 #include <iomanip>
 #include <sstream>
 

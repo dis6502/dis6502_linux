@@ -1,8 +1,8 @@
-#include "Assert.h"
+#include "Assertions.h"
 #include "PlatformCompat.h"
 #include "FileIO.h"
 #include "FileIOTest.h"
-#include "String.h"
+#include "Strings.h"
 
 
 void FileIOTest::AssertFileEquals(wstring_view actualFilePath, wstring_view expectedFilePath) {

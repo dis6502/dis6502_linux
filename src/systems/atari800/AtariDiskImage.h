@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Syntax.h"
-#include "../../Byte.h"
-#include "../../ByteArray.h"
+#include "Syntax.h"
+#include "Byte.h"
+#include "ByteArray.h"
 
 class AtariDiskImage {
 public:

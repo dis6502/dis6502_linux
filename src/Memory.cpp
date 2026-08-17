@@ -1,7 +1,7 @@
 #include "Memory.h"
 
-#include "String.h"
 #include "DatatypeUtility.h"
+#include "Strings.h"
 
 wstring Memory::size_to_hex_string(Memory::size size) {
     if (size < Memory::MAX_SIZE) {

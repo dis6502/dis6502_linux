@@ -10,6 +10,7 @@
 
 #include <memory> // for std::unique_ptr
 #include <stdexcept>
+#include <cstring>
 #include <string>
 #include <sstream>
 

@@ -3,7 +3,7 @@
 
 
 #include "Debug.h"
-#include "String.h"
+#include "Strings.h"
 #include <sstream>
 
 FileInputStream::~FileInputStream() {

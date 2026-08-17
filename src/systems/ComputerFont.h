@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Syntax.h"
-#include "../PlatformCompat.h"
+#include "Syntax.h"
+#include "UI.h"
 
 // Portable placeholder for the Win32 GDI-backed ComputerFont. The real
 // implementation created actual HFONTs via CreateFont() for rendering

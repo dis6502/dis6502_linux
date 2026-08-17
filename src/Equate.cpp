@@ -1,7 +1,7 @@
-#include "Equate.h"
 #include "Character.h"
-#include "String.h"
 #include "Debug.h"
+#include "Equate.h"
+#include "Strings.h"
 #ifdef _WIN32
 #include <Windows.h>
 #endif

@@ -1,8 +1,8 @@
-#include "DisassemblyLineWriter.h"
 #include "Disassembly.h"
-#include "Workspace.h"
+#include "DisassemblyLineWriter.h"
 #include "Profile.h"
-#include "String.h"
+#include "Strings.h"
+#include "Workspace.h"
 #include <gsl/gsl>
 
 DisassemblyLineWriter::DisassemblyLineWriter(size_t lineBufferSize) {

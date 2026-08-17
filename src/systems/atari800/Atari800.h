@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../ComputerSystem.h"
+#include "ComputerSystem.h"
 
-#include "../../Memory.h"
+#include "Memory.h"
 
 class Atari800 final : public ComputerSystem {
 public:

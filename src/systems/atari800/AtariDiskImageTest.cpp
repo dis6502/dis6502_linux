@@ -6,9 +6,9 @@
 #include "AtariDiskImage.h"
 #include "AtariDOS.h"
 #include "DiskImageFileInputStream.h"
-#include "../../Assert.h"
-#include "../../FileInputStream.h"
-#include "../../StreamTest.h"
+#include "Assertions.h"
+#include "FileInputStream.h"
+#include "StreamTest.h"
 
 void AtariDiskImageTest::AssertFileNames83Equal() {
     AssertFileName83Equals(L"", L"");

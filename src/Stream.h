@@ -1,7 +1,7 @@
 #pragma once
 
+#include "CommonIO.h"
 #include "Syntax.h"
-#include "IO.h"
 #include <iostream>
 
 class Stream {

@@ -1,7 +1,7 @@
 #include "AtariDiskImage.h"
 #include <cstring>
 
-#include "../../DiskImage.h"
+#include "DiskImage.h"
 
 
 void AtariDiskImage::ReadAbsoluteSector(wstring_view diskImageFilePath, SectorNumber sectorNumber, ByteArray& sectorData, SectorSize& sectorSize) {
