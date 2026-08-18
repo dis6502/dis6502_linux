@@ -49,7 +49,6 @@ public:
 
     static void SetCurrentWorkingDirectory(wstring_view folderPath); // Throws IOException
 
-private:
     static std::filesystem::path ToPath(wstring_view filePath);
 
 };

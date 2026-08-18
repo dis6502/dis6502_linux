@@ -3,17 +3,17 @@
 #include "Text.h"
 #include <filesystem>
 #include <gsl/gsl>
-#include "PlatformCompat.h"
 
 #ifdef _WIN32
 const wstring FileIO::FILE_SEPARATOR = L"\\";
 #else
 const wstring FileIO::FILE_SEPARATOR = L"/";
 #endif
+
 const wstring FileIO::EMPTY_FILE_PATH = L"";
 
-std::filesystem::path FileIO::ToPath(std::wstring_view s) {
-    return std::filesystem::path(String::wstring_to_utf8(s));
+std::filesystem::path FileIO::ToPath(wstring_view filePath) {
+    return std::filesystem::path(String::wstring_to_utf8(filePath));
 }
 
 bool FileIO::FileExists(wstring_view filePath) {
@@ -44,10 +44,11 @@ ByteArray FileIO::ReadByteArray(wstring_view filePath) {
         throw IOException(String::Format(L"Cannot open file '{0}' for reading", filePath));
     }
 
-    auto fileSize = std::filesystem::file_size(filePath);
 #undef max
-    if (fileSize > std::numeric_limits<std::size_t>::max()) {
-        throw IOException(String::Format(L"Requested buffer size {0} exceeds the memory limits", std::to_wstring(fileSize)));
+    static constexpr size_t maxFileSize = std::numeric_limits<std::size_t>::max();
+    auto fileSize = std::filesystem::file_size(filePath);
+    if (fileSize > maxFileSize) {
+        throw IOException(String::Format(L"Requested buffer size {0} exceeds the memory limit of {1} bytes.", std::to_wstring(fileSize), std::to_wstring(maxFileSize)));
     }
     const auto bufferSize = gsl::narrow_cast<size_t>(fileSize);
     auto buffer = ByteArray(bufferSize);
@@ -109,15 +110,9 @@ void FileIO::CloseFile(FILE* fd) {
 }
 
 void FileIO::SetCurrentWorkingDirectory(wstring_view folderPath) {
-#ifdef WIN32
-    if (::SetCurrentDirectory(wstring(folderPath).c_str()) == 0) {
-        throw IOException(String::Format(L"Cannot set folder path '{0}' as current directory", folderPath));
-    }
-#else 
     std::error_code ec;
     std::filesystem::current_path(ToPath(folderPath), ec);
     if (ec) {
         throw IOException(String::Format(L"Cannot set folder path '{0}' as current directory", folderPath));
     }
-#endif
 }

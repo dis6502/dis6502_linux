@@ -1,5 +1,4 @@
 #include "FileInputStream.h"
-#include "PlatformCompat.h"
 
 
 #include "Debug.h"
@@ -15,7 +14,7 @@ FileIO::FILE_SIZE FileInputStream::OpenFile(wstring_view filePath, const std::io
     if (!FileIO::FileExists(filePath)) {
         throw IOException(String::Format(L"File '{0}' does not exist", filePath));
     }
-    fs.open(ToPath(this->filePath), std::ios::in | flags);
+    fs.open(FileIO::ToPath(filePath), std::ios::in | flags);
     if (!fs.is_open()) {
         throw IOException(String::Format(L"Cannot open file '{0}' for reading", filePath));
     }

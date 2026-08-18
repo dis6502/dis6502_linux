@@ -1,4 +1,3 @@
-#include <cstring>
 #include "Assertions.h"
 #include "ByteArray.h"
 #include "CommonTest.h"

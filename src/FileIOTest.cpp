@@ -1,5 +1,4 @@
 #include "Assertions.h"
-#include "PlatformCompat.h"
 #include "FileIO.h"
 #include "FileIOTest.h"
 #include "Strings.h"
@@ -28,7 +27,7 @@ void FileIOTest::AssertFileEquals(wstring_view actualFilePath, wstring_view expe
 
 void FileIOTest::TestFileIO() {
 
-    auto filePath = String::ansi_to_wstring(std::tmpnam(nullptr)); // No existing temp file
+    auto filePath = String::ansi_to_wstring(".non_existing_test_file");
     try {
         const auto fileSize = FileIO::GetFileSize(filePath);
         Assert::Fail(L"Expected IOException instead of file size "+std::to_wstring(fileSize));
@@ -38,7 +37,7 @@ void FileIOTest::TestFileIO() {
     }
 
     std::ofstream fout;
-    fout.open(ToPath(filePath), std::ios::binary | std::ios::out);
+    fout.open(FileIO::ToPath(filePath), std::ios::binary | std::ios::out);
 
     constexpr size_t arraySize = 40000;
     auto byteArray = std::make_unique<char[]>(arraySize);
