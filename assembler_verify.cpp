@@ -1,13 +1,13 @@
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 
-#include "ui_frontend/MiniAssembler.h"
 #include "Application.h"
-#include "Workspace.h"
-#include "systems/ComputerSystemFactory.h"
-#include "WorkspaceLogic.h"
-#include "String.h"
 #include "ByteArray.h"
+#include "Strings.h"
+#include "systems/ComputerSystemFactory.h"
+#include "ui_frontend/MiniAssembler.h"
+#include "Workspace.h"
+#include "WorkspaceLogic.h"
 
 int main() {
     ComputerSystemFactory computerSystemFactory;
@@ -28,7 +28,7 @@ int main() {
     auto check = [&](const char* desc, bool condition) {
         std::printf("%s %s\n", condition ? "PASS" : "FAIL", desc);
         if (!condition) failed++;
-    };
+        };
 
     // LDA #$05 -> opcode 0xA9, operand 0x05 (Immediate mode, 2 bytes)
     {
