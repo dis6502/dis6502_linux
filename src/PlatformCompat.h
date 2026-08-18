@@ -89,7 +89,7 @@ inline std::filesystem::path ToPath(std::wstring_view s) {
 #include <stdio.h>
 #define _stat stat
 inline int _fstat(int fd, struct stat* buf) { return fstat(fd, buf); }
-inline int _fileno(FILE* f) { return fileno(f); }
+inline int _fileno(FILE* f) { return -1; /* TODO return fileno(f);  */ }
 
 // ---- AddFontResource/RemoveFontResource: GDI's temporary font-file
 // registration mechanism, used originally to install a bundled .fon
@@ -99,13 +99,6 @@ inline int _fileno(FILE* f) { return fileno(f); }
 // ComputerSystem still compiles/runs headlessly. ----
 inline int AddFontResource(const wchar_t* /*fontFilePath*/) { return 1; } // pretend success
 inline int RemoveFontResource(const wchar_t* /*fontFilePath*/) { return 1; }
-
-// ---- SetCurrentDirectory (Win32 kernel32 API) ----
-inline int SetCurrentDirectory(const wchar_t* path) {
-    std::error_code ec;
-    std::filesystem::current_path(ToPath(path), ec);
-    return ec ? 0 : 1; // Win32 convention: nonzero on success
-}
 
 // ---- Win32 base integer typedefs/macros used directly in engine code ----
 using BYTE = unsigned char;
@@ -189,8 +182,8 @@ inline int wsprintf(wchar_t* buffer, const wchar_t* format, ...) {
 #endif
 
 // ---- case-insensitive string compare ----
-inline int _stricmp(const char* a, const char* b) { return strcasecmp(a, b); }
-inline int _wcsicmp(const wchar_t* a, const wchar_t* b) { return wcscasecmp(a, b); }
+int _stricmp(const char* a, const char* b);
+int _wcsicmp(const wchar_t* a, const wchar_t* b);
 
 // ---- opaque handle stand-ins for GDI resource types that "core" data
 // structures store (but never actually dereference/draw with) — e.g.

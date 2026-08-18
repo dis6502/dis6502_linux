@@ -3,13 +3,17 @@
 #include "ByteArray.h"
 #include "CommonIO.h"
 #include "Syntax.h"
-
-#include "PlatformCompat.h"
-#include <cstdint>
+#include <filesystem>
 #include <vector>
 
 // Include standard IO flags
 #include <fstream>
+
+// ---- _MAX_PATH: Windows CRT max-path-length constant ----
+#include <climits>
+#ifndef _MAX_PATH
+#define _MAX_PATH PATH_MAX
+#endif
 
 class FileIO final
 {
@@ -44,4 +48,8 @@ public:
     static void CloseFile(FILE* fd);
 
     static void SetCurrentWorkingDirectory(wstring_view folderPath); // Throws IOException
+
+private:
+    static std::filesystem::path ToPath(wstring_view filePath);
+
 };

@@ -12,6 +12,10 @@ const wstring FileIO::FILE_SEPARATOR = L"/";
 #endif
 const wstring FileIO::EMPTY_FILE_PATH = L"";
 
+std::filesystem::path FileIO::ToPath(std::wstring_view s) {
+    return std::filesystem::path(String::wstring_to_utf8(s));
+}
+
 bool FileIO::FileExists(wstring_view filePath) {
     return std::filesystem::exists(filePath);
 }
@@ -110,7 +114,9 @@ void FileIO::SetCurrentWorkingDirectory(wstring_view folderPath) {
         throw IOException(String::Format(L"Cannot set folder path '{0}' as current directory", folderPath));
     }
 #else 
-    if (chdir(wstring(folderPath).c_str()) != 0) {
+    std::error_code ec;
+    std::filesystem::current_path(ToPath(folderPath), ec);
+    if (ec) {
         throw IOException(String::Format(L"Cannot set folder path '{0}' as current directory", folderPath));
     }
 #endif
