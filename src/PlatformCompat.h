@@ -75,22 +75,6 @@ inline std::string WStringToUtf8Compat(std::wstring_view str) {
     return result;
 }
 
-// ---- fstream path conversion: MSVC's stream classes have a (const
-// wchar_t*) constructor/open() overload as an extension; libstdc++'s
-// don't. std::filesystem::path is the portable way to hand a wide-char
-// path to an fstream on either platform. ----
-#include <filesystem>
-inline std::filesystem::path ToPath(std::wstring_view s) {
-    return std::filesystem::path(WStringToUtf8Compat(s));
-}
-
-// ---- _stat/_fstat/_fileno: Windows CRT file-stat functions -> POSIX ----
-#include <sys/stat.h>
-#include <stdio.h>
-#define _stat stat
-inline int _fstat(int fd, struct stat* buf) { return fstat(fd, buf); }
-inline int _fileno(FILE* f) { return -1; /* TODO return fileno(f);  */ }
-
 // ---- AddFontResource/RemoveFontResource: GDI's temporary font-file
 // registration mechanism, used originally to install a bundled .fon
 // bitmap font for rendering the Atari/C64 character set. No portable

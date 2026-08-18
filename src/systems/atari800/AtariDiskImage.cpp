@@ -1,5 +1,4 @@
 #include "AtariDiskImage.h"
-#include <cstring>
 
 #include "DiskImage.h"
 

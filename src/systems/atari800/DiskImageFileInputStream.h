@@ -24,7 +24,7 @@ private:
 
     ByteArray fileContent;
     bool valid;
-    long long position;
+    Stream::stream_position position;
 
     void Reset();
 };

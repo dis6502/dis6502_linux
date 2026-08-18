@@ -1,8 +1,8 @@
-#include "SegmentTest.h"
-#include "Segment.h"
 #include "AddressLabel.h"
 #include "AddressLabelList.h"
 #include "Assertions.h"
+#include "Segment.h"
+#include "SegmentTest.h"
 
 void SegmentTest::TestSegment() {
 
@@ -67,7 +67,7 @@ void SegmentTest::TestAddressLabels(AddressLabelList& addressLabels) {
     Memory::address address = 0x3000;
     AddressLabelList::AddressLabelVector addressLabelsVector;
     addressLabels.Enumerate(addressLabelsVector);
-    for (const auto addressLabel : addressLabelsVector) {
+    for (const auto& addressLabel : addressLabelsVector) {
         Assert::LongEquals(addressLabel->GetAddress(), address++);
     }
 

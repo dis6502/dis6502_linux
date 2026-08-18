@@ -34,13 +34,13 @@ void DiskImageFileInputStream::Read(void* buffer, stream_size size) {
         throw std::runtime_error("Buffer must not be nullptr");
     }
 
-    if (size > std::numeric_limits<size_t>::max()) {
-        throw IOException(L"Specified file size exceeds memory limit");
+    if (size > (stream_size)std::numeric_limits<size_t>::max()) {
+        throw IOException(L"Specified file size exceeds the memory limit");
     }
 
     const auto endPosition = position + size;
     if (size > 0) {
-        if (endPosition <= GetFileSize()) {
+        if (endPosition <= (stream_size)GetFileSize()) {
             memcpy(buffer, fileContent.get() + position, (size_t)size);
         }
     }
@@ -57,8 +57,8 @@ void DiskImageFileInputStream::Skip(stream_offset offset) {
         throw IOException(L"Invalid negative position");
 
     }
-    const auto result = ((FileIO::FILE_SIZE)position <= GetFileSize());
-    if (position > GetFileSize()) {
+    const auto result = (position <= (stream_position)GetFileSize());
+    if (!result) {
         valid = false;
     }
 

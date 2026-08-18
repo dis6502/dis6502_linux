@@ -120,7 +120,7 @@ void Atari5200::ReadROMFile(SegmentListInserter& segmentListInserter, InputStrea
     segment->SetType(vectorOffset, MemoryType::LABEL, vectorSize);
 
     // Convert Atari Screen Code to ASCII
-    for (int i = 0; i < titleSize; i++) {
+    for (Memory::offset i = 0; i < titleSize; i++) {
         auto b = segment->GetData(titleOffset + i);
 
         if (b < 64) {

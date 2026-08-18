@@ -56,13 +56,13 @@ bool MemoryInspectorSelection::IsEmpty() const {
 }
 
 void  MemoryInspectorSelection::SetSelection(Memory::offset nBegin, Memory::offset nEnd) {
-    if (nBegin < 0) {
-        throw std::runtime_error("Cannot set negative begin of range.");
-    }
+//    if (nBegin < 0) {
+//      throw std::runtime_error("Cannot set negative begin of range.");
+//  }
 
-    if (nEnd < 0) {
-        throw std::runtime_error("Cannot set negative end of range.");
-    }
+//  if (nEnd < 0) {
+//      throw std::runtime_error("Cannot set negative end of range.");
+//  }
 
     if (segment == nullptr) {
         throw std::runtime_error("No segment selected yet. Cannot set selection range.");

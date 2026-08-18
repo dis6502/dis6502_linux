@@ -1,5 +1,4 @@
 #include "AtariDOS.h"
-#include "PlatformCompat.h"
 #include <iomanip>
 #include <sstream>
 
@@ -301,20 +300,20 @@ std::unique_ptr<AtariDisk>AtariDOS::OpenAtariDisk(wstring_view diskImageFilePath
 }
 
 AtariError AtariDOS::Seek(FILE* fd, sector_number sectorNumber) {
-    struct _stat buf;
 
-    // determine if we have an XFD or ATR file
-    if (_fstat(_fileno(fd), &buf)) {
-        return AtariError::SECTOR_NOT_FOUND;
+    // Determine if we have an XFD or ATR file, based on the file size
+    if (fseek(fd, 0L, SEEK_END)) {
+        return AtariError::SECTOR_NOT_FOUND; // Cannot determine file size
     }
 
+    auto size = ftell(fd);
     // go to sector
-    if (buf.st_size == 92160L || buf.st_size == 133120L) {
+    if (size == 92160L || size == 133120L) {
         if (fseek(fd, sectorNumber * 128L, SEEK_SET)) {
             return AtariError::SECTOR_NOT_FOUND;
         }
     }
-    else if (buf.st_size == 92176L || buf.st_size == 133136L) {
+    else if (size == 92176L || size == 133136L) {
         if (fseek(fd, (sectorNumber * 128L) + 16L, SEEK_SET)) {
             return AtariError::SECTOR_NOT_FOUND;
         }
@@ -924,7 +923,8 @@ AtariError AtariDOS::WriteSector(wstring_view diskImageFilePath, AtariFile& info
     FILE* fd;
     try {
         fd = OpenForReadWrite(diskImageFilePath);
-    } catch (const IOException&) {
+    }
+    catch (const IOException&) {
         return AtariError::DISK_NOT_FOUND;
     }
 

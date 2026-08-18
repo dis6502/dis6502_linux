@@ -52,7 +52,7 @@ ByteArray FileIO::ReadByteArray(wstring_view filePath) {
     const auto bufferSize = gsl::narrow_cast<size_t>(fileSize);
     auto buffer = ByteArray(bufferSize);
     fs.read(reinterpret_cast<char*>(buffer.get()), buffer.size());
-    if (fs.gcount() != fileSize) {
+    if (fs.gcount() != (std::streamsize)fileSize) {
         throw IOException(String::Format(L"Cannot read expected {1} bytes from file \"{0}\". Only {2} bytes read.",
             filePath, std::to_hex_string(fileSize), std::to_hex_string(fs.gcount())));
     }

@@ -10,7 +10,6 @@
 #include "Memory.h"
 #include "Strings.h"
 #include "Syntax.h"
-#include <cstdint>
 
 #include <gsl/pointers>
 
