@@ -8,7 +8,7 @@
 
 #include "Application.h"
 #include "TestPaths.h"
-#include "Assert.h"
+#include "Assertions.h"
 
 #include "CommonTest.h"
 #include "FileIOTest.h"
