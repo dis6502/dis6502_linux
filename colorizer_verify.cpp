@@ -11,7 +11,7 @@
 #include "DisassemblyResult.h"
 #include "FileType.h"
 #include "systems/ComputerSystemFactory.h"
-#include "String.h"
+#include "Strings.h"
 
 const char* ClassName(DisLineSyntaxClass c) {
     switch (c) {

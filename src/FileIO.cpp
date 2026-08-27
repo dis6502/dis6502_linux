@@ -92,19 +92,38 @@ FILE* FileIO::OpenFile(wstring_view filePath, wstring_view mode) {
 #endif
 
     if (fd == 0) {
-        errno_t errorNumber;
+		wstring errorNumberString;
+		wstring errorMessageString;
+		
+		#ifdef _WIN32
+ 
+		errno_t errno;
+        _get_errno(&errno);
+		
+		errorNumberString =std::to_wstring(errno);
+        errorMessageString = wstring(_wcserror(errno));
 
-        _get_errno(&errorNumber);
-        auto errorMessage = wstring(_wcserror(errorNumber));
+		#else
+		
+		char *narrow = strerror(errno);
+	   	size_t len = strlen(narrow) + 1;
+	   	wchar_t *wide = new wchar_t[len];
+	   	if (wide) {
+	       mbstowcs(wide, narrow, len);
+	   	}
+	   	errorMessageString = wstring(wide);
+	   	delete[] wide;
+	
+		#endif
 
         if (mode.starts_with(L"r")) {
-            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, filePath, std::to_wstring(errorNumber), errorMessage));
+            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, filePath, errorNumberString, errorMessageString));
         }
         else if (mode.starts_with(L"r+")) {
-            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_WRITE_ACCESS, filePath, std::to_wstring(errorNumber), errorMessage));
+            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_WRITE_ACCESS, filePath, errorNumberString, errorMessageString));
         }
         else {
-            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_WRITE_ACCESS, filePath, std::to_wstring(errorNumber), errorMessage));
+            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_WRITE_ACCESS, filePath, errorNumberString, errorMessageString));
         }
     }
     return fd;

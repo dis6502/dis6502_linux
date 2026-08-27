@@ -7,7 +7,9 @@
 #include "Strings.h"
 #include "Text.h"
 #include <filesystem>
+#ifdef _WIN32
 #include <io.h>
+#endif
 #include <sys/stat.h>
 #include <vector>
 
