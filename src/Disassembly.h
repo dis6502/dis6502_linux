@@ -2,15 +2,15 @@
 
 #include "Syntax.h"
 
-#include "Equate.h"
-#include "MemoryType.h"
-#include "SegmentTypes.h"
-#include "Memory.h"
-#include "DisassemblySectionType.h"
 #include "DisassemblyLineWriter.h"
+#include "DisassemblyOpcodeBuffer.h"
 #include "DisassemblyResult.h"
 #include "DisassemblySection.h"
-#include "DisassemblyOpcodeBuffer.h"
+#include "DisassemblySectionType.h"
+#include "Equate.h"
+#include "Memory.h"
+#include "MemoryType.h"
+#include "SegmentTypes.h"
 
 class EquateList;
 class Instruction;

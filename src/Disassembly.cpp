@@ -4,12 +4,13 @@
 */
 
 #include "Disassembly.h"
-#include "PlatformCompat.h"
 
 #include "DatatypeUtility.h"
 #include <algorithm>
 #include <string.h>
 
+#include "AddressLabel.h"
+#include "AddressLabelList.h"
 #include "Application.h"
 #include "Debug.h"
 #include "DisassemblyLine.h"
@@ -17,20 +18,17 @@
 #include "DisassemblyResultIterators.h"
 #include "DisassemblyResultTest.h"
 #include "DisassemblyWriter.h"
-
-#include "Fixup.h"
 #include "EquateList.h"
-#include "Memory.h"
-#include "AddressLabelList.h"
-#include "AddressLabel.h"
-#include "MemoryBlockIterator.h"
-#include "Profile.h"
+#include "Fixup.h"
 #include "InstructionSet.h"
+#include "Memory.h"
+#include "MemoryBlockIterator.h"
+#include "Pass1.h"
+#include "Profile.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "Strings.h"
 #include "Workspace.h"
-#include "Pass1.h"
 
 
 Disassembly::Disassembly() :lineWriter(1024) {
