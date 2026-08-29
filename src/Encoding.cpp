@@ -37,12 +37,7 @@ EncodingInfo EncodingFactory::GetInfo(const Encoding encoding) {
         return EncodingInfo(Encoding::BINARY, L"BINARY", L"Binary", L"\n", O_BINARY);
     }
     else if (encoding == Encoding::UTF8) {
-#ifdef _WIN32
-        const int mode = _O_U8TEXT;
-#else
-        const int mode = O_BINARY;
-#endif
-        return EncodingInfo(Encoding::UTF8, L"UTF8", L"UTF-8", L"\n", mode);
+        return EncodingInfo(Encoding::UTF8, L"UTF8", L"UTF-8", L"\n", O_UTF8);
     }
     return EncodingInfo(Encoding::UNKNOWN, L"UNKNOWN", L"Unknown", L"", 0);
 }

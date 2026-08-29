@@ -1,11 +1,7 @@
 #pragma once
 
 #include "Syntax.h"
-#include <cstdint> // for uintmax_t below - this was previously relying on
-                   // transitive inclusion via another header, which
-                   // isn't a portable guarantee across g++/libstdc++
-                   // versions (compiled fine in one environment, failed
-                   // in another with the exact same source)
+#include <cstdint>
 
 // TODO: Replace remaining usage of char array by strings
 void strclr(char* szString);
