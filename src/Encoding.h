@@ -1,7 +1,9 @@
 #pragma once
 
-
 #include "Syntax.h"
+#ifdef _WIN32
+#define _CRT_DECLARE_NONSTDC_NAMES 1
+#endif
 #include <fcntl.h>	// For file open flags
 #include <vector>
 

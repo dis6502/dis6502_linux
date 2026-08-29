@@ -1,6 +1,5 @@
 #include "Encoding.h"
 #include <algorithm>
-#include "PlatformCompat.h"
 
 #include <map>
 
@@ -24,15 +23,23 @@ EncodingInfo EncodingFactory::GetInfo(wstring_view key) {
 }
 
 EncodingInfo EncodingFactory::GetInfo(const Encoding encoding) {
-    if (encoding == Encoding::ASCII)
-        return EncodingInfo(Encoding::ASCII, L"ASCII", L"ASCII", L"\n", _O_TEXT);
-    else if (encoding == Encoding::ATASCII)
-        return EncodingInfo(Encoding::ATASCII, L"ATASCII", L"ATASCII", L"\u009b", _O_BINARY);
-    else if (encoding == Encoding::BINARY)
-        return EncodingInfo(Encoding::BINARY, L"BINARY", L"Binary", L"\n", _O_BINARY);
-    else if (encoding == Encoding::UTF8)
-        return EncodingInfo(Encoding::UTF8, L"UTF8", L"UTF-8", L"\n", _O_U8TEXT);
-
+    if (encoding == Encoding::ASCII) {
+        return EncodingInfo(Encoding::ASCII, L"ASCII", L"ASCII", L"\n", O_TEXT);
+    }
+    else if (encoding == Encoding::ATASCII) {
+        return EncodingInfo(Encoding::ATASCII, L"ATASCII", L"ATASCII", L"\u009b", O_BINARY);
+    }
+    else if (encoding == Encoding::BINARY) {
+        return EncodingInfo(Encoding::BINARY, L"BINARY", L"Binary", L"\n", O_BINARY);
+    }
+    else if (encoding == Encoding::UTF8) {
+#ifdef _WIN32
+        const int mode = _O_U8TEXT;
+#else
+        const int mode = O_BINARY;
+#endif
+        return EncodingInfo(Encoding::UTF8, L"UTF8", L"UTF-8", L"\n", mode);
+    }
     return EncodingInfo(Encoding::UNKNOWN, L"UNKNOWN", L"Unknown", L"", 0);
 }
 

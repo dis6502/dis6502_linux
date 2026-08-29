@@ -1,5 +1,3 @@
-#include <cstring>
-#include "PlatformCompat.h"
 #include "Syntax.h"
 
 #include <sstream>
@@ -109,7 +107,7 @@ string ByteArray::stringAt(size_t offset, size_t size) const {
     }
     auto buffer = new char[size + 1];
     auto resultSize = std::min((size_t)(_size - offset), size);
-    _memccpy(buffer, (const void*)_array, offset, resultSize);
+    memcpy(buffer, _array + offset, resultSize);
     buffer[resultSize] = 0;
     auto result = string(buffer);
     delete[] buffer;
