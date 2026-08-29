@@ -1,0 +1,50 @@
+#include "Console.h"
+
+#include "UI.h"
+#include "Debug.h"
+
+Console::Console() {
+    allocated = false;
+}
+
+void Console::Allocate() {
+    if (!allocated) {
+        AllocConsole();
+        allocated = true;
+    }
+}
+
+void Console::Write(wstring_view message) {
+
+    Allocate();
+
+    wstring messageString(message);
+
+    // Output within Visual Studio
+    Debug::Log(messageString);
+
+    // Output within command line window
+    DWORD dwBuff = 0;
+    auto hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    WriteConsole(hStdOut, messageString.c_str(), messageString.length(), &dwBuff, NULL);  // #.c_str() OK
+
+}
+string Console::ReadLine() {
+
+    constexpr int BUFFER_LENGTH = 1024;
+    constexpr auto STD_HANDLE = STD_INPUT_HANDLE;
+    CHAR szBuffer[BUFFER_LENGTH] = {};
+
+    DWORD dwRead = 0;
+    auto hIn = GetStdHandle(STD_HANDLE);
+
+    if (hIn == INVALID_HANDLE_VALUE) {
+        wprintf(L"Invalid handle value.\n");
+        safeExit();
+    }
+
+    if (ReadConsole(hIn, szBuffer, sizeof(szBuffer), &dwRead, NULL)) {
+        // Loop until RETURN pressed
+    }
+    return string(szBuffer);
+}

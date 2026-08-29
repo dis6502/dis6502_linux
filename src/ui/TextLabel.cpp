@@ -1,0 +1,33 @@
+#include "Application.h"
+
+#include "Strings.h"
+#include "TextLabel.h"
+
+TextLabel::TextLabel(HWND hWnd) : Control(hWnd) {}
+
+
+void TextLabel::SetText(wstring_view text) {
+    static wchar_t buffer[1024];
+    wcsncpy_s(buffer, sizeof(buffer), text.data(), text.size());
+    SendMessage(hWnd, WM_SETTEXT, 0, (LPARAM)buffer);
+}
+
+wstring TextLabel::GetText() const {
+    static wchar_t buffer[1024];
+    strclr(buffer);
+    SendMessage(hWnd, WM_GETTEXT, sizeof(buffer), (LPARAM)buffer);
+    return wstring(buffer);
+}
+
+void TextLabel::SetNumber(unsigned int value) {
+    static wchar_t szNumber[11]; //  4294967295
+    wsprintf(szNumber, L"%u", value);
+    SetText(szNumber);
+}
+
+unsigned int TextLabel::GetNumber() const {
+    unsigned int value = 0;
+    auto text = GetText();
+    swscanf(text.c_str(), L"%u", &value);
+    return value;
+}
