@@ -23,6 +23,10 @@ EncodingInfo EncodingFactory::GetInfo(wstring_view key) {
 }
 
 EncodingInfo EncodingFactory::GetInfo(const Encoding encoding) {
+	const int O_TEXT=1;
+	const int O_BINARY=2;
+	const int O_UTF8=3;
+	
     if (encoding == Encoding::ASCII) {
         return EncodingInfo(Encoding::ASCII, L"ASCII", L"ASCII", L"\n", O_TEXT);
     }
