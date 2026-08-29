@@ -1,16 +1,10 @@
 #include "OutputStream.h"
 
-#include "PlatformCompat.h"
 #include "Encoding.h"
 #include "File.h"
 #include "FileIO.h"
 #include "Strings.h"
-#include "Text.h"
 #include <filesystem>
-#ifdef _WIN32
-#include <io.h>
-#endif
-#include <sys/stat.h>
 #include <vector>
 
 gsl::not_null<OutputStream*> OutputStream::OpenFile(wstring_view filePath, Encoding encoding) {
@@ -21,27 +15,22 @@ gsl::not_null<OutputStream*> OutputStream::OpenFile(wstring_view filePath, Encod
     if (!FileIO::FileExists(folderPath)) {
         std::filesystem::create_directories(std::filesystem::path(folderPath));
     }
-    int fd = _wsopen(wstring(filePath).c_str(), _O_CREAT | _O_TRUNC | _O_WRONLY | EncodingFactory::GetInfo(encoding).flags, _SH_DENYNO, _S_IWRITE); // ##c_str() OK
-    if (fd < 0) {
-        const auto error = errno;
-        // Cannot open file "{0}" for write access. Error code {1} - "{2}".
-        throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_WRITE_ACCESS, filePath, std::to_wstring(error), wstring(_wcserror(error))));
-    }
-    return new OutputStream(filePath, fd, encoding);
+    auto file = FileIO::OpenFile(filePath, L"wb");
+    return new OutputStream(filePath, file, encoding);
 }
 
-OutputStream::OutputStream(wstring_view filePath, int fd, Encoding encoding) {
+OutputStream::OutputStream(wstring_view filePath, FILE* file, Encoding encoding) {
 
-    if (fd < 0) {
+    if (file == nullptr) {
         throw std::runtime_error("Invalid file descriptor");
     }
     this->filePath = filePath;
-    this->fd = fd;
+    this->file = file;
     this->encoding = encoding;
 }
 
 OutputStream::~OutputStream() {
-    _close(fd);
+    FileIO::CloseFile(file);
 }
 
 void OutputStream::WriteString(wstring_view stringView) {
@@ -99,7 +88,7 @@ void OutputStream::WriteString(const wchar_t* string) {
 }
 
 void OutputStream::Write(const void* buffer, long size) {
-    const long effectiveSize = _write(fd, buffer, size);
+    const long effectiveSize = fwrite(buffer, 1, size, file);
 
     if (effectiveSize != size) {
         throw IOException(String::Format(L"Could only write {0} of {1} requested bytes", std::to_wstring(effectiveSize), std::to_wstring(size)));

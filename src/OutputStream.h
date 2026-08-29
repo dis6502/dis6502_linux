@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Encoding.h"
+#include "FileIO.h"
 #include "Syntax.h"
 #include <gsl/gsl>
-#include "Encoding.h"
 
 class OutputStream {
 public:
@@ -15,8 +16,8 @@ public:
 
 private:
     wstring filePath;
-    int fd;
+    FILE* file;
     Encoding encoding;
 
-    OutputStream(wstring_view filePath, int fd, Encoding encoding);
+    OutputStream(wstring_view filePath, FILE* file, Encoding encoding);
 };

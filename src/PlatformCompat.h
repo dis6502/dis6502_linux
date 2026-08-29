@@ -176,72 +176,9 @@ int _wcsicmp(const wchar_t* a, const wchar_t* b);
 using HFONT = void*;
 constexpr HFONT NULL_HFONT_COMPAT = nullptr;
 
-// ---- low-level POSIX file-descriptor I/O, replacing <io.h>'s
-// _wsopen/_close/_write and their Windows-only flag names. There's no
-// text/binary distinction or file-sharing-mode concept on POSIX, so
-// those flags become no-ops. ----
-#include <fcntl.h>
-#include <unistd.h>
-
-constexpr int _O_CREAT = O_CREAT;
-constexpr int _O_TRUNC = O_TRUNC;
-constexpr int _O_WRONLY = O_WRONLY;
-constexpr int _O_TEXT = 0;
-constexpr int _O_BINARY = 0;
-constexpr int _O_U8TEXT = 0;
-constexpr int _SH_DENYNO = 0;   // no POSIX equivalent needed for this single-process tool
-constexpr int _S_IWRITE = 0644; // used here as the create-mode, not a share flag
-
-inline int _wsopen(const wchar_t* path, int oflag, int /*shflag*/, int pmode) {
-    std::string narrowPath = WStringToUtf8Compat(path);
-    return open(narrowPath.c_str(), oflag, pmode);
-}
-
-inline int _close(int fd) { return close(fd); }
-inline long _write(int fd, const void* buffer, unsigned int count) {
-    return static_cast<long>(write(fd, buffer, count));
-}
-
-// ---- wide-char file I/O (Windows CRT extensions) ----
-using errno_t = int;
-
-inline FILE* _wfopen(const wchar_t* path, const wchar_t* mode) {
-    // Convert both the path and mode from wide chars to UTF-8/narrow,
-    // since POSIX fopen() takes narrow paths (glibc treats them as
-    // whatever the current locale/filesystem encoding is, typically UTF-8).
-    std::string narrowPath = WStringToUtf8Compat(path);
-    std::string narrowMode(mode, mode + wcslen(mode)); // mode is always ASCII ("r", "rb", "w+", etc.)
-    return fopen(narrowPath.c_str(), narrowMode.c_str());
-}
-
-inline errno_t _get_errno(errno_t* out) { *out = errno; return 0; }
-
-inline wchar_t* _wcserror(errno_t errnum) {
-    static thread_local wchar_t buf[256];
-    const char* msg = strerror(errnum);
-    size_t n = std::mbstowcs(buf, msg, 255);
-    buf[n == static_cast<size_t>(-1) ? 0 : n] = L'\0';
-    return buf;
-}
-
 // ---- OutputDebugString: just log to stderr on Linux ----
 inline void OutputDebugString(const wchar_t* text) {
     std::fwprintf(stderr, L"%ls", text);
-}
-
-// ---- _memccpy: copy from src to dest until character c is copied,
-// or n bytes have been copied, matching MSVC's _memccpy semantics.
-// Returns pointer just past the copied c in dest, or NULL if not found. ----
-inline void* _memccpy(void* dest, const void* src, int c, size_t n) {
-    unsigned char* d = static_cast<unsigned char*>(dest);
-    const unsigned char* s = static_cast<const unsigned char*>(src);
-    for (size_t i = 0; i < n; i++) {
-        d[i] = s[i];
-        if (s[i] == static_cast<unsigned char>(c)) {
-            return d + i + 1;
-        }
-    }
-    return nullptr;
 }
 
 // ---- strncpy_s: MSVC "secure CRT" string copy. Two overloads are used
