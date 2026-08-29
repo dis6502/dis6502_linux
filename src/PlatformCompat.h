@@ -176,11 +176,6 @@ int _wcsicmp(const wchar_t* a, const wchar_t* b);
 using HFONT = void*;
 constexpr HFONT NULL_HFONT_COMPAT = nullptr;
 
-// ---- OutputDebugString: just log to stderr on Linux ----
-inline void OutputDebugString(const wchar_t* text) {
-    std::fwprintf(stderr, L"%ls", text);
-}
-
 // ---- strncpy_s: MSVC "secure CRT" string copy. Two overloads are used
 // in this codebase: the fixed-array-destination template form, and the
 // explicit (dest, destSize, src, count) form with _TRUNCATE. ----
