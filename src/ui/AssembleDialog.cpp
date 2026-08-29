@@ -1,13 +1,13 @@
 #include "Application.h"
-#include "Equate.h"
+#include "AssembleDialog.h"
 #include "Character.h"
-#include "Workspace.h"
+#include "EditControl.h"
+#include "Equate.h"
+#include "InstructionSet.h"
 #include "Memory.h"
 #include "MemoryInspectorControl.h"
-#include "InstructionSet.h"
-#include "EditControl.h"
-#include "AssembleDialog.h"
-#include "String.h"
+#include "Strings.h"
+#include "Workspace.h"
 
 extern std::unique_ptr<Workspace> g_Workspace;
 

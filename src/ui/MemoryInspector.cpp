@@ -6,11 +6,11 @@
 #include <algorithm>
 
 #include "Application.h"
-#include "systems/ComputerSystem.h"
 #include "DatatypeUtility.h"
 #include "Dialog.h"
 #include "FileHeader.h"
 #include "FindStringDialog.h"
+#include "InstructionSet.h"
 #include "LowHighByteDialog.h"
 #include "Main.h"
 #include "MainDisassembly.h"
@@ -21,11 +21,11 @@
 #include "MemoryInspectorSelection.h"
 #include "MemoryInspectorStack.h"
 #include "MemoryInspectorWindow.h"
-#include "InstructionSet.h"
 #include "Profile.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SelectSpritesDialog.h"
+#include "systems/ComputerSystem.h"
 #include "Workspace.h"
 
 #include "MemoryInspector.h"

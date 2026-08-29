@@ -1,13 +1,14 @@
 #include "EquateRangeDialog.h"
 #include "Application.h"
-#include "DatatypeUtility.h"
-#include "String.h"
-#include "EquateList.h"
-#include "MessageBoxDialog.h"
-#include "ComboBox.h"
-#include "ListBox.h"
-#include "EditControl.h"
 #include "Button.h"
+#include "ComboBox.h"
+#include "DatatypeUtility.h"
+#include "EditControl.h"
+#include "EquateList.h"
+#include "EquateRangeDialog.h"
+#include "ListBox.h"
+#include "MessageBoxDialog.h"
+#include "Strings.h"
 
 constexpr auto ITEM_FORMAT = L"%s ($%04hX)";
 

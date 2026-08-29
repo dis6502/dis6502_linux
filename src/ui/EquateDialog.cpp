@@ -1,11 +1,11 @@
-#include "EquateDialog.h"
 #include "Application.h"
-#include "String.h"
-#include "Equate.h"
-#include "EquateList.h"
-#include "EditControl.h"
-#include "ListBox.h"
 #include "Button.h"
+#include "EditControl.h"
+#include "Equate.h"
+#include "EquateDialog.h"
+#include "EquateList.h"
+#include "ListBox.h"
+#include "Strings.h"
 
 extern std::unique_ptr<Application> g_Application;
 

@@ -17,7 +17,7 @@
 #include "MainWindow.h"
 #include "MemoryInspector.h"
 #include "MemoryInspectorSelection.h"
-#include "resource.h"
+#include "Resource.h"
 
 #include "Segment.h"
 #include "SegmentList.h"

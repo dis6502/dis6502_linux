@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Syntax.h"
+#include "UI.h"
 
 #include "Memory.h"
 #include "MemoryType.h"

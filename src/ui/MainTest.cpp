@@ -14,7 +14,7 @@
 #include "Profile.h"
 #include "SegmentList.h"
 #include "SegmentTest.h"
-#include "String.h"
+#include "Strings.h"
 #include "systems/atari800/AtariDiskImageTest.h"
 #include "systems/ComputerSystemTest.h"
 #include "systems/ComputerSystemType.h"

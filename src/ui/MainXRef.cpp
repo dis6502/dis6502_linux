@@ -1,9 +1,9 @@
 #include "MainDisassembly.h"
-#include "MainXRef.h"
-#include "XRefListWindow.h"
 #include "MainWindow.h"
-#include "String.h"
+#include "MainXRef.h"
+#include "Strings.h"
 #include "Text.h"
+#include "XRefListWindow.h"
 
 MainXRef::MainXRef(Main& main) : MainController(main) {
 

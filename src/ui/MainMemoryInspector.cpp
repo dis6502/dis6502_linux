@@ -12,7 +12,7 @@
 #include "MemoryInspectorFindStringDialog.h"
 #include "MemoryInspectorSelection.h"
 #include "MemoryInspectorWindow.h"
-#include "resource.h"
+#include "Resource.h"
 #include "Segment.h"
 
 
@@ -234,7 +234,7 @@ void MainMemoryInspector::FindNext() {
 
 void MainMemoryInspector::SaveWithoutHeader(const Window& parentWindow) {
 
-    auto result = ::g_FileSystemLogic->GetSaveFileName(parentWindow, L"", FileType::RAW_FILE);
+    auto result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, L"", FileType::RAW_FILE);
 
     if (result.success) {
         if (auto fp = FileIO::OpenFile(result.filePath, L"w+b"); fp) { // TODO Use OutputStream
@@ -248,7 +248,7 @@ void MainMemoryInspector::SaveWithoutHeader(const Window& parentWindow) {
 }
 
 void MainMemoryInspector::SaveWithHeader(const Window& parentWindow) {
-    auto result = ::g_FileSystemLogic->GetSaveFileName(parentWindow, L"", FileType::EXECUTABLE_FILE);
+    auto result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, L"", FileType::EXECUTABLE_FILE);
 
     if (result.success) {
         auto fp = FileIO::OpenFile(result.filePath, L"w+b"); // TODO Use OutputStream

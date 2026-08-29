@@ -1,12 +1,9 @@
 #include <algorithm>
 
 #include "Application.h"
-#include "systems/atari800/AtariDOS.h"				// TODO: Move DOS/Disk handling and merge to ComputerSystem
-#include "systems/atari800/DiskImageFileInputStream.h"  // TODO: Move DOS/Disk handling and merge to ComputerSystem
-#include "systems/ComputerSystem.h"
-#include "systems/ComputerSystemType.h"
 #include "ByteSequence.h"
 #include "DisassemblyResultFile.h"
+#include "DisassemblyResultWriter.h"
 #include "DiskImage.h"
 #include "DiskImageExecutableFileDialog.h"
 #include "DiskImageSectorsDialog.h"
@@ -16,17 +13,20 @@
 #include "FileType.h"
 #include "Main.h"
 #include "MainWindow.h"
+#include "Memory.h"
 #include "MemoryInspector.h"
 #include "MRUController.h"
 #include "RawFileDialog.h"
 #include "Segment.h"
-#include "Memory.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
+#include "systems/atari800/AtariDOS.h"				// TODO: Move DOS/Disk handling and merge to ComputerSystem
+#include "systems/atari800/DiskImageFileInputStream.h"  // TODO: Move DOS/Disk handling and merge to ComputerSystem
+#include "systems/ComputerSystem.h"
+#include "systems/ComputerSystemType.h"
 #include "Window.h"
 #include "Workspace.h"
 #include "WorkspaceLogic.h"
-#include "DisassemblyResultWriter.h"
 
 #include "MainFile.h"
 
@@ -227,7 +227,7 @@ void MainFile::OpenDiskImageSectors(const Window& parentWindow, wstring_view fil
 void MainFile::OpenFileWithDialog(const Window& parentWindow, const FileType fileType, bool add) {
     auto filePath = mruController->GetLastFilePath(fileType);
 
-    auto result = ::g_FileSystemLogic->GetOpenFileName(parentWindow, filePath, fileType);
+    auto result = ::g_FileSystemLogic->GetOpenFileName_(parentWindow, filePath, fileType);
 
     if (result.success) {
         mruController->AddFile(result.filePath, fileType);
@@ -293,7 +293,7 @@ void MainFile::ReadFile(FileType fileType, wstring_view filePath) {
 bool MainFile::SaveWorkspaceFile(const Window& parentWindow, bool bSaveAs) {
     auto filePath = ::g_Workspace->GetFilePath();
     if (filePath.empty() || bSaveAs) {
-        FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName(parentWindow, filePath, FileType::WORKSPACE_FILE);
+        FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, filePath, FileType::WORKSPACE_FILE);
 
         if (!result.success) {
             return false;
@@ -308,7 +308,7 @@ bool MainFile::SaveWorkspaceFile(const Window& parentWindow, bool bSaveAs) {
 }
 
 void MainFile::SaveDisassemblyFiles(const Window& parentWindow) {
-    const FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName(parentWindow, L"", FileType::DISASSEMBLY_FILE);
+    const FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, L"", FileType::DISASSEMBLY_FILE);
 
     if (result.success) {
         DisassemblyResultFile disassemblyResultFile;

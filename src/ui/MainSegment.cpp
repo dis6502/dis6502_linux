@@ -1,4 +1,3 @@
-#include "systems/ComputerSystem.h"
 #include "Application.h"
 #include "FileSystemLogic.h"
 #include "FileType.h"
@@ -6,12 +5,13 @@
 #include "MainWindow.h"
 #include "MemoryInspector.h"
 #include "OutputStream.h"
-#include "resource.h"
+#include "Resource.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListPopupMenu.h"
 #include "SegmentListWindow.h"
 #include "SegmentPropertiesDialog.h"
+#include "systems/ComputerSystem.h"
 #include "Workspace.h"
 
 #include "MainSegment.h"
@@ -185,7 +185,7 @@ void MainSegment::RButtonDownProc() {
 void MainSegment::SaveSegment(SEGMENT_INDEX segmentIndex, bool writeHeader) {
     const auto fileType = writeHeader ? FileType::EXECUTABLE_FILE : FileType::RAW_FILE;
 
-    const auto result = ::g_FileSystemLogic->GetSaveFileName(*segmentListWindow, L"", fileType);
+    const auto result = ::g_FileSystemLogic->GetSaveFileName_(*segmentListWindow, L"", fileType);
 
     if (result.success) {
         OutputStream* outputStream = nullptr;
@@ -210,7 +210,7 @@ void MainSegment::SaveSegment(SEGMENT_INDEX segmentIndex, bool writeHeader) {
 
 
 void MainSegment::SaveAllSegments(const SegmentList& segmentList) {
-    FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName(*segmentListWindow, L"", FileType::EXECUTABLE_FILE);
+    FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName_(*segmentListWindow, L"", FileType::EXECUTABLE_FILE);
 
     if (result.success) {
         OutputStream* outputStream = nullptr;

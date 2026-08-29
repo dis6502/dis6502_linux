@@ -1,11 +1,11 @@
 #include "Application.h"
 
-#include "Text.h"
-#include "FindStringDialog.h"
-#include "EditControl.h"
-#include "MessageBoxDialog.h"
-#include "String.h"
 #include "DatatypeUtility.h"
+#include "EditControl.h"
+#include "FindStringDialog.h"
+#include "MessageBoxDialog.h"
+#include "Strings.h"
+#include "Text.h"
 
 FindStringDialog::FindStringDialog(int nMaxChars) {
     this->nMaxChars = nMaxChars;
