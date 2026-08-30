@@ -153,7 +153,7 @@ void Read(InputStream& inputStream, void* buffer, size_t size, FileIO::FILE_SIZE
 */
 bool Atari800::LoadFixUps(Segment& segment, InputStream& inputStream, FileIO::FILE_SIZE& bytesRemaining) const {
     byte bByte = 0;
-    int offset = 0;
+    Memory::offset offset = 0;
 
     constexpr Memory::size bufferSize = 8192;
     ByteArray buffer(bufferSize); // unknown size so allocate enough for fix-up data
