@@ -30,12 +30,13 @@ FileIO::FILE_SIZE DiskImageFileInputStream::GetFileSize() const {
 
 
 void DiskImageFileInputStream::Read(void* buffer, stream_size size) {
+    static constexpr stream_size max_size = std::numeric_limits<size_t>::max();
     if (buffer == nullptr) {
         throw std::runtime_error("Buffer must not be nullptr");
     }
 
-    if (size > (stream_size)std::numeric_limits<size_t>::max()) {
-        throw IOException(L"Specified file size exceeds the memory limit");
+    if (size > max_size) {
+        throw IOException(String::Format(L"Specified file size {0} exceeds the memory limit of {1} bytes.", std::to_wstring(size), std::to_wstring(max_size)));
     }
 
     const auto endPosition = position + size;
