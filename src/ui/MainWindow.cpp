@@ -25,10 +25,10 @@ void MainWindow::RegisterClassFor(HINSTANCE hInstance, WNDPROC lpfnWndProc) {
     wc.hCursor = LoadCursor(NULL_HINSTANCE, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wc.lpszMenuName = L"MAIN_MENU";
-    wc.lpszClassName = MainWindow::CLASS_NAME;
+    wc.lpszClassName = CLASS_NAME;
 
     if (!RegisterClass(&wc)) {
-        safeExit();
+       safeExit("Cannot register class %s", CLASS_NAME);
     }
 }
 

@@ -254,7 +254,7 @@ void MainTest::Execute(TestMode testMode) {
     }
     catch (const std::exception& ex) {
         Assert::Log(ex);
-        safeExit();
+        safeExit("MainTest::Execute");
     }
 
     switch (testMode) {

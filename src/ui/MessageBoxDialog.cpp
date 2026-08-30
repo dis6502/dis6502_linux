@@ -1,9 +1,6 @@
 #include "MessageBoxDialog.h"
 #include "UI.h"
 
-
-// std::fwprintf(stderr, L"[dialog] %ls: %ls\n", wstring(title).c_str(), wstring(message).c_str());
-
 MessageBoxDialog::ButtonID  MessageBoxDialog::Show(Window* parentWindow, wstring_view title, wstring_view message, ButtonType buttonType) {
 #ifdef _WIN32
     auto hWnd = parentWindow != nullptr ? parentWindow->GetHWnd() : NULL_HWND;

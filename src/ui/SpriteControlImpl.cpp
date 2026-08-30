@@ -766,6 +766,6 @@ __declspec(dllexport) void _cdecl  SpriteControlImpl::RegisterClassFor(HINSTANCE
     };
 
     if (!RegisterClass(&wc)) {
-        safeExit();
+        safeExit("Cannot register class %s", CLASS_NAME);
     };
 }

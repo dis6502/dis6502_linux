@@ -107,7 +107,7 @@ __declspec(dllexport) void _cdecl  DisassemblyControlImpl::RegisterClassFor(HINS
     };
 
     if (!RegisterClass(&wc)) {
-        safeExit();
+       safeExit("Cannot register class %s", CLASS_NAME);
     };
 }
 

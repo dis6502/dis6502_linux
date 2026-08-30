@@ -39,8 +39,7 @@ string Console::ReadLine() {
     auto hIn = GetStdHandle(STD_HANDLE);
 
     if (hIn == INVALID_HANDLE_VALUE) {
-        wprintf(L"Invalid handle value.\n");
-        safeExit();
+        safeExit(L"Console::ReadLine(): Invalid handle value.");
     }
 
     if (ReadConsole(hIn, szBuffer, sizeof(szBuffer), &dwRead, NULL)) {

@@ -120,5 +120,5 @@ bool FindStringDialog::HexStringToAsciiString(Dialog& dialog) {
 void FindStringDialog::ShowStringNotFoundMessage(Window* parentWindow, wstring_view text) {
     auto title = Text::Get(IDS_FIND_STRING_DIALOG_TITLE);
     auto message = Text::Format(IDS_FIND_STRING_DIALOG_STRING_NOT_FOUND_MESSAGE, text);
-    MessageBoxDialog::Show(parentWindow, title, message, MB_OK | MB_ICONEXCLAMATION);
+    MessageBoxDialog::ShowAlert(parentWindow, title, message);
 }

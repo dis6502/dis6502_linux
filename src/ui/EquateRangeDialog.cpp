@@ -99,7 +99,7 @@ VOID EquateRangeDialog::CreateControls() {
 
 void EquateRangeDialog::SendErrorMessage(LPCWSTR szMessage) {
     dialogVisible = true;
-    MessageBoxDialog::Show(this, L"Define address range", szMessage, MB_OK | MB_ICONEXCLAMATION);
+    MessageBoxDialog::ShowAlert(this, L"Define address range", szMessage);
     dialogVisible = false;
 }
 

@@ -46,9 +46,7 @@ void Window::CreateWindowControl(wstring_view className, wstring_view windowName
             L"Actual parameters are: dwStyle=%lu hParentWnd=%p hMenu=%p  ::g_Application->GetHInstance()=%p\n",
             lastError, wstring(windowName).c_str(), wstring(className).c_str(), dwStyle, hParentWnd, hMenu, ::g_Application->GetInstanceHandle());
 
-        MessageBoxDialog::ShowAlert(nullptr, L"Error in CreateControl", szMessage);
-
-        safeExitWithExitCode(lastError);
+        safeExitWithExitCode(String::Format(L"Error in CreateWindowControl: %s", szMessage), lastError);
     }
 
     InitControl(className, hWnd);
