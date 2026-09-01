@@ -1,7 +1,7 @@
 #include "Console.h"
 
-#include "UI.h"
 #include "Debug.h"
+#include "UI.h"
 
 Console::Console() {
     allocated = false;
@@ -39,7 +39,7 @@ string Console::ReadLine() {
     auto hIn = GetStdHandle(STD_HANDLE);
 
     if (hIn == INVALID_HANDLE_VALUE) {
-        safeExit(L"Console::ReadLine(): Invalid handle value.");
+        safeExit("Console::ReadLine(): Invalid handle value.");
     }
 
     if (ReadConsole(hIn, szBuffer, sizeof(szBuffer), &dwRead, NULL)) {

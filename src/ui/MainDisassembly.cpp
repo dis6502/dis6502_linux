@@ -2,35 +2,32 @@
 #include "CommentDialog.h"
 #include "Dialog.h"
 #include "Disassembly.h"
+#include "DisassemblyFindStringDialog.h"
 #include "DisassemblyLine.h" 
 #include "DisassemblyPopupMenu.h"
 #include "DisassemblyProgressDialog.h"
 #include "DisassemblyProgressMonitor.h"
 #include "DisassemblyResult.h"
 #include "DisassemblyWriter.h"
-
-#include "DisassemblyFindStringDialog.h"
+#include "EquateListController.h"
 #include "FindStringDialog.h"
-#include "EquateListLogic.h"
 #include "LowHighByteDialog.h"
 #include "Main.h"
+#include "MainDisassembly.h"
 #include "MainWindow.h"
 #include "MemoryInspector.h"
 #include "MemoryInspectorSelection.h"
 #include "Resource.h"
-
 #include "Segment.h"
 #include "SegmentList.h"
-#include "Workspace.h"
 #include "SegmentListWindow.h"
-
-#include "MainDisassembly.h"
+#include "Workspace.h"
 
 extern HWND hDisWnd;
 
 extern std::unique_ptr<Workspace> g_Workspace;
 extern std::unique_ptr<MemoryInspector> g_MemoryInspector; // TODO Make explicit references
-extern std::unique_ptr<EquateListLogic> g_EquateListLogic;
+extern std::unique_ptr<EquateListController> g_EquateListController;
 
 MainDisassembly::MainDisassembly(Main& main) : MainController(main) {
     disassemblyControl = nullptr;
@@ -275,25 +272,25 @@ void MainDisassembly::FindRef2() {
 void MainDisassembly::RenameDef() {
     auto labelDefinition = disassemblyControl->GetLabelDefinition();
     auto address = Equate::ExtractAddress(labelDefinition);
-    ::g_EquateListLogic->Edit(*::g_Workspace->GetUserEquateList(), TRUE, address);
+    ::g_EquateListController->Edit(*::g_Workspace->GetUserEquateList(), TRUE, address);
 }
 
 void MainDisassembly::RenameRef() {
     auto labelReference = disassemblyControl->GetLabelReference();
     auto address = Equate::ExtractAddress(labelReference);
-    ::g_EquateListLogic->Edit(*::g_Workspace->GetUserEquateList(), TRUE, address);
+    ::g_EquateListController->Edit(*::g_Workspace->GetUserEquateList(), TRUE, address);
 }
 
 void MainDisassembly::AddrRangeDef() {
     auto labelDefinition = disassemblyControl->GetLabelDefinition();
     auto address = Equate::ExtractAddress(labelDefinition);
-    ::g_EquateListLogic->DefineUserAddressRange(*::g_Workspace, address);
+    ::g_EquateListController->DefineUserAddressRange(*::g_Workspace, address);
 }
 
 void MainDisassembly::AddrRangeRef() {
     auto labelReference = disassemblyControl->GetLabelReference();
     auto address = Equate::ExtractAddress(labelReference);
-    ::g_EquateListLogic->DefineUserAddressRange(*::g_Workspace, address);
+    ::g_EquateListController->DefineUserAddressRange(*::g_Workspace, address);
 }
 
 

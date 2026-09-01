@@ -1,3 +1,4 @@
+
 #include "Application.h"
 #include "CommonTest.h"
 #include "Disassembly.h"
@@ -120,21 +121,19 @@ wstring MainTest::GetUnitOutFilePath(wstring_view fileName) {
 
 void MainTest::Setup() {
     // Logics
-    fileSystemLogic = std::make_unique<FileSystemLogic>();
     computerSystemFactory = std::make_unique<ComputerSystemFactory>();
     defaultFoldersLogic = std::make_unique<DefaultFoldersLogic>();
     profileLogic = std::make_unique<ProfileLogic>();
-    workspaceLogic = std::make_unique<WorkspaceLogic>();
-    workspace = std::make_unique<Workspace>(*computerSystemFactory);
     equateListLogic = std::make_unique<EquateListLogic>();
+    workspaceLogic = std::make_unique<WorkspaceLogic>(*equateListLogic);
+    workspace = std::make_unique<Workspace>(*computerSystemFactory);
 }
 
 void MainTest::Teardown() {
-    equateListLogic.reset();
     workspace.reset();
     workspaceLogic.reset();
+    equateListLogic.reset();
     profileLogic.reset();
-    fileSystemLogic.reset();
     defaultFoldersLogic.reset();
 }
 
@@ -152,7 +151,7 @@ void MainTest::TestEquate() {
     auto filePath = GetUnitInFilePath(L"DISK_NOT_FOUND.atr");
     Setup();
     EquateTest::TestFiles(filePath);
-    equateListLogic->Clear(*workspace->GetUserEquateList());
+    workspace->GetUserEquateList()->Clear();
     Teardown();
 }
 
@@ -363,7 +362,7 @@ bool MainTest::ExecuteUnitTestItem(wstring_view unitName, FileType fileType, wst
             return false;
         }
     }
-    equateListLogic->LoadSystemEquates(*workspace);
+    workspaceLogic->LoadSystemEquates(*workspace);
 
     auto profile = workspace->GetProfile();
     workspace->GetProfile()->omitUnreferencedSystemLabels = false; // TODO Make them work instead

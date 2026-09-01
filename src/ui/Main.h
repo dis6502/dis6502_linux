@@ -2,29 +2,24 @@
 
 #include "Syntax.h"
 #include "UI.h"
-
-#include "SegmentTypes.h"
 #include "WorkspaceChangedListener.h"
-
 enum class FileType;
-
 #include "systems/ComputerSystemFactory.h"
 #include "DefaultFoldersLogic.h"
 #include "DefaultFolders.h"
 #include "ProfileLogic.h"
+#include "ProfilesController.h"
 #include "WorkspaceLogic.h"
 class Workspace;
-
 #include "MRUController.h"
 #include "Layout.h"
-
 #include "MainWindow.h"
 #include "MainMenu.h"
 #include "MainFile.h"
+#include "EquateListLogic.h"
 #include "MainSegment.h"
 #include "MainMemoryInspector.h"
 #include "MainDisassembly.h"
-#include "DisassemblyProgressMonitor.h"
 #include "MainXRef.h"
 
 
@@ -73,6 +68,7 @@ private:
     std::unique_ptr<ComputerSystemFactory> computerSystemFactory = nullptr;
     std::unique_ptr<DefaultFoldersLogic> defaultFoldersLogic = nullptr;
     std::unique_ptr<ProfileLogic> profileLogic = nullptr;
+    std::unique_ptr<EquateListLogic> equateListLogic = nullptr;
     std::unique_ptr<WorkspaceLogic> workspaceLogic = nullptr;
 
     std::unique_ptr<MRUController> mruController = nullptr;
@@ -80,6 +76,7 @@ private:
     HACCEL hAccelerators = NULL_HACCEL;
 
     // Controllers.
+    std::unique_ptr<ProfilesController> profilesController = nullptr;
     std::unique_ptr<MainMenu> mainMenu_ = nullptr;;
     std::unique_ptr<MainFile> mainFile = nullptr;
     std::unique_ptr<MainSegment> mainSegment = nullptr;;
@@ -96,7 +93,7 @@ private:
 
     void ClearWorkspace();
 
-    void RedrawMainWindow();
+    void RedrawMainWindow() const;
     void PaintMainWindow();
 
     void CreateControls();

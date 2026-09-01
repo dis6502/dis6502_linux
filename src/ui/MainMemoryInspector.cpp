@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "AssembleDialog.h"
-#include "FileSystemLogic.h"
+#include "FileDialogs.h"
 #include "FileType.h"
 #include "FindStringDialog.h"
 #include "Main.h"
@@ -19,7 +19,7 @@
 #include "MainMemoryInspector.h"
 
 extern std::unique_ptr<Main> g_Main;
-extern std::unique_ptr<FileSystemLogic> g_FileSystemLogic;
+extern std::unique_ptr<FileDialogs> g_FileDialogs;
 extern std::unique_ptr<MemoryInspector> g_MemoryInspector;
 
 MainMemoryInspector::MainMemoryInspector(Main& main) : MainController(main) {
@@ -28,25 +28,25 @@ MainMemoryInspector::MainMemoryInspector(Main& main) : MainController(main) {
 
 long MainMemoryInspector::Proc(HWND hWnd, WPARAM wParam) {
     switch (HIWORD(wParam)) {
-    // User has changed the selection.
+        // User has changed the selection.
     case static_cast<unsigned short>(MemoryInspectorNotification::SELECTION_CHANGED): {
         ::g_MemoryInspector->SelectionChanged();
         break;
     }
 
-    // User has right clicked in the window.
+                                                                                    // User has right clicked in the window.
     case static_cast<unsigned short>(MemoryInspectorNotification::RBUTTONDOWN): {
         ::g_MemoryInspector->DrawMenu();
         break;
     }
 
-    // User has left double clicked in the window.
+                                                                              // User has left double clicked in the window.
     case static_cast<unsigned short>(MemoryInspectorNotification::LBUTTONDBLCLK): {
         Edit();
         break;
     }
 
-    // User has quit the edit mode.
+                                                                                // User has quit the edit mode.
     case static_cast<unsigned short>(MemoryInspectorNotification::QUIT_EDIT_MODE): {
         QuitEditMode();
         break;
@@ -234,7 +234,7 @@ void MainMemoryInspector::FindNext() {
 
 void MainMemoryInspector::SaveWithoutHeader(const Window& parentWindow) {
 
-    auto result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, L"", FileType::RAW_FILE);
+    auto result = ::g_FileDialogs->ChooseSaveFileName(parentWindow, L"", FileType::RAW_FILE);
 
     if (result.success) {
         if (auto fp = FileIO::OpenFile(result.filePath, L"w+b"); fp) { // TODO Use OutputStream
@@ -248,7 +248,7 @@ void MainMemoryInspector::SaveWithoutHeader(const Window& parentWindow) {
 }
 
 void MainMemoryInspector::SaveWithHeader(const Window& parentWindow) {
-    auto result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, L"", FileType::EXECUTABLE_FILE);
+    auto result = ::g_FileDialogs->ChooseSaveFileName(parentWindow, L"", FileType::EXECUTABLE_FILE);
 
     if (result.success) {
         auto fp = FileIO::OpenFile(result.filePath, L"w+b"); // TODO Use OutputStream

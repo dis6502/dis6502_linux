@@ -2,12 +2,12 @@
 #include "DisassemblyWindow.h"
 #include "Layout.h"
 #include "LogListWindow.h"
+#include "MainWindow.h"
 #include "MainWindowMenu.h"
 #include "MemoryInspectorWindow.h"
 #include "SegmentListWindow.h"
+#include "Strings.h"
 #include "XRefListWindow.h"
-
-#include "MainWindow.h"
 
 
 void MainWindow::RegisterClassFor(HINSTANCE hInstance, WNDPROC lpfnWndProc) {
@@ -28,7 +28,7 @@ void MainWindow::RegisterClassFor(HINSTANCE hInstance, WNDPROC lpfnWndProc) {
     wc.lpszClassName = CLASS_NAME;
 
     if (!RegisterClass(&wc)) {
-       safeExit("Cannot register class %s", CLASS_NAME);
+        safeExit(String::wstring_to_ansi(String::Format(L"Cannot register class %s", CLASS_NAME)).c_str());
     }
 }
 

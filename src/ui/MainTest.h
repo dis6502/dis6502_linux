@@ -2,15 +2,16 @@
 
 #include "Syntax.h"
 
+#include "Console.h"
 #include "DefaultFoldersLogic.h"
-#include "systems/ComputerSystemFactory.h"
-#include "ProfileLogic.h"
-#include "FileSystemLogic.h"
 #include "EquateListLogic.h"
+#include "FileDialogs.h"
+#include "ProfileLogic.h"
+
+#include "systems/ComputerSystemFactory.h"
+#include "TestUnit.h"
 #include "Workspace.h"
 #include "WorkspaceLogic.h"
-#include "Console.h"
-#include "TestUnit.h"
 
 enum class FileType;
 enum class ComputerSystemType;
@@ -41,7 +42,6 @@ private:
     TestUnit testUnit;
 
     // See Setup()
-    std::unique_ptr<FileSystemLogic> fileSystemLogic = nullptr;
     std::unique_ptr<ComputerSystemFactory> computerSystemFactory = nullptr;
     std::unique_ptr<DefaultFoldersLogic> defaultFoldersLogic = nullptr;
     std::unique_ptr<ProfileLogic> profileLogic = nullptr;

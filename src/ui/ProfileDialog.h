@@ -3,17 +3,17 @@
 #include "Syntax.h"
 
 #include "Dialog.h"
-#include <vector>
 #include "Encoding.h"
+#include <vector>
 
 class ComputerSystemTypeInfo;
 class Profile;
-class ProfileLogic;
+class ProfilesController;
 
 
 class ProfileDialog : public Dialog {
 public:
-    ProfileDialog(Window& parentWindow, ProfileLogic& profileLogic);
+    ProfileDialog(Window& parentWindow, ProfilesController& profilesController);
 
     bool Show(Profile& profile, const ComputerSystemTypeInfo& computerSystemTypeInfo);
 
@@ -21,7 +21,7 @@ protected:
     bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 private:
-    ProfileLogic* profileLogic;
+    ProfilesController* profilesController;
     Profile* profile = nullptr;
     const ComputerSystemTypeInfo* computerSystemTypeInfo = nullptr;
     std::vector<Encoding> outputEncodings = { Encoding::ASCII, Encoding::ATASCII, Encoding::UTF8 };

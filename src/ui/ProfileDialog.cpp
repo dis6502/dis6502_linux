@@ -1,17 +1,15 @@
 #include "Application.h"
-#include "systems/ComputerSystemType.h"
-#include "Profile.h"
-#include "ProfileLogic.h"
-
-#include "ProfileDialog.h"
-#include "EditControl.h"
 #include "CheckBox.h"
 #include "ComboBox.h"
-#include "RadionButtonGroup.h"
+#include "EditControl.h"
+#include "Profile.h"
+#include "ProfileDialog.h" 
+#include "ProfilesController.h" 
+#include "systems/ComputerSystemType.h"
+#include "systems/ComputerSystemType.h"
 
-
-ProfileDialog::ProfileDialog(Window& parentWindow, ProfileLogic& profileLogic) : Dialog(parentWindow, L"PROFILEBOX") {
-    this->profileLogic = &profileLogic;
+ProfileDialog::ProfileDialog(Window& parentWindow, ProfilesController& profilesController) : Dialog(parentWindow, L"PROFILEBOX") {
+    this->profilesController = &profilesController;
 }
 
 bool ProfileDialog::Show(Profile& profile, const ComputerSystemTypeInfo& computerSystemTypeInfo) {
@@ -85,7 +83,7 @@ void ProfileDialog::SetDialogValues(const Profile& profile) {
     GetEditControl(IDC_DSSYNTAX).SetText(profile.directiveDS);
 
     // Section "Disassembly Listing".
-    GetComboBox(IDC_OUTPUT_ENCODING).SetSelectedIndex(EncodingFactory::GetIndex(profile.outputEncoding, outputEncodings,0));
+    GetComboBox(IDC_OUTPUT_ENCODING).SetSelectedIndex(EncodingFactory::GetIndex(profile.outputEncoding, outputEncodings, 0));
     GetCheckBox(IDC_REMOVEUNUSEDLABELS).SetChecked(profile.omitUnreferencedSystemLabels);
     const bool bIncludeAllowed = profile.directiveINCLUDEAllowed;
     GetCheckBox(IDC_INCLUDEALLOWED).SetChecked(bIncludeAllowed);
@@ -182,7 +180,7 @@ bool ProfileDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lPa
         case ID_LOAD_PROFILE: {
             Profile tempProfile;
 
-            if (profileLogic->Load(tempProfile, *computerSystemTypeInfo, *this)) {
+            if (profilesController->Load(tempProfile, *computerSystemTypeInfo, *this)) {
                 SetDialogValues(tempProfile);
             }
 
@@ -193,7 +191,7 @@ bool ProfileDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lPa
             Profile tempProfile;
 
             GetDialogValues(tempProfile);
-            profileLogic->Save(tempProfile, *this);
+            profilesController->Save(tempProfile, *this);
 
             return true;
         }

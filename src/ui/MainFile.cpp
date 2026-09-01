@@ -7,9 +7,9 @@
 #include "DiskImage.h"
 #include "DiskImageExecutableFileDialog.h"
 #include "DiskImageSectorsDialog.h"
+#include "FileDialogs.h"
 #include "FileInputStream.h"
 #include "FileIO.h"
-#include "FileSystemLogic.h"
 #include "FileType.h"
 #include "Main.h"
 #include "MainWindow.h"
@@ -36,7 +36,7 @@ extern wstring diskPath;
 extern std::unique_ptr<Application> g_Application;
 extern std::unique_ptr<Workspace> g_Workspace;
 
-extern std::unique_ptr<FileSystemLogic> g_FileSystemLogic;
+extern std::unique_ptr<FileDialogs> g_FileDialogs;
 
 
 MainFile::MainFile(Main& main, MRUController& mruController, WorkspaceLogic& workspaceLogic) : MainController(main), mruController(&mruController), workspaceLogic(&workspaceLogic)
@@ -227,7 +227,7 @@ void MainFile::OpenDiskImageSectors(const Window& parentWindow, wstring_view fil
 void MainFile::OpenFileWithDialog(const Window& parentWindow, const FileType fileType, bool add) {
     auto filePath = mruController->GetLastFilePath(fileType);
 
-    auto result = ::g_FileSystemLogic->GetOpenFileName_(parentWindow, filePath, fileType);
+    auto result = ::g_FileDialogs->ChooseOpenFileName(parentWindow, filePath, fileType);
 
     if (result.success) {
         mruController->AddFile(result.filePath, fileType);
@@ -293,7 +293,7 @@ void MainFile::ReadFile(FileType fileType, wstring_view filePath) {
 bool MainFile::SaveWorkspaceFile(const Window& parentWindow, bool bSaveAs) {
     auto filePath = ::g_Workspace->GetFilePath();
     if (filePath.empty() || bSaveAs) {
-        FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, filePath, FileType::WORKSPACE_FILE);
+        FileDialogResult result = ::g_FileDialogs->ChooseSaveFileName(parentWindow, filePath, FileType::WORKSPACE_FILE);
 
         if (!result.success) {
             return false;
@@ -308,7 +308,7 @@ bool MainFile::SaveWorkspaceFile(const Window& parentWindow, bool bSaveAs) {
 }
 
 void MainFile::SaveDisassemblyFiles(const Window& parentWindow) {
-    const FileSystemLogicResult result = ::g_FileSystemLogic->GetSaveFileName_(parentWindow, L"", FileType::DISASSEMBLY_FILE);
+    const FileDialogResult result = ::g_FileDialogs->ChooseSaveFileName(parentWindow, L"", FileType::DISASSEMBLY_FILE);
 
     if (result.success) {
         DisassemblyResultFile disassemblyResultFile;
@@ -371,7 +371,7 @@ bool MainFile::ConfirmOpen(Text::TextID textID, wstring_view variable1, bool add
     return ConfirmOpen(textID, variable1, L"", add);
 }
 
-bool MainFile::ConfirmOpen(Text::TextID textID,wstring_view variable1, wstring_view variable2, bool add) {
+bool MainFile::ConfirmOpen(Text::TextID textID, wstring_view variable1, wstring_view variable2, bool add) {
     if (!add) {
 
         if (!main->PromptToClearWorkspace(IDS_MAIN_FILE_NEW_WORKSPACE_TITLE, IDS_MAIN_FILE_NEW_WORKSPACE_MESSAGE, !add)) {

@@ -6,7 +6,7 @@
 #include "Strings.h"
 #include <algorithm>
 #include <memory.h>
-#include <string.h>
+#include <Strings.h>
 
 #define NOMINMAX
 #include "DisassemblyControlImpl.h"
@@ -107,7 +107,7 @@ __declspec(dllexport) void _cdecl  DisassemblyControlImpl::RegisterClassFor(HINS
     };
 
     if (!RegisterClass(&wc)) {
-       safeExit("Cannot register class %s", CLASS_NAME);
+        safeExitWithClassName(CLASS_NAME);
     };
 }
 

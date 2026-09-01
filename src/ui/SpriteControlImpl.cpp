@@ -3,13 +3,14 @@
 **
 ** Sprite control implementation used to draw a graphic buffer using a specified Atari graphic mode.
 */
+#include "Strings.h"
 #include <algorithm>
 #include <memory.h>
 
 #define NOMINMAX
+#include "utils.h"
 #include <Windows.h>
 
-#include "utils.h"
 /* The following types and functions are used
 *  DibNew
    DibBitCount
@@ -766,6 +767,6 @@ __declspec(dllexport) void _cdecl  SpriteControlImpl::RegisterClassFor(HINSTANCE
     };
 
     if (!RegisterClass(&wc)) {
-        safeExit("Cannot register class %s", CLASS_NAME);
+        safeExitWithClassName(CLASS_NAME);
     };
 }

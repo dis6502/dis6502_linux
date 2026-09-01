@@ -1,17 +1,19 @@
-#include "Application.h"
 #include "ComboBox.h"
-#include "systems/ComputerSystemType.h"
+#include "Dialog.h"
+#include "Resource.h"
 #include "systems/ComputerSystem.h"
 #include "systems/ComputerSystemFactory.h"
-
+#include "systems/ComputerSystemType.h"
+#include "Window.h"
 #include "Workspace.h"
 #include "WorkspaceDialog.h"
+#include <memory>
+#include <Windows.h>
 
 extern std::unique_ptr<Workspace> g_Workspace;
 
 
-WorkspaceDialog::WorkspaceDialog(Window& parentWindow) : Dialog(parentWindow, L"WORKSPACEBOX") {
-}
+WorkspaceDialog::WorkspaceDialog(Window& parentWindow) : Dialog(parentWindow, L"WORKSPACEBOX") {}
 
 bool WorkspaceDialog::Show() {
     return (ShowDialogBox() == TRUE);

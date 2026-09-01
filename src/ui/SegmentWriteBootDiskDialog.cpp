@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "Button.h"
 #include "EditControl.h"
-#include "FileSystemLogic.h"
+#include "FileDialogs.h"
 #include "FileType.h"
 #include "Segment.h"
 #include "systems/atari800/AtariDiskImage.h"
@@ -12,7 +12,7 @@
 #include "SegmentWriteBootDiskDialog.h"
 
 extern std::unique_ptr<Application> g_Application;
-extern std::unique_ptr<FileSystemLogic> g_FileSystemLogic;
+extern std::unique_ptr<FileDialogs> g_FileDialogs;
 
 
 SegmentWriteBootDiskDialog::SegmentWriteBootDiskDialog(const Window& parentWindow) : Dialog(parentWindow, L"WRITEBOOTBOX"), segment(nullptr), withInitAddress(false), initAddress(false) {}
@@ -57,7 +57,7 @@ bool SegmentWriteBootDiskDialog::ProcessDialogMessage(UINT message, WPARAM wPara
         }
 
         case IDOK: {
-            auto result = ::g_FileSystemLogic->GetSaveFileName_(*this, L"", FileType::DISK_IMAGE_BOOT_SECTORS);
+            auto result = ::g_FileDialogs->ChooseSaveFileName(*this, L"", FileType::DISK_IMAGE_BOOT_SECTORS);
             if (result.success) {
                 WriteBootDisk(hDlg, result.filePath);
                 return EndDialogBox(true);
