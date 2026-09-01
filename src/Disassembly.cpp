@@ -2,33 +2,43 @@
 * Disassembly.cpp
 * Implements one disasseblmy run.
 */
-
-#include "Disassembly.h"
-
-#include "DatatypeUtility.h"
-#include <algorithm>
-#include <string.h>
-
 #include "AddressLabel.h"
 #include "AddressLabelList.h"
-#include "Application.h"
+#include "Byte.h"
 #include "Debug.h"
+#include "Disassembly.h"
+#include "DisassemblyBuffer.h"
 #include "DisassemblyLine.h"
 #include "DisassemblyProgressMonitor.h"
+#include "DisassemblyResult.h"
 #include "DisassemblyResultIterators.h"
-#include "DisassemblyResultTest.h"
+#include "DisassemblySection.h"
+#include "DisassemblySectionType.h"
 #include "DisassemblyWriter.h"
+#include "Equate.h"
 #include "EquateList.h"
-#include "Fixup.h"
+#include "EquateType.h"
+#include "FileHeader.h"
 #include "InstructionSet.h"
+#include "LabelAccess.h"
 #include "Memory.h"
 #include "MemoryBlockIterator.h"
+#include "MemoryType.h"
 #include "Pass1.h"
 #include "Profile.h"
 #include "Segment.h"
 #include "SegmentList.h"
+#include "SegmentTypes.h"
 #include "Strings.h"
+#include "Syntax.h"
+#include "Word.h"
 #include "Workspace.h"
+#include <stdexcept>
+#include <string>
+#include <wchar.h>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 
 Disassembly::Disassembly() :lineWriter(1024) {
