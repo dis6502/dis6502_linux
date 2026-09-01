@@ -1,7 +1,7 @@
 #include "Atari800.h"
-
 #include "Debug.h"
 #include "FileHeader.h"
+#include "FileType.h"
 #include "Fixup.h"
 #include "InputStream.h"
 #include "OutputStream.h"
@@ -10,7 +10,7 @@
 #include "SegmentListInserter.h"
 #include "Strings.h"
 #include <set>
-#include <sstream>
+
 
 
 Atari800::Atari800(const ComputerSystemTypeInfo& computerSystemTypeInfo) : ComputerSystem(computerSystemTypeInfo) {
@@ -216,7 +216,7 @@ void WriteSDXSymbol(wstring_view string, OutputStream& outputStream) {
         throw IOException(String::Format(L"Length of SDX symbol '{0}' exceeds maximum length {1}", string, std::to_wstring(maxLength)));
     }
     for (size_t i = 0; i < length; i++) {
-        gsl::at(sdxSymbol,i) = string.at(i);
+        gsl::at(sdxSymbol, i) = string.at(i);
     }
 
     outputStream.Write(sdxSymbol, maxLength);
@@ -289,23 +289,8 @@ void Atari800::ReadExecutableFile(SegmentListInserter& segmentListInserter, Inpu
                 segment->bBinary = true;
             }
             else {
-                // No file data follows (bSDXControlByte's high bit is
-                // set) - this is a "reserve N bytes of RAM" block (see
-                // the RamBlk case in Segment::ToString()/GetSDXBlockType),
-                // e.g. for BSS-style uninitialized storage the loader
-                // reserves without any bytes to actually read. wBegin/
-                // wEnd above already declare that real, meaningful size
-                // (unlike e.g. SDX_SYM_DEFINED's point-definition, which
-                // has no size and legitimately wants FakeSegment's 1-byte
-                // placeholder). Using FakeSegment here instead left
-                // Segment::GetSize() (wEnd-wBegin+1, often many bytes)
-                // completely out of sync with the actual 1-byte buffer it
-                // allocated - any UI code trusting GetSize() to bound its
-                // reads (e.g. the Memory Inspector) would then read past
-                // that 1 byte and crash. CreateMemoryBlockFromBeginToEnd
-                // allocates the declared size for real, zero-initialized,
-                // keeping it consistent with GetSize().
-                segment->CreateMemoryBlockFromBeginToEnd();
+                // mark segment as being used by allocating a 1 byte buffer
+                FakeSegment(*segment);
             }
             break;
         }

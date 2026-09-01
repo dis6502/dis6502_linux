@@ -1,7 +1,7 @@
 #include "ComputerSystemTest.h"
 
 #include "atari800/Atari800Test.h"
-#include "TestPaths.h"
+#include "MainTest.h"
 #include "ComputerSystemFactory.h"
 #include "ComputerSystem.h"
 
@@ -12,7 +12,7 @@ void ComputerSystemTest::TestSystems(const ComputerSystemFactory& computerSystem
 }
 
 void ComputerSystemTest::SetupUnit(wstring_view areaName, wstring_view unitName) {
-    testUnit = TestUnit(TestPaths::GetSuitePath(), areaName, unitName);
+    testUnit = TestUnit(MainTest::GetSuitePath(), areaName, unitName);
 }
 
 void ComputerSystemTest::TestAtari800(const ComputerSystem& computerSystem) {

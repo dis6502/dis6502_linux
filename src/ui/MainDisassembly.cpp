@@ -22,6 +22,7 @@
 #include "SegmentList.h"
 #include "SegmentListWindow.h"
 #include "Workspace.h"
+#include "WorkspaceFont.h"
 
 extern HWND hDisWnd;
 
@@ -186,7 +187,7 @@ void MainDisassembly::AddComment() {
 
     if ((disSelection.segmentIndex != NO_SEGMENT_INDEX) && (disSelection.offset != 0xFFFF)) { // TODO: Have constant
         CommentDialog dialog(*mainWindow);
-        auto hFont = ::g_Workspace->GetResizedFont();
+        auto hFont = main->GetResizedFont();
 
         if (dialog.Show(*::g_Workspace->GetConstDisassemblyResult(), *::g_Workspace->GetSegmentList(),
             disSelection.segmentIndex,

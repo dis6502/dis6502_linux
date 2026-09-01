@@ -12,9 +12,7 @@
 #include "FileIO.h"
 #include "FileType.h"
 #include "Main.h"
-#include "MainWindow.h"
 #include "Memory.h"
-#include "MemoryInspector.h"
 #include "MRUController.h"
 #include "RawFileDialog.h"
 #include "Segment.h"
@@ -26,6 +24,7 @@
 #include "systems/ComputerSystemType.h"
 #include "Window.h"
 #include "Workspace.h"
+#include "WorkspaceFont.h"
 #include "WorkspaceLogic.h"
 
 #include "MainFile.h"
@@ -50,7 +49,7 @@ void MainFile::OpenRawFile(const Window& parentWindow, wstring_view filePath, bo
     }
     binPath = filePath;
 
-    RawFileDialog dialog(parentWindow, ::g_Workspace->GetResizedFont());
+    RawFileDialog dialog(parentWindow, main->GetResizedFont());
     if (dialog.Show(binPath)) {
 
         Memory::offset offset = 0;
@@ -100,7 +99,7 @@ void MainFile::OpenDiskImageExecutableFile(const Window& parentWindow, wstring_v
     auto atariDisk = AtariDOS::OpenAtariDisk(filePath);
     switch (atariDisk->FindFirst(info)) {
     case AtariError::OK: {
-        DiskImageExecutableFileDialog dialog(parentWindow, ::g_Workspace->GetResizedFont());
+        DiskImageExecutableFileDialog dialog(parentWindow, main->GetResizedFont());
         if (dialog.Show(filePath)) {
             auto executableFilePath = dialog.GetExecutableFilePath();
             if (!ConfirmOpen(IDS_LOG_OPEN_DISK_IMAGE_EXECUTABLE_FILE, executableFilePath, filePath, add)) {
@@ -186,7 +185,7 @@ void MainFile::OpenDiskImageSectors(const Window& parentWindow, wstring_view fil
     DiskImage::GetInfo(filePath, Info);
 
     if (!DiskImage::DisplayError(Info.nResult)) {
-        DiskImageSectorsDialog dialog(parentWindow, ::g_Workspace->GetResizedFont());
+        DiskImageSectorsDialog dialog(parentWindow, main->GetResizedFont());
 
         if (dialog.Show(filePath)) {
             auto items = dialog.GetItems();

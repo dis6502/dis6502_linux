@@ -1,17 +1,20 @@
 #include <Windows.h>
 #define STRICT_TYPED_ITEMIDS
 
-#include <shobjidl.h>
-#include "Text.h"
-#include "systems/ComputerSystemType.h"
 #include "DefaultFolders.h"
+#include "DefaultFoldersDialog.h"
+#include "Dialog.h"
+#include "EditControl.h"
 #include "FileIO.h"
 #include "FolderType.h"
-#include "DefaultFoldersDialog.h"
-#include "EditControl.h"
+#include "systems/ComputerSystemType.h"
+#include "Text.h"
+#include "Window.h"
+#include <Resource.h>
+#include <ShObjIdl_core.h>
+#include <Syntax.h>
 
-DefaultFoldersDialog::DefaultFoldersDialog(Window& parentWindow) : Dialog(parentWindow, L"DEFAULTFOLDERSBOX") {
-}
+DefaultFoldersDialog::DefaultFoldersDialog(Window& parentWindow) : Dialog(parentWindow, L"DEFAULTFOLDERSBOX") {}
 
 bool DefaultFoldersDialog::Show(HWND hWndParent, DefaultFolders& defaultFolders) {
     this->defaultFolders = &defaultFolders;
@@ -22,7 +25,7 @@ bool DefaultFoldersDialog::Show(HWND hWndParent, DefaultFolders& defaultFolders)
 bool DefaultFoldersDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
     case WM_INITDIALOG: {
-        auto text = defaultFolders->GetComputerSystemTypeInfo()->text;
+        auto& text = defaultFolders->GetComputerSystemTypeInfo()->text;
         auto title = Text::Format(IDS_DEFAULT_FOLDERS_DIALOG_TITLE, text);
         SetTitle(title);
         SetDialogValues(*defaultFolders);
@@ -130,7 +133,7 @@ void DefaultFoldersDialog::GetDialogValues(DefaultFolders& defaultFolders) {
 
 
 
-HRESULT ShellSelectFolder(HWND parentHWnd, wstring_view title, wstring& folderPath)
+static HRESULT ShellSelectFolder(HWND parentHWnd, wstring_view title, wstring& folderPath)
 {
     // CoCreate the File Open Dialog object.
     IFileDialog* fileDialog = NULL;

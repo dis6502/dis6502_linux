@@ -1,11 +1,13 @@
+#include "C64.h"
+#include "FileType.h"
 #include "InputStream.h"
 #include "MemoryBlock.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
 #include "Strings.h"
-#include "C64.h"
 #include <set>
+
 
 C64::C64(const ComputerSystemTypeInfo& computerSystemTypeInfo) : ComputerSystem(computerSystemTypeInfo) {
     returnCharacter = 0x0d;

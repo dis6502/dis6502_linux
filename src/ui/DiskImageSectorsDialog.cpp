@@ -1,12 +1,21 @@
-#include "Application.h"
-#include "systems/atari800/AtariDOS.h"
+
+#include "Button.h"
+#include "Control.h"
+#include "Dialog.h"
 #include "DiskImage.h"
+#include "DiskImageSectorsDialog.h"
+#include "EditControl.h"
 #include "ListBox.h"
 #include "MemoryInspectorControl.h"
-#include "Button.h"
-#include "EditControl.h"
-#include "DiskImageSectorsDialog.h"
+#include "Syntax.h"
 #include "TextLabel.h"
+#include "Window.h"
+#include <cstdio>
+#include <list>
+#include <memory>
+#include <Memory.h>
+#include <Resource.h>
+#include <Windows.h>
 
 DiskImageSectorsDialog::DiskImageSectorsDialog(const Window& parentWindow, HFONT hComputerFont) : Dialog(parentWindow, L"OPENDISKIMAGESECTORSBOX") {
     this->hComputerFont = hComputerFont;

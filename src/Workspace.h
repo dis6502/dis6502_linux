@@ -7,14 +7,14 @@
 #include "LabelAccess.h"
 #include "Memory.h"
 #include "Profile.h"
+#include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListChangedListener.h"
 #include "SegmentTypes.h"
 #include "Syntax.h"
-#include "PlatformCompat.h" // For portable HFONT stand-in
 #include "WorkspaceTypes.h"
 #include "XML.h"
-#include <gsl/gsl>
+#include <memory>
 #include <vector>
 
 enum class ComputerSystemType;
@@ -54,11 +54,6 @@ public:
     // File.
     wstring GetFilePath() const;
     void SetFilePath(wstring_view filePath);
-
-    // Font.
-    HFONT GetResizedFont() const;
-    int GetResizedFontWidth() const;
-    int GetResizedFontHeight() const;
 
     // Computer System.
     void SetComputerSystemTypeID(wstring_view id);

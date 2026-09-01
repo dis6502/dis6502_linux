@@ -1,9 +1,23 @@
-#include "Disassembly.h"
+
+#include "Byte.h"
 #include "DisassemblyLineWriter.h"
+#include "Memory.h"
+#include "MemoryType.h"
 #include "Profile.h"
+#include "Segment.h"
+#include "SegmentList.h"
+#include "SegmentTypes.h"
 #include "Strings.h"
+#include "Syntax.h"
 #include "Workspace.h"
-#include <gsl/gsl>
+#include <algorithm>
+#include <cctype>
+#include <cstdio>
+#include <stdexcept>
+#include <wchar.h>
+
+constexpr size_t DECIMAL_SIZE = 11;
+constexpr size_t HEX_SIZE = 12;
 
 DisassemblyLineWriter::DisassemblyLineWriter(size_t lineBufferSize) {
     this->lineBuffer = new wchar_t[lineBufferSize];
@@ -95,15 +109,16 @@ DisassemblyLineWriter& DisassemblyLineWriter::SpaceUntil34() {
 }
 
 DisassemblyLineWriter& DisassemblyLineWriter::Decimal(const unsigned int value) {
-    wchar_t buffer[11]; // 4294967295
-    wsprintf(buffer, L"%u", value);
+    wchar_t buffer[DECIMAL_SIZE]; // 4294967295
+    swprintf(buffer, DECIMAL_SIZE, L"%u", value);
     return CString(buffer);
 }
 
 DisassemblyLineWriter& DisassemblyLineWriter::Number(const unsigned int value) {
+
     if (profile->useHexNotation) {
-        wchar_t buffer[11];
-        wsprintf(buffer, L"%s%04X", profile->hexNotationPrefix.c_str(), value);
+        wchar_t buffer[HEX_SIZE]; // 4294967295
+        swprintf(buffer, HEX_SIZE, L"%s%04X", profile->hexNotationPrefix.c_str(), value);
         return CString(buffer);
     }
     else {
@@ -113,8 +128,8 @@ DisassemblyLineWriter& DisassemblyLineWriter::Number(const unsigned int value) {
 
 DisassemblyLineWriter& DisassemblyLineWriter::ByteNumber(const Memory::byte value) {
     if (profile->useHexNotation) {
-        wchar_t buffer[11];
-        wsprintf(buffer, L"%s%02X", profile->hexNotationPrefix.c_str(), value);
+        wchar_t buffer[HEX_SIZE];
+        swprintf(buffer, HEX_SIZE, L"%s%02X", profile->hexNotationPrefix.c_str(), value);
         return CString(buffer);
     }
     else {
@@ -124,8 +139,8 @@ DisassemblyLineWriter& DisassemblyLineWriter::ByteNumber(const Memory::byte valu
 
 DisassemblyLineWriter& DisassemblyLineWriter::Byte(const Memory::byte value) {
     if (profile->useHexNotation) {
-        wchar_t buffer[11];
-        wsprintf(buffer, L"%s%02X", profile->hexNotationPrefix.c_str(), value);
+        wchar_t buffer[HEX_SIZE];
+        swprintf(buffer, HEX_SIZE, L"%s%02X", profile->hexNotationPrefix.c_str(), value);
         return CString(buffer);
     }
     else {

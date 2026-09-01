@@ -1,12 +1,18 @@
-#include "Oric.h"
-
+#include "Byte.h"
+#include "ByteSequence.h"
+#include "CommonIO.h"
+#include "ComputerSystem.h"
+#include "ComputerSystemType.h"
+#include "FileHeader.h"
+#include "FileIO.h"
 #include "FileType.h"
 #include "InputStream.h"
-#include "OutputStream.h"
+#include "Memory.h"
+#include "Oric.h"
 #include "Segment.h"
 #include "SegmentListInserter.h"
-#include "Workspace.h"
 #include <set>
+#include <vector>
 
 
 /**
@@ -161,9 +167,9 @@ void Oric::ReadExecutableFile(SegmentListInserter& segmentListInserter, InputStr
         lpSegment->szTitle.at(nNameIndex) = 0;
 
         // check data size.
-        WORD wSize = wEnd - wBegin + 1;
+        Memory::size wSize = wEnd - wBegin + 1;
         if (wSize > bytesRemaining) {
-            wSize = (WORD)bytesRemaining;
+            wSize = bytesRemaining;
         }
 
         // save segment type

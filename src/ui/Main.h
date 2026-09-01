@@ -32,6 +32,8 @@ public:
     Main& operator=(Main&&) = delete;       // move assignment
     ~Main();
 
+    HFONT GetResizedFont();
+
     void OpenFileWithDialog(const FileType fileType, bool add);
     void OpenFile(wstring_view filePath, const FileType fileType, bool add);
     void OpenWorkspaceFile(wstring_view filePath);
@@ -88,6 +90,8 @@ private:
     std::unique_ptr<DefaultFolders> defaultFolders = nullptr;
 
     void SetMainWindowTitle();
+    void SetLayoutFont();
+
 
     void HandleWorkspaceChanged(const Workspace& workspace, const std::vector<WorkspaceProperty>& propertyChangeEvents) override;
 

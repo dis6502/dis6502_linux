@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Syntax.h"
-#include "UI.h"
 
 class Application;
 class Main;

@@ -1,11 +1,14 @@
 #pragma once
 
-#include <list>
-
-#include "Syntax.h"
 #include "Dialog.h"
 #include "DiskImage.h"
 #include "MemoryInspectorControl.h"
+#include "Syntax.h"
+#include "Window.h"
+#include <gsl/pointers>
+#include <list>
+#include <memory>
+#include <Windows.h>
 
 
 class DiskImageSectorsDialog : public Dialog {

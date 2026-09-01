@@ -4,11 +4,10 @@
 ** Load and save workspace.
 */
 
-#include "WorkspaceLogic.h"
-
 #include "Application.h"
 #include "Byte.h"
 #include "ByteArray.h"
+#include "EquateListLogic.h"
 #include "FileInputStream.h"
 #include "FileIO.h"
 #include "FileType.h"
@@ -19,10 +18,15 @@
 #include "systems/ComputerSystem.h"
 #include "Workspace.h"
 #include "Workspace1X.h"
+#include "WorkspaceLogic.h"
 #include "XML.h"
 #include <sstream>
 
 extern std::unique_ptr<Application> g_Application;
+
+WorkspaceLogic::WorkspaceLogic(EquateListLogic& equateListLogic) {
+    this->equateListLogic = &equateListLogic;
+}
 
 bool WorkspaceLogic::Load(Workspace& workspace, wstring_view filePath) {
     workspace.Init();
@@ -123,6 +127,11 @@ bool WorkspaceLogic::Save(Workspace& workspace, wstring_view filePath, Workspace
     }
 
     return saved;
+}
+void WorkspaceLogic::LoadSystemEquates(Workspace& workspace) {
+    const auto& computerSystem = workspace.GetComputerSystem();
+    auto filePath = computerSystem->GetResourceFilePathByExtension(L".equ");
+    equateListLogic->Load(*workspace.GetSystemEquateList(), filePath);
 }
 
 

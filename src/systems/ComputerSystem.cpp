@@ -1,39 +1,35 @@
-#include <sstream>
-
 #include "Application.h"
+#include "Byte.h"
+#include "ComputerSystem.h"
+#include "ComputerSystemType.h"
 #include "FileIO.h"
 #include "FileType.h"
 #include "InputStream.h"
-#include "MessageBoxDialog.h"
-#include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
-#include "Strings.h"
-
-
-#include "ComputerFont.h"
-#include "ComputerSystem.h"
-#include "ComputerSystemFactory.h"
+#include <algorithm>
+#include <memory>
+#include <Memory.h>
+#include <OutputStream.h>
+#include <SegmentTypes.h>
+#include <sstream>
+#include <stdexcept>
+#include <Syntax.h>
 
 extern std::unique_ptr<Application> g_Application;
 
 
-ComputerSystem::ComputerSystem(const ComputerSystemTypeInfo& computerSystemTypeInfo):
-   computerSystemTypeInfo(&computerSystemTypeInfo) {
+ComputerSystem::ComputerSystem(const ComputerSystemTypeInfo& computerSystemTypeInfo) :
+    computerSystemTypeInfo(&computerSystemTypeInfo) {}
 
-    computerFont = std::make_unique<ComputerFont>(8);
-}
-
-ComputerSystem::~ComputerSystem(){
-   RemoveFontResource(fontFilePath.c_str());
-}
+ComputerSystem::~ComputerSystem() {}
 
 
-ComputerSystemType ComputerSystem::GetType() const  {
+ComputerSystemType ComputerSystem::GetType() const {
     return computerSystemTypeInfo->type;
 }
 
-gsl::not_null<const ComputerSystemTypeInfo*> ComputerSystem::GetTypeInfo() const  {
+gsl::not_null<const ComputerSystemTypeInfo*> ComputerSystem::GetTypeInfo() const {
     return computerSystemTypeInfo;
 }
 
@@ -50,36 +46,12 @@ wstring ComputerSystem::GetResourceFilePathByExtension(wstring_view extension) c
     return GetResourceFilePath(ss.str());
 }
 
-HFONT ComputerSystem::GetFont(bool doubleHeight) const  {
-    return computerFont->GetFont(doubleHeight);
-}
-
-byte ComputerSystem::GetReturnCharacter() const  {
+byte ComputerSystem::GetReturnCharacter() const {
     return returnCharacter;
 }
 
 bool ComputerSystem::IsSupportedFileType(FileType fileType) const {
     return std::find(supportedFileTypes.begin(), supportedFileTypes.end(), fileType) != supportedFileTypes.end();
-}
-
-void ComputerSystem::Init() {
-
-    // Load font.
-    //fontFilePath = GetResourceFilePath("AtariClassic-Regular.ttf");
-    //string fontName = "Atari Classic";
-    //if (FileIO::FileExists(fontFilePath)) {
-
-    // TODO: Currently TTF is not yet supported as it would required Unicode. 
-    // See https://sourceforge.net/p/dis6502/bugs/33/
-    // TODO: This means we can try this now!
-    fontFilePath = GetResourceFilePathByExtension(L".fon");
-    wstring fontName = L"Atari800";
-    //}
-    if (AddFontResource(fontFilePath.c_str()) == 0) {
-        auto message = String::Format(L"Font file '{0}' not found.", fontFilePath);
-        MessageBoxDialog::Show(nullptr, GetTypeInfo()->id, message, MB_OK);
-    }
-    computerFont->Load(fontName);
 }
 
 bool ComputerSystem::IsDisplayListVectorAddress(const Memory::address address) const {
@@ -88,7 +60,6 @@ bool ComputerSystem::IsDisplayListVectorAddress(const Memory::address address) c
 
 FileType ComputerSystem::GuessFileType(wstring_view filePath) const {
     constexpr size_t headerSize = 4;
-    byte buf[headerSize] = { 0,0,0,0 };
 
     auto byteArray = FileIO::ReadByteArray(filePath);
     const FileIO::FILE_SIZE fileSize = byteArray.size();
@@ -96,10 +67,7 @@ FileType ComputerSystem::GuessFileType(wstring_view filePath) const {
     if (fileSize < headerSize) {
         return FileType::UNKNOWN_FILE;
     }
-    buf[0] = byteArray.at(0);
-    buf[1] = byteArray.at(1);
-    buf[2] = byteArray.at(2);
-    buf[3] = byteArray.at(3);
+
     return GuessFileType(fileSize, *byteArray.GetSubSequence(0, headerSize));
 }
 

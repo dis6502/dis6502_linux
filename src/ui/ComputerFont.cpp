@@ -1,90 +1,130 @@
 #include "ComputerFont.h"
-#include "../String.h"
-#include "../MessageBoxDialog.h"
+#include "Strings.h"
+#include "Syntax.h"
+#include "systems/ComputerSystem.h"
+#include "UI.h"
+#include <ComputerSystemType.h>
+#include <exception>
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <utility>
+#include <Windows.h>
+
+// TODO: FontFactory (/ RemoveFontResource(fontFilePath.c_str());
+
+std::map <ComputerSystemType, const std::unique_ptr<ComputerFont>> ComputerFont::instances;
+
 
 ComputerFont::ComputerFont(int fontHeight) {
-	this->fontHeight = fontHeight;
-	hFont = NULL_HFONT;
-	hDoubleHeightFont = NULL_HFONT;
+    this->fontHeight = fontHeight;
+    hFont = NULL_HFONT;
+    hDoubleHeightFont = NULL_HFONT;
 }
 
 ComputerFont::~ComputerFont() {
-	try {
-		DeleteFonts();
-	}
-	catch (const std::exception& ex) {
-		try {
-			// catch anything thrown within try block that derives from std::exception
-			MessageBoxDialog::Show(nullptr, L"Error Deleting Fonts", String::utf8_to_wstring(ex.what()), MB_OK);
-		}
-		catch (const std::exception&) {}
-        safeExit();
-	}
+    try {
+        DeleteFonts();
+    }
+    catch (const std::exception& ex) {
+        auto message = String::wstring_to_utf8(String::Format(L"Error Deleting Fonts. %s", String::utf8_to_wstring(ex.what())));
+        safeExit(message.c_str());
+    }
 }
 
 
 void ComputerFont::Load(wstring_view fontName) {
 
-	if (CreateFonts(fontHeight, fontName)) {
-		return;
-	}
+    if (CreateFonts(fontHeight, fontName)) {
+        return;
+    }
 
-	//// fallback to use fonts under Wine
-	//if (CreateFonts(fontHeight, "Atari Classic Chunky")) {
-	//	return;
-	//}
-	//if (CreateFonts(fontHeight, "Atari Classic Smooth")) {
-	//	return;
-	//}
-	//if (CreateFonts(fontHeight, "Atari Classic Extrasmooth")) {
-	//	return;
-	//}
+    //// fallback to use fonts under Wine
+    //if (CreateFonts(fontHeight, "Atari Classic Chunky")) {
+    //	return;
+    //}
+    //if (CreateFonts(fontHeight, "Atari Classic Smooth")) {
+    //	return;
+    //}
+    //if (CreateFonts(fontHeight, "Atari Classic Extrasmooth")) {
+    //	return;
+    //}
 
-	if (CreateFonts(fontHeight, L"Courier New")) {
-		return;
-	}
+    if (CreateFonts(fontHeight, L"Courier New")) {
+        return;
+    }
 
-	MessageBoxDialog::Show(nullptr, L"Error Loading Fonts", L"Cannot load any font.", MB_OK);
+    throw std::runtime_error("Cannot load any font.");
+}
 
-    safeExit();
+const ComputerFont& ComputerFont::Get(const ComputerSystem& computerSystem) {
+
+    const auto& i = instances.find(computerSystem.GetType());
+    if (i != instances.end()) {
+        return *(i->second);
+    }
+    instances.insert(std::make_pair(computerSystem.GetType(), std::make_unique<ComputerFont>(8)));
+    auto j = instances.find(computerSystem.GetType());
+    auto fontFilePath = computerSystem.GetResourceFilePathByExtension(L".fon");
+    j->second->Load(fontFilePath);
+    return *(j->second);
+
+    // Load font.
+    //fontFilePath = GetResourceFilePath("AtariClassic-Regular.ttf");
+    //string fontName = "Atari Classic";
+    //if (FileIO::FileExists(fontFilePath)) {
+
+    // TODO: Currently TTF is not yet supported as it would required Unicode. 
+    // See https://sourceforge.net/p/dis6502/bugs/33/
+    // TODO: This means we can try this now!
+//    auto fontFilePath = computerSystem.GetResourceFilePathByExtension(L".fon");
+//    wstring fontName = L"Atari800";
+//
+//    if (AddFontResource(fontFilePath.c_str()) == 0) {
+//        // TODO: Raise Exception
+//        auto message = String::Format(L"Font file '{0}' not found.", fontFilePath);
+//        MessageBoxDialog::ShowAlert(nullptr, computerSystem.GetTypeInfo()->id, message);
+//        return;
+//    }
+//    Load(fontName);
 }
 
 
-HFONT ComputerFont::GetFont(bool doubleHeight) {
-	return doubleHeight ? hDoubleHeightFont : hFont;
+HFONT ComputerFont::GetFont(bool doubleHeight) const {
+    return doubleHeight ? hDoubleHeightFont : hFont;
 }
 
 
 bool ComputerFont::CreateFonts(int fontHeight, wstring_view fontName) {
-	constexpr int doubleHeightFontFactor = 2;
-	auto fontNameString = wstring(fontName);
-	hFont = CreateFont(fontHeight, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str());
-	hDoubleHeightFont = CreateFont(fontHeight * doubleHeightFontFactor, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str());
+    constexpr int doubleHeightFontFactor = 2;
+    auto fontNameString = wstring(fontName);
+    hFont = CreateFont(fontHeight, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str());
+    hDoubleHeightFont = CreateFont(fontHeight * doubleHeightFontFactor, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str());
 
-	const bool result = (hFont != NULL_HFONT && hDoubleHeightFont != NULL_HFONT);
-	if (!result) {
-		DeleteFonts();
-	}
+    const bool result = (hFont != NULL_HFONT && hDoubleHeightFont != NULL_HFONT);
+    if (!result) {
+        DeleteFonts();
+    }
 
-	return result;
+    return result;
 }
 
 void ComputerFont::DeleteFonts() {
-	if (hFont != NULL_HFONT) {
-		const BOOL bResult = DeleteObject(hFont);
-		hFont = NULL_HFONT;
+    if (hFont != NULL_HFONT) {
+        const BOOL bResult = DeleteObject(hFont);
+        hFont = NULL_HFONT;
 
-		if (!bResult) {
-			throw std::runtime_error("Cannot delete font");
-		}
-	}
+        if (!bResult) {
+            throw std::runtime_error("Cannot delete font");
+        }
+    }
 
-	if (hDoubleHeightFont != NULL_HFONT) {
-		const BOOL result = DeleteObject(hDoubleHeightFont);
-		hDoubleHeightFont = NULL_HFONT;
+    if (hDoubleHeightFont != NULL_HFONT) {
+        const BOOL result = DeleteObject(hDoubleHeightFont);
+        hDoubleHeightFont = NULL_HFONT;
 
-		if (!result) {
-			throw std::runtime_error("Cannot delete double height font");
-		}
-	}
+        if (!result) {
+            throw std::runtime_error("Cannot delete double height font");
+        }
+    }
 }

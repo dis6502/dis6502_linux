@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 #include "systems/ComputerSystemType.h"
 #include <list>
+#include <memory>
 
 class ApplicationSettingsSection;
 class DefaultFolders;
@@ -11,13 +11,13 @@ enum class FolderType;
 
 class DefaultFoldersLogic {
 public:
-	DefaultFoldersLogic();
+    DefaultFoldersLogic();
 
-	std::unique_ptr<DefaultFolders> CreateDefaultFolders(const ComputerSystemTypeInfo& computerSystemTypeInfo);
-	
-	void Load(DefaultFolders& defaultFolders);
-	void Save(const DefaultFolders& defaultFolders);
+    std::unique_ptr<DefaultFolders> CreateDefaultFolders(const ComputerSystemTypeInfo& computerSystemTypeInfo);
+
+    void Load(DefaultFolders& defaultFolders);
+    void Save(const DefaultFolders& defaultFolders);
 
 private:
-	std::unique_ptr<std::list<FolderType>> folderTypeList;
+    std::unique_ptr<std::list<FolderType>> folderTypeList;
 };

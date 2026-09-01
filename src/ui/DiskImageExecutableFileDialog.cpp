@@ -1,10 +1,19 @@
 #include "Application.h"
 #include "Button.h"
+#include "Control.h"
+#include "Dialog.h"
 #include "DiskImageExecutableFileDialog.h"
 #include "EditControl.h"
 #include "ListBox.h"
 #include "systems/atari800/AtariDOS.h"
 #include "TextLabel.h"
+#include "Window.h"
+#include <cstdarg>
+#include <memory>
+#include <Resource.h>
+#include <Strings.h>
+#include <Syntax.h>
+#include <Windows.h>
 
 extern std::unique_ptr<Application> g_Application;
 

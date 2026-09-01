@@ -1,16 +1,19 @@
 #include "Assertions.h"
-#include <sstream>
+#include "Byte.h"
 #include "Debug.h"
-#include "PlatformCompat.h"
 #include "Strings.h"
-#ifdef _WIN32
-#include <Windows.h>
-#endif
+#include "Syntax.h"
+#include <cstdio>
+#include <exception>
+#include <ios>
+#include <stdexcept>
+#include <string>
 
-wstring ToString(void* pointer) {
+static wstring ToString(void* pointer) {
     constexpr size_t BUFFER_SIZE = 32;
     wchar_t buffer[BUFFER_SIZE];
-    wsprintf(buffer, L"%p", pointer);
+
+    swprintf(buffer, BUFFER_SIZE, L"%p", pointer);
     return wstring(buffer);
 }
 

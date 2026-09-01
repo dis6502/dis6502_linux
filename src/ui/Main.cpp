@@ -1,24 +1,17 @@
-/*
-** Main.cpp
-*/
+
 #include "Application.h"
 #include "DC.h"
 #include "DefaultFolders.h"
 #include "DefaultFoldersDialog.h"
 #include "DefaultFoldersLogic.h"
 #include "DisassemblyControl.h"
-#include "DisassemblyProgressDialog.h"
-#include "DisassemblyProgressMonitor.h"
-#include "DisassemblyResultFile.h"
 #include "DisassemblyWindow.h"
 #include "EquateList.h"
 #include "EquateListController.h"
 #include "EquateListLogic.h"
 #include "FileDialogs.h"
 #include "FileType.h"
-#include "FolderType.h"
 #include "Layout.h"
-#include "LogListWindow.h"
 #include "Main.h"
 #include "MainDisassembly.h"
 #include "MainFile.h"
@@ -42,7 +35,6 @@
 #include "ProfileLogic.h"
 #include "Segment.h"
 #include "SegmentList.h"
-#include "SegmentListWindow.h"
 #include "SpriteControl.h"
 #include "Strings.h"
 #include "systems/ComputerSystem.h"
@@ -50,8 +42,8 @@
 #include "systems/ComputerSystemType.h"
 #include "Text.h"
 #include "Workspace.h"
+#include "WorkspaceFont.h"
 #include "WorkspaceLogic.h"
-#include "XRefListWindow.h"
 #include <filesystem>
 #include <iostream>
 #include <strsafe.h>
@@ -133,6 +125,14 @@ void  Main::ToggleViewDoubleFontHeight() {
     ::g_Workspace->NotifyFontChanged();
 };
 
+HFONT Main::GetResizedFont() {
+    return WorkspaceFont::GetResizedFont(*g_Workspace);
+}
+
+void Main::SetLayoutFont() {
+    layout->SetFont(GetResizedFont(), WorkspaceFont::GetResizedFontWidth(*g_Workspace), WorkspaceFont::GetResizedFontHeight(*g_Workspace));
+}
+
 MainDisassembly* Main::GetMainDisassembly() {
     return mainDisassembly.get();
 }
@@ -181,7 +181,7 @@ void Main::HandleWorkspaceChanged(const Workspace& workspace, const std::vector<
             break;
 
         case WorkspaceProperty::FONT:
-            layout->SetFont(workspace.GetResizedFont(), workspace.GetResizedFontWidth(), workspace.GetResizedFontHeight());
+            SetLayoutFont();
             layout->Compute();
             mainWindow->ApplyLayout();
             break;
@@ -310,7 +310,7 @@ void Main::PaintMainWindow() {
     PAINTSTRUCT ps = {};
     auto hDC = BeginPaint(hWnd, &ps);
     DC dc(hDC);
-    auto hFont = ::g_Workspace->GetResizedFont();
+    auto hFont = GetResizedFont();
     auto hOldFont = (HFONT)SelectObject(hDC, hFont);
     const auto rgbOldTextColor = dc.SetTextColor(RGB(0, 0, 0));
 
@@ -493,10 +493,7 @@ bool Main::InitApplication(HINSTANCE hInstance, wstring& commandLine, int nCmdSh
 
     // Prepare initial layout.
     layout = std::make_unique<Layout>();
-    layout->SetFont(
-        ::g_Workspace->GetResizedFont(),
-        ::g_Workspace->GetResizedFontWidth(),
-        ::g_Workspace->GetResizedFontHeight());
+    SetLayoutFont();
     layout->ComputeForSize(1024, 768);
 
     CreateControls();

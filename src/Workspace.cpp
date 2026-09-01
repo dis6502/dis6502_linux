@@ -1,14 +1,28 @@
 #include "Debug.h"
+#include "DisassemblyResult.h"
+#include "Equate.h"
 #include "EquateList.h"
 #include "InstructionSet.h"
+#include "LabelAccess.h"
+#include "Memory.h"
+#include "ProcessorType.h"
 #include "Profile.h"
 #include "Segment.h"
 #include "SegmentList.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
 #include "systems/ComputerSystem.h"
 #include "systems/ComputerSystemFactory.h"
 #include "systems/ComputerSystemType.h"
 #include "Workspace.h"
 #include "WorkspaceChangedListener.h"
+#include "WorkspaceTypes.h"
+#include "XML.h"
+#include <algorithm>
+#include <memory>
+#include <stdexcept>
+#include <vector>
+#include <wchar.h>
 
 Workspace::Workspace(const ComputerSystemFactory& computerSystemFactory) :
     computerSystemFactory(&computerSystemFactory),
@@ -118,18 +132,6 @@ const gsl::not_null<InstructionSet*> Workspace::GetInstructionSet(ProcessorType 
     default:
         throw std::runtime_error("Invalid processor type");
     }
-}
-
-HFONT Workspace::GetResizedFont() const {
-    return GetComputerSystem()->GetFont(viewDoubleHeight);
-}
-
-int Workspace::GetResizedFontWidth() const {
-    return 8;
-}
-
-int Workspace::GetResizedFontHeight() const {
-    return viewDoubleHeight ? 16 : 8;
 }
 
 Profile* Workspace::GetProfile() const {
