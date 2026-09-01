@@ -1,9 +1,8 @@
 #pragma once
 
-#include <list>
-
 #include "Syntax.h"
 #include "systems/ComputerSystemType.h"
+#include <list>
 
 class ApplicationSettingsSection;
 class DefaultFolders;

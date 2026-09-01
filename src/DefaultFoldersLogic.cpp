@@ -1,11 +1,9 @@
 #include "Application.h"
 #include "ApplicationSettingsSection.h"
-#include "systems/ComputerSystemType.h"
 #include "DefaultFolders.h"
-#include "FileIO.h"
-#include "FolderType.h"
-
 #include "DefaultFoldersLogic.h"
+#include "FolderType.h"
+#include "systems/ComputerSystemType.h"
 
 extern std::unique_ptr<Application> g_Application;
 
