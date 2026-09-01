@@ -107,7 +107,7 @@ bool DatatypeUtility::ByteArrayFromHexString(byte*& valueArray, size_t& size, ws
         length = stringValue.length();
     }
     catch (...) {
-        safeExit();
+        safeExit("Error in DatatypeUtility::ByteArrayFromHexString");
     }
     if (length < 2) {
         return false;
