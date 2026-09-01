@@ -1,16 +1,13 @@
 #pragma once
 
-#include "Syntax.h"
-
 #include "DisassemblyLineWriter.h"
 #include "DisassemblyOpcodeBuffer.h"
 #include "DisassemblyResult.h"
-#include "DisassemblySection.h"
 #include "DisassemblySectionType.h"
-#include "Equate.h"
 #include "Memory.h"
 #include "MemoryType.h"
 #include "SegmentTypes.h"
+#include "Syntax.h"
 
 class EquateList;
 class Instruction;
