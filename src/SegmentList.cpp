@@ -1,11 +1,7 @@
 #include "SegmentList.h"
 
-#include <cassert>
-
-#include "Application.h"
 #include "Comment.h"
 #include "Debug.h"
-#include "DisassemblySectionType.h"
 #include "Equate.h"
 #include "EquateList.h"
 #include "FileHeader.h"
@@ -15,6 +11,7 @@
 #include "Segment.h"
 #include "Strings.h"
 #include "Workspace.h"
+#include <cassert>
 #include <gsl/util>
 #ifdef _WIN32
 #include <Windows.h>
@@ -520,7 +517,7 @@ wstring SegmentList::GetLabelAtAddressInternal(SEGMENT_INDEX segmentIndex, Memor
         if (equate != nullptr) {
             return equate->GetLabel();;
         }
-        return BuildAddress(segmentIndex, wAddr, labelAccess, TRUE);
+        return BuildAddress(segmentIndex, wAddr, labelAccess, true);
     }
     const Fixup* fixup = GetFixup(segmentIndex, cType, wPC, wAddr);
     if (fixup) {
@@ -553,7 +550,7 @@ wstring SegmentList::GetLabelAtAddressInternal(SEGMENT_INDEX segmentIndex, Memor
         // For a relative branch, find in the same kind of segment first
         const auto otherSegmentIndex = FindSegmentWithSameFileHeaderByAddr(segmentIndex, wAddr);
         if (otherSegmentIndex != NO_SEGMENT_INDEX) {
-            auto label = BuildAddress(otherSegmentIndex, wAddr, labelAccess, FALSE);
+            auto label = BuildAddress(otherSegmentIndex, wAddr, labelAccess, false);
             if (!label.empty()) {
                 return label;
             }
@@ -563,7 +560,7 @@ wstring SegmentList::GetLabelAtAddressInternal(SEGMENT_INDEX segmentIndex, Memor
     if (otherSegmentIndex != NO_SEGMENT_INDEX) {
         segmentIndex = otherSegmentIndex;
     }
-    auto label = BuildAddress(segmentIndex, wAddr, labelAccess, FALSE);
+    auto label = BuildAddress(segmentIndex, wAddr, labelAccess, false);
     if (!label.empty()) {
         return label;
     }

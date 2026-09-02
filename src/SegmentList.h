@@ -1,15 +1,12 @@
 #pragma once
 
-#include "Syntax.h"
-
-#include <vector>
-
-#include "Equate.h"
-#include "SegmentTypes.h"
-#include "Memory.h"
-#include "XML.h"
-#include "Segment.h"
 #include "InstructionSet.h"
+#include "Memory.h"
+#include "Segment.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
+#include "XML.h"
+#include <vector>
 
 class SegmentListInserter;
 class SegmentListChangedListener;

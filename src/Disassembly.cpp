@@ -1100,7 +1100,7 @@ void Disassembly::Pass4() {
           break; \
 	 	 	 	      } \
      DIS_GET_NEXT_BYTE(cH, segmentIndex, wPC); \
-     wAddr = ((WORD) cL) | (((WORD) cH) << 8); \
+     wAddr = ((word) cL) | (((word) cH) << 8); \
 }
 
     Memory::byte bByte;
@@ -1198,7 +1198,7 @@ void Disassembly::Pass4() {
         case MemoryType::WORD:
             DIS_GET_BYTE_IN_PASS_4(bByte, cLow, segmentIndex, wPC);
             if (profile->directiveWORDAllowed) {
-                wAddr = ((WORD)bByte) | (((WORD)cLow) << 8);
+                wAddr = ((word)bByte) | (((word)cLow) << 8);
                 disassemblyWriter.DUMP_WORD(wAddr);
             }
             else {
@@ -1213,7 +1213,7 @@ void Disassembly::Pass4() {
             DIS_GET_BYTE_IN_PASS_4(bByte, cLow, segmentIndex, wPC);
             wAddr = Memory::to_address(bByte, cLow);
             const wchar_t* szLabel;
-            if ((profile->directiveBYTEOnlyNumbersAllowed == FALSE) && (szLabel = workspace->FindSymbolByAddress(oldSegmentIndex, wOldPC, wAddr))) {
+            if ((profile->directiveBYTEOnlyNumbersAllowed == false) && (szLabel = workspace->FindSymbolByAddress(oldSegmentIndex, wOldPC, wAddr))) {
                 disassemblyWriter.DUMP_LABEL(szLabel);
             }
             else {
@@ -1226,7 +1226,7 @@ void Disassembly::Pass4() {
         case MemoryType::FIXUP:
         {
             DIS_GET_BYTE_IN_PASS_4(bByte, cLow, segmentIndex, wPC);
-            wAddr = ((WORD)bByte) | (((WORD)cLow) << 8);
+            wAddr = ((word)bByte) | (((word)cLow) << 8);
             auto label = segmentList->GetLabelAtAddress(oldSegmentIndex, wOldPC, wAddr, cDisByteType, OperandMode::Accumulator, LabelAccess::READ);
             if (!label.empty()) {
                 disassemblyWriter.DUMP_LABEL(label.c_str());
@@ -1247,9 +1247,9 @@ void Disassembly::Pass4() {
         case MemoryType::LABEL:
             DIS_GET_BYTE_IN_PASS_4(bByte, cLow, segmentIndex, wPC);
             if (profile->directiveWORDAllowed) {
-                wAddr = ((WORD)bByte) | (((WORD)cLow) << 8);
+                wAddr = ((word)bByte) | (((word)cLow) << 8);
                 auto label = segmentList->GetLabelAtAddress(oldSegmentIndex, wOldPC, wAddr, cDisByteType, OperandMode::Accumulator, LabelAccess::READ_WRITE);
-                if ((profile->directiveBYTEOnlyNumbersAllowed == FALSE) && !label.empty()) {
+                if ((profile->directiveBYTEOnlyNumbersAllowed == false) && !label.empty()) {
                     disassemblyWriter.DUMP_LABEL(label.c_str());
                 }
                 else {
@@ -1357,7 +1357,7 @@ void Disassembly::Pass4() {
             case OperandMode::Immediate: {
                 if (cDisByteType == MemoryType::LOBYTE) {
                     DIS_GET_BYTE_IN_PASS_4(bByte, cLow, segmentIndex, wPC);
-                    wAddr = ((WORD)cLow) | (((WORD)cDisByteType) << 8);
+                    wAddr = ((word)cLow) | (((word)cDisByteType) << 8);
 
                     lineWriter.Instruction(opcodeSegment, bByte).CString(L" #");
                     auto label = segmentList->GetLabelAtAddress(oldSegmentIndex, wOldPC, wAddr, cDisByteType, bByte);

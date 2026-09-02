@@ -75,28 +75,6 @@ inline std::string WStringToUtf8Compat(std::wstring_view str) {
     return result;
 }
 
-// ---- AddFontResource/RemoveFontResource: GDI's temporary font-file
-// registration mechanism, used originally to install a bundled .fon
-// bitmap font for rendering the Atari/C64 character set. No portable
-// meaning outside GDI - real font loading belongs to the UI layer
-// (ImGui uses its own font-atlas system entirely). Stubbed as no-ops so
-// ComputerSystem still compiles/runs headlessly. ----
-inline int AddFontResource(const wchar_t* /*fontFilePath*/) { return 1; } // pretend success
-inline int RemoveFontResource(const wchar_t* /*fontFilePath*/) { return 1; }
-
-// ---- Win32 base integer typedefs/macros used directly in engine code ----
-using BYTE = unsigned char;
-using WORD = unsigned short;
-using DWORD = unsigned long;
-using BOOL = int;
-using UINT = unsigned int;
-#ifndef TRUE
-#define TRUE 1
-#endif
-#ifndef FALSE
-#define FALSE 0
-#endif
-
 // ---- wsprintf: old Win32 User32 API, unbounded but in practice capped
 // at 1024 wide chars (its historical real-world limit on Windows).
 //
@@ -169,12 +147,6 @@ inline int wsprintf(wchar_t* buffer, const wchar_t* format, ...) {
 int _stricmp(const char* a, const char* b);
 int _wcsicmp(const wchar_t* a, const wchar_t* b);
 
-// ---- opaque handle stand-ins for GDI resource types that "core" data
-// structures store (but never actually dereference/draw with) — e.g.
-// ComputerFont/Workspace hold a font handle as a settings value. The real
-// UI layer's own font handles are wired in separately later. ----
-using HFONT = void*;
-constexpr HFONT NULL_HFONT_COMPAT = nullptr;
 
 // ---- strncpy_s: MSVC "secure CRT" string copy. Two overloads are used
 // in this codebase: the fixed-array-destination template form, and the
