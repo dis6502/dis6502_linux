@@ -866,10 +866,14 @@ void Disassembly::Pass3() {
     MemoryType cDisByteType;
 
     Memory::byte cLow;
+#ifdef _MSC_VER
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-but-set-variable"
+#endif
     Memory::address wAddr = 0; // Used as parameter in macro calls
+#ifdef _MSC_VER
 #pragma clang diagnostic pop
+#endif
     Memory::address wPC;
     SEGMENT_INDEX segmentIndex = 0;
 

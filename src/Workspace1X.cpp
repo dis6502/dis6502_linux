@@ -1,5 +1,4 @@
 
-#include "PlatformCompat.h"
 #include "FileHeader.h"
 #include "InputStream.h"
 #include "OutputStream.h"
@@ -13,14 +12,8 @@
 static constexpr size_t MAX_SEGMENTS10 = 256;
 static constexpr size_t MAX_SEGMENTS14 = 256;
 
-// NOTE(Linux port): these were declared `extern` here but never defined
-// anywhere in the codebase - grepping the whole source tree found no
-// other reference to either symbol. That means the original build could
-// never have actually linked a binary that called Load10/Load14/Save14.
-// Since nothing else needs these across translation units, they're
-// defined here directly instead.
-static wstring binPath;  // To be part of workspace, used by "Workspace.cpp"
-static wstring diskPath;  // To be part of workspace, used by "Workspace.cpp"
+extern wstring binPath;  // To be part of workspace, used by "Workspace.cpp"
+extern wstring diskPath;  // To be part of workspace, used by "Workspace.cpp"
 
 bool Workspace1X::IsNull(const POINTER_32BIT pointer32Bit) {
     return pointer32Bit == 0u;

@@ -7,7 +7,6 @@
 #include <memory>
 #include <stdexcept>
 #include <utility>
-#include <wchar.h>
 
 DefaultFolders::DefaultFolders(const ComputerSystemTypeInfo& computerSystemTypeInfo) :
     computerSystemTypeInfo(&computerSystemTypeInfo) {

@@ -1,7 +1,7 @@
 #include "Console.h"
-
 #include "Debug.h"
-#include "UI.h"
+#include "Strings.h"
+#include <Windows.h>
 
 Console::Console() {
     allocated = false;
@@ -14,7 +14,7 @@ void Console::Allocate() {
     }
 }
 
-void Console::Write(wstring_view message) {
+void Console::WriteLine(wstring_view message) {
 
     Allocate();
 
@@ -29,6 +29,16 @@ void Console::Write(wstring_view message) {
     WriteConsole(hStdOut, messageString.c_str(), messageString.length(), &dwBuff, NULL);  // #.c_str() OK
 
 }
+
+void Console::Write(wstring_view message) {
+    WriteLine(message);
+
+}
+
+void  Console::Write(wstring_view pattern, wstring_view v0, wstring_view v1, wstring_view v2, wstring_view v3) {
+    WriteLine(String::Format(pattern, v0, v1, v2, v3));
+}
+
 string Console::ReadLine() {
 
     constexpr int BUFFER_LENGTH = 1024;

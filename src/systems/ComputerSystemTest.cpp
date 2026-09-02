@@ -1,9 +1,10 @@
-#include "ComputerSystemTest.h"
-
 #include "atari800/Atari800Test.h"
-#include "MainTest.h"
-#include "ComputerSystemFactory.h"
 #include "ComputerSystem.h"
+#include "ComputerSystemFactory.h"
+#include "ComputerSystemTest.h"
+#include "MainTest.h"
+#include "Syntax.h"
+#include "TestUnit.h"
 
 void ComputerSystemTest::TestSystems(const ComputerSystemFactory& computerSystemFactory) {
     TestAtari800(*computerSystemFactory.GetComputerSystem(ComputerSystemType::ATARI800));

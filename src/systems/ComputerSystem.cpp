@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "Byte.h"
 #include "ComputerSystem.h"
 #include "ComputerSystemType.h"
 #include "FileIO.h"

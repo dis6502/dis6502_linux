@@ -18,7 +18,7 @@
 #include "MainMemoryInspector.h"
 #include "MainMenu.h"
 #include "MainSegment.h"
-#include "MainTest.h"
+#include "MainUITest.h"
 #include "MainWindow.h"
 #include "MainWindowMenu.h"
 #include "MainXRef.h"
@@ -475,8 +475,8 @@ bool Main::InitApplication(HINSTANCE hInstance, wstring& commandLine, int nCmdSh
             testMode = true;
             testModeName = testModeParameter.substr(5);
         }
-        MainTest mainTest;
-        if (!mainTest.Execute(testModeName)) {
+        MainUITest mainUITest;
+        if (!mainUITest.Execute(testModeName)) {
             return false;
         }
     }
