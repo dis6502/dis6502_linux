@@ -2,12 +2,17 @@
 #include "EquateList.h"
 #include "FileHeader.h"
 #include "InputStream.h"
+#include "MemoryBlock.h"
 #include "OutputStream.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
+#include "SegmentTypes.h"
+#include "StringUtility.h"
+#include "Syntax.h"
 #include "Workspace.h"
 #include "Workspace1X.h"
+#include <string.h>
 
 static constexpr size_t MAX_SEGMENTS10 = 256;
 static constexpr size_t MAX_SEGMENTS14 = 256;
