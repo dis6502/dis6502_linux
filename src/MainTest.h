@@ -68,7 +68,7 @@ private:
     void TestWorkspace();
 
     void ExecuteVariant();
-    int System(wstring_view command);
+    int ExecuteCommand(wstring_view command);
 
     bool ExecuteUnitTest(wstring_view unitName, FileType fileType, wstring_view fileName, wstring_view outputFileName, wstring_view referenceFileName);
     bool ExecuteUnitTestItem(wstring_view unitName, FileType fileType, wstring_view fileName, wstring_view outputFileName, wstring_view referenceFileName);

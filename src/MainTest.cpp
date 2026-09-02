@@ -20,6 +20,7 @@
 #include "MainTest.h"
 #include "Memory.h"
 #include "MemoryInspectorTest.h"
+#include "OperatingSystem.h"
 #include "Profile.h"
 #include "ProfileLogic.h"
 #include "Resource.h"
@@ -310,10 +311,10 @@ void MainTest::ExecuteVariant() {
 }
 
 
-int MainTest::System(wstring_view command) {
-    auto commandString = wstring(command);
-    const auto result = _wsystem(commandString.c_str());
-    Log(L"INFO: Execution of '{0}' ended with return code {1}.", commandString, std::to_wstring(result));
+int MainTest::ExecuteCommand(wstring_view command) {
+
+    const auto result = OperatingSystem::ExecuteCommand(command);
+    Log(L"INFO: Execution of '{0}' ended with return code {1}.", command, std::to_wstring(result));
     return result;
 }
 
@@ -346,7 +347,7 @@ bool MainTest::ExecuteUnitTestItem(wstring_view unitName, FileType fileType, wst
     SetupUnit(L"disassembly", unitName);
     FileIO::SetCurrentWorkingDirectory(GetUnitOutFilePath(L""));
 
-    if (System(L"del /F/Q *.*") != 0) {
+    if (ExecuteCommand(L"del /F/Q *.*") != 0) {
         return false;
     }
 
@@ -437,13 +438,13 @@ bool MainTest::ExecuteUnitTestItem(wstring_view unitName, FileType fileType, wst
 
     auto commandLine = GetSuitePath() + FileIO::FILE_SEPARATOR + L"asm\\mads\\mads.exe " + disassemblyMainFile.GetPath() + L" -o:" + wstring(outputFileName) + L" -t:" + outputLabelFileName + L" -l:" + outputListFileName;
     std::wofstream scriptFile;
-    scriptFile.open(outputScriptFilePath);
+    scriptFile.open(FileIO::ToPath(outputScriptFilePath));
     scriptFile << L"@echo off" << std::endl << L"cd \"%~dp0\"" << std::endl << commandLine << std::endl << L"pause" << std::endl;
     scriptFile.close();
 
     // For programatic execution, outputs are redirected, so they can be loaded
     commandLine += L" >stdout.txt 2>stderr.txt";
-    if (System(commandLine.c_str()) != 0) {
+    if (ExecuteCommand(commandLine.c_str()) != 0) {
         wstring stdoutFilePath = L"stdout.txt";
         auto text = FileIO::ReadString(stdoutFilePath);
         Log(L"ERROR: Content of {0}\n{1}\n", stdoutFilePath, text);

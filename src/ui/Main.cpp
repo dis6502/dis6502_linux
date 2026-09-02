@@ -1,7 +1,6 @@
 
 #include "Application.h"
 #include "DC.h"
-#include "DefaultFolders.h"
 #include "DefaultFoldersDialog.h"
 #include "DefaultFoldersLogic.h"
 #include "DisassemblyControl.h"
@@ -33,6 +32,7 @@
 #include "Profile.h"
 #include "ProfileDialog.h"
 #include "ProfileLogic.h"
+#include "ProfilesController.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SpriteControl.h"
@@ -41,18 +41,31 @@
 #include "systems/ComputerSystemFactory.h"
 #include "systems/ComputerSystemType.h"
 #include "Text.h"
+#include "UI.h"
 #include "Workspace.h"
 #include "WorkspaceFont.h"
 #include "WorkspaceLogic.h"
+#include "WorkspaceTypes.h"
+#include <exception>
 #include <filesystem>
+#include <gsl/pointers>
 #include <iostream>
+#include <locale>
+#include <malloc.h>
+#include <memory>
+#include <Resource.h>
+#include <string>
 #include <strsafe.h>
+#include <Syntax.h>
+#include <vector>
+#include <wchar.h>
+#include <Windows.h>
 
 LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 
 // Main Globals
-wstring binPath; // Part of workspace. Used by Main/MainFile and Workspace Logic
-wstring diskPath; // Part of workspace. Used by Main/MainFile and Workspace Logic
+extern wstring binPath; // Part of workspace. Defined in Workspace1X.cpp, used by Main/MainFile and Workspace Logic
+extern wstring diskPath; // Part of workspace. Defined in Workspace1X.cpp, used by Main/MainFile and Workspace Logic
 
 std::unique_ptr<Main> g_Main = nullptr;
 std::unique_ptr<Application> g_Application = nullptr;

@@ -10,7 +10,6 @@ enum class FileType;
 #include "ProfileLogic.h"
 #include "ProfilesController.h"
 #include "WorkspaceLogic.h"
-class Workspace;
 #include "MRUController.h"
 #include "Layout.h"
 #include "MainWindow.h"
@@ -21,7 +20,13 @@ class Workspace;
 #include "MainMemoryInspector.h"
 #include "MainDisassembly.h"
 #include "MainXRef.h"
+#include "WorkspaceTypes.h"
+#include "Text.h"
+#include <Windows.h>
+#include <memory>
+#include <vector>
 
+class Workspace;
 
 class Main final : private WorkspaceChangedListener {
 public:

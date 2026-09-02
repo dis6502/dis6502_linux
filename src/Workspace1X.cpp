@@ -1,4 +1,5 @@
 
+#include "EquateList.h"
 #include "FileHeader.h"
 #include "InputStream.h"
 #include "OutputStream.h"
@@ -6,14 +7,13 @@
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
 #include "Workspace.h"
-#include "EquateList.h"
 #include "Workspace1X.h"
 
 static constexpr size_t MAX_SEGMENTS10 = 256;
 static constexpr size_t MAX_SEGMENTS14 = 256;
 
-extern wstring binPath;  // To be part of workspace, used by "Workspace.cpp"
-extern wstring diskPath;  // To be part of workspace, used by "Workspace.cpp"
+wstring binPath;  // To be part of workspace, used by "Workspace1X.cpp"
+wstring diskPath;  // To be part of workspace, used by "Workspace1X.cpp"
 
 bool Workspace1X::IsNull(const POINTER_32BIT pointer32Bit) {
     return pointer32Bit == 0u;
