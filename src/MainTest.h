@@ -75,4 +75,5 @@ private:
 
 };
 
+MainTest::TestMode TestModeFromString(wstring_view string);
 wstring ToString(MainTest::TestMode testMode);

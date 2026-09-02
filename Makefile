@@ -23,8 +23,9 @@ CXXFLAGS := $(CXXSTD) $(INCLUDES) -Wall -Wextra -Wno-unused-parameter
 
 # Every core engine source file (src/*.cpp and src/systems/**/*.cpp).
 CORE_SOURCES := $(wildcard $(SRC_DIR)/*.cpp) \
-                 $(wildcard $(SRC_DIR)/systems/*.cpp) \
-                 $(wildcard $(SRC_DIR)/systems/*/*.cpp)
+                $(wildcard $(SRC_DIR)/systems/*.cpp) \
+                $(wildcard $(SRC_DIR)/systems/*/*.cpp) \
+				$(wildcard $(SRC_DIR)/ui/Console.cpp)
 CORE_OBJECTS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CORE_SOURCES))
 
 .PHONY: all test clean
@@ -75,7 +76,7 @@ smoke_test_bin: $(OBJ_DIR)/smoke_test.o $(CORE_OBJECTS)
 	$(CXX) $(CXXSTD) $^ -o $@
 
 # --- run the real unit test suite against tst/suite/ ---
-# TestPaths::GetSuitePath() resolves "../../../tst/suite" relative to
+# MainTest::GetSuitePath() resolves "../../../tst/suite" relative to
 # the *binary's own* directory (via /proc/self/exe), so the runner
 # needs to sit exactly 3 directories below wherever tst/ lives (tst/ is
 # bundled directly in this zip, alongside src/). This recreates that

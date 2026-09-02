@@ -44,6 +44,7 @@
 #include <sstream>
 #include <stdexcept>
 
+using TestMode = MainTest::TestMode;
 extern std::unique_ptr<Application> g_Application;
 
 enum VariantBits : unsigned int {
@@ -52,7 +53,24 @@ enum VariantBits : unsigned int {
 };
 
 
-wstring ToString(MainTest::TestMode testMode) {
+TestMode TestModeFromString(wstring_view string) {
+    auto testMode = TestMode::UNDEFINED;
+    if (String::Equals(string, L"DEV")) {
+        testMode = TestMode::DEV;
+    }
+    else if (String::Equals(string, L"FAST")) {
+        testMode = TestMode::FAST;
+    }
+    else if (string.empty() || String::Equals(string, L"NORMAL")) {
+        testMode = TestMode::NORMAL;
+    }
+    else if (String::Equals(string, L"DEEP")) {
+        testMode = TestMode::DEEP;
+    }
+    return testMode;
+}
+
+wstring ToString(TestMode testMode) {
     switch (testMode) {
     case MainTest::TestMode::DEV:
         return L"DEV";
@@ -67,6 +85,7 @@ wstring ToString(MainTest::TestMode testMode) {
     }
     throw std::runtime_error("Undefined test mode");
 }
+
 
 MainTest::MainTest(Writer& writer) {
     this->writer = &writer;

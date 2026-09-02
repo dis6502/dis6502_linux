@@ -1,13 +1,14 @@
-#include <cassert>
-#include <cstdio>
-
 #include "Application.h"
 #include "ByteArray.h"
+#include "EquateListLogic.h"
 #include "Strings.h"
 #include "systems/ComputerSystemFactory.h"
 #include "ui_frontend/MiniAssembler.h"
 #include "Workspace.h"
 #include "WorkspaceLogic.h"
+#include <cassert>
+#include <cstdio>
+
 
 int main() {
     ComputerSystemFactory computerSystemFactory;
@@ -16,7 +17,8 @@ int main() {
 
     // Give ourselves a plain raw segment to assemble into - simplest way
     // to get a real, writable Segment without needing a full file load.
-    WorkspaceLogic workspaceLogic;
+    EquateListLogic equateListLogic;
+    WorkspaceLogic workspaceLogic(equateListLogic);
     ByteArray buffer(16);
     workspaceLogic.AddRawSegment(workspace, buffer, 0, 16, 0x0600);
 
