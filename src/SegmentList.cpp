@@ -9,7 +9,7 @@
 #include "InstructionSet.h"
 #include "Memory.h"
 #include "Segment.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Workspace.h"
 #include <cassert>
 #include <gsl/util>

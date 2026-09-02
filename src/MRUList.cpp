@@ -5,7 +5,7 @@
 #include "FileIO.h"
 #include "FileType.h"
 #include "MRUEntry.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 extern std::unique_ptr<Application> g_Application;
 

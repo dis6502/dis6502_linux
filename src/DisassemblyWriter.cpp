@@ -1,5 +1,5 @@
 #include "DisassemblyWriter.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #ifdef _WIN32
 #include <Windows.h>
 #endif

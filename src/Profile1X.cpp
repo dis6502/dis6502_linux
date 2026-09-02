@@ -2,7 +2,7 @@
 
 #include "Application.h"
 #include "ApplicationSettingsSection.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 #include "Profile1X.h"
 

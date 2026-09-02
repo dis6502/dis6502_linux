@@ -29,7 +29,7 @@
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentTypes.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Syntax.h"
 #include "Word.h"
 #include "Workspace.h"

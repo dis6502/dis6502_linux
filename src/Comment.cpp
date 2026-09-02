@@ -1,5 +1,5 @@
 #include "Comment.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 Comment::Comment() :
     offset(0),

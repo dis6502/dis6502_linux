@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Syntax.h"
 
 class IOException : public std::exception {

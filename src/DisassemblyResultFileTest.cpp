@@ -4,7 +4,7 @@
 
 #include "Assertions.h"
 #include "FileIO.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 void DisassemblyResultFileTest::TestDisassemblyResultFile(File folder) {
 

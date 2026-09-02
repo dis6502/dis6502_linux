@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Disassembly.h"
 #include "DisassemblyProgressDialog.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "TextLabel.h"
 
 

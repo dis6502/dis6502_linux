@@ -14,7 +14,7 @@
 #include "OutputStream.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "systems/ComputerSystem.h"
 #include "Workspace.h"
 #include "Workspace1X.h"

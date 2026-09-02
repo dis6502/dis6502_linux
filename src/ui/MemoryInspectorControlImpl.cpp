@@ -13,7 +13,7 @@
 
 #include "MemoryInspectorControlImpl.h"
 #include "MemoryType.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 /*
 ** structure where buffer size and graphic mode characteristics are saved.

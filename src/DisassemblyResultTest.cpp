@@ -5,7 +5,7 @@
 
 #include "DisassemblySection.h"
 #include "DisassemblySectionType.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 #include "Assertions.h"
 

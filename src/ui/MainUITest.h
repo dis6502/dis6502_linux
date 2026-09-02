@@ -1,14 +1,9 @@
 #pragma once
+#pragma once
 
 #include "Console.h"
-#include "DefaultFoldersLogic.h"
-#include "EquateListLogic.h"
-#include "ProfileLogic.h"
 #include "Syntax.h"
-#include "systems/ComputerSystemFactory.h"
-#include "TestUnit.h"
-#include "Workspace.h"
-#include "WorkspaceLogic.h"
+
 
 enum class FileType;
 enum class ComputerSystemType;

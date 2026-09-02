@@ -3,10 +3,10 @@
 
 ** Disassembly control implementation used to display a disassembly listing.
 */
-#include "Strings.h"
+#include "StringUtility.h"
 #include <algorithm>
 #include <memory.h>
-#include <Strings.h>
+#include <StringUtility.h>
 
 #define NOMINMAX
 #include "DisassemblyControlImpl.h"

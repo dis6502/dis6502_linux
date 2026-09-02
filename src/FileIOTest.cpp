@@ -1,7 +1,7 @@
 #include "Assertions.h"
 #include "FileIO.h"
 #include "FileIOTest.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 
 void FileIOTest::AssertFileEquals(wstring_view actualFilePath, wstring_view expectedFilePath) {

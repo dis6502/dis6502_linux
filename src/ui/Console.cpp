@@ -1,10 +1,11 @@
 #include "Console.h"
 #include "Debug.h"
-#include "Strings.h"
+#include "StringUtility.h"
+#include "Syntax.h"
 #include <Windows.h>
 
-Console::Console() {
-    allocated = false;
+Console::Console() : allocated(false) {
+
 }
 
 void Console::Allocate() {

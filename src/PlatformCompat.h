@@ -13,6 +13,7 @@
 #include <cwchar>
 #include <cwctype>
 #include <string>
+#include <strings.h>
 
 #define _TRUNCATE ((size_t)-1)
 

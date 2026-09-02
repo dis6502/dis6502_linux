@@ -8,7 +8,7 @@
 #include "DatatypeUtility.h"
 #include "FileIO.h"
 #include "Memory.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Syntax.h"
 
 #include <gsl/pointers>

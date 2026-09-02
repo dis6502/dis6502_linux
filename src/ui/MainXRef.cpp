@@ -1,7 +1,7 @@
 #include "MainDisassembly.h"
 #include "MainWindow.h"
 #include "MainXRef.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Text.h"
 #include "XRefListWindow.h"
 

@@ -1,5 +1,5 @@
 #include "ComputerFont.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Syntax.h"
 #include "systems/ComputerSystem.h"
 #include "UI.h"

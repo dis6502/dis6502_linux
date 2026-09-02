@@ -1,5 +1,5 @@
 #include "PlatformCompat.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include <algorithm>
 #include <format>
 #include <sstream>

@@ -9,7 +9,7 @@
 #include "EditControl.h"
 #include "ListBox.h"
 #include "MessageBoxDialog.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "TextLabel.h"
 
 extern std::unique_ptr<Application> g_Application;

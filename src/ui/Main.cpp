@@ -36,7 +36,7 @@
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SpriteControl.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "systems/ComputerSystem.h"
 #include "systems/ComputerSystemFactory.h"
 #include "systems/ComputerSystemType.h"

@@ -4,7 +4,7 @@
 #include "AboutDialog.h"
 #include "Byte.h"
 #include "FileIO.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include <span>
 
 extern std::unique_ptr<Application> g_Application;

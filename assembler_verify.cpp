@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "ByteArray.h"
 #include "EquateListLogic.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "systems/ComputerSystemFactory.h"
 #include "ui_frontend/MiniAssembler.h"
 #include "Workspace.h"

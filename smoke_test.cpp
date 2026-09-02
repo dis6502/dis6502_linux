@@ -7,7 +7,7 @@
 #include <cwchar>
 
 #include "InstructionSet.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 int main() {
     InstructionSetMOS6502 instructionSet(L"MOS 6502");

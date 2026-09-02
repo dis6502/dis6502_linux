@@ -6,7 +6,7 @@
 #include "InstructionSet.h"
 #include "Memory.h"
 #include "MemoryInspectorControl.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Workspace.h"
 
 extern std::unique_ptr<Workspace> g_Workspace;

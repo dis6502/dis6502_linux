@@ -1,6 +1,6 @@
 #include "Application.h"
 
-#include "Strings.h"
+#include "StringUtility.h"
 #include "TextLabel.h"
 
 TextLabel::TextLabel(HWND hWnd) : Control(hWnd) {}

@@ -4,7 +4,7 @@
 #include "EditControl.h"
 #include "FindStringDialog.h"
 #include "MessageBoxDialog.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Text.h"
 
 FindStringDialog::FindStringDialog(int nMaxChars) {

@@ -9,14 +9,15 @@ MainUITest::MainUITest() {
 }
 
 bool MainUITest::Execute(wstring_view testModeName) {
-
     auto testMode = TestModeFromString(testModeName);
 
     if (testMode != TestMode::UNDEFINED) {
+        console.Allocate();
         MainTest mainTest(console);
         mainTest.Execute(testMode);
     }
     else {
+        console.Allocate();
         console.Write(L"ERROR: Unknown test mode {0}.", testModeName);
     }
 
@@ -24,6 +25,7 @@ bool MainUITest::Execute(wstring_view testModeName) {
         return true;
     }
     else {
+        console.Allocate();
         console.ReadLine();
         return false;
     }

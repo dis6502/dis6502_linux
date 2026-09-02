@@ -3,7 +3,7 @@
 #include "CommonTest.h"
 #include "DatatypeUtility.h"
 #include "Debug.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include <vector>
 
 long Allocatable::instanceCount;

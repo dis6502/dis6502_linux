@@ -4,7 +4,7 @@
 #include "Application.h"
 #include "DefaultFolders.h"
 #include "FileType.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Text.h"
 #include "Window.h"
 

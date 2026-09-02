@@ -26,7 +26,7 @@
 #include "Resource.h"
 #include "SegmentList.h"
 #include "SegmentTest.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Syntax.h"
 #include "systems/atari800/AtariDiskImageTest.h"
 #include "systems/ComputerSystemTest.h"

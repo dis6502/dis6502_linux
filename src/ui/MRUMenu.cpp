@@ -1,7 +1,7 @@
 #include "MRUEntry.h"
 #include "MRUList.h"
 #include "MRUMenu.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include <sstream>
 
 MRUMenu::MRUMenu(UINT menuPosition, std::vector<UINT> itemIDList) :

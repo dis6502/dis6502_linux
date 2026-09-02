@@ -8,7 +8,7 @@
 #include "EquateRangeDialog.h"
 #include "ListBox.h"
 #include "MessageBoxDialog.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 constexpr auto ITEM_FORMAT = L"%s ($%04hX)";
 

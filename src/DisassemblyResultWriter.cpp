@@ -4,7 +4,7 @@
 #include "File.h"
 #include "FileIO.h"
 #include "OutputStream.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 DisassemblyResultWriter::DisassemblyResultWriter(const Profile& profile) :
     profile(&profile), file(), outputStream(nullptr), lineNumber(0) {

@@ -8,7 +8,7 @@
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include <set>
 
 

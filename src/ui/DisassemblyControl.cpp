@@ -3,7 +3,7 @@
 
 #include "DisassemblyControl.h"
 #include "DisassemblyResult.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 void DisassemblyControl::RegisterClassFor(HINSTANCE hInstance) {
     DisassemblyControlImpl::RegisterClassFor(hInstance);

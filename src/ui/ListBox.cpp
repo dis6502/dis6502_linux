@@ -1,6 +1,6 @@
 #include "Dialog.h"
 #include "ListBox.h"
-#include "Strings.h"
+#include "StringUtility.h"
 
 
 

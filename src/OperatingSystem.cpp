@@ -1,6 +1,6 @@
 #include "OperatingSystem.h"
 #ifndef _WIN32
-#include "Strings.h"
+#include "StringUtility.h"
 #endif
 #include "Syntax.h"
 #include <cstdlib>

@@ -4,7 +4,7 @@
 #include "FileInputStream.h"
 #include "Fixup.h"
 #include "Segment.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Symbol.h"
 // #include <algorithm> // TODO For sorting, should be in each list
 #ifdef _WIN32

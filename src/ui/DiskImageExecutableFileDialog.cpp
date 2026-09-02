@@ -11,7 +11,7 @@
 #include <cstdarg>
 #include <memory>
 #include <Resource.h>
-#include <Strings.h>
+#include <StringUtility.h>
 #include <Syntax.h>
 #include <Windows.h>
 

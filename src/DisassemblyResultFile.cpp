@@ -8,7 +8,7 @@
 #include "File.h"
 #include "FileIO.h"
 #include "Profile.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #ifdef _WIN32
 #include <Windows.h>
 #endif

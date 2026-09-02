@@ -1,5 +1,5 @@
 #include "FileIO.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "Text.h"
 #include <filesystem>
 #include <gsl/gsl>

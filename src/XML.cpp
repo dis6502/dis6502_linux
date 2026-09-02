@@ -1,5 +1,5 @@
 #include "DatatypeUtility.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "XML.h"
 
 gsl::not_null<XML::Element*> XML::AddChildElement(Element& element, wstring_view elementName) {

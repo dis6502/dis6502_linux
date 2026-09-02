@@ -3,7 +3,7 @@
 **
 ** Sprite control implementation used to draw a graphic buffer using a specified Atari graphic mode.
 */
-#include "Strings.h"
+#include "StringUtility.h"
 #include <algorithm>
 #include <memory.h>
 

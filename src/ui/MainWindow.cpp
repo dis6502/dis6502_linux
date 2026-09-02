@@ -6,7 +6,7 @@
 #include "MainWindowMenu.h"
 #include "MemoryInspectorWindow.h"
 #include "SegmentListWindow.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include "XRefListWindow.h"
 
 

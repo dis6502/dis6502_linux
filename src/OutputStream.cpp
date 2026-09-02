@@ -3,7 +3,7 @@
 #include "Encoding.h"
 #include "File.h"
 #include "FileIO.h"
-#include "Strings.h"
+#include "StringUtility.h"
 #include <filesystem>
 #include <vector>
 
