@@ -1,8 +1,14 @@
 #include "Assertions.h"
+#include "CommonIO.h"
 #include "FileIO.h"
 #include "FileIOTest.h"
 #include "StringUtility.h"
-
+#include "Syntax.h"
+#include <filesystem>
+#include <fstream>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 void FileIOTest::AssertFileEquals(wstring_view actualFilePath, wstring_view expectedFilePath) {
     Assert::Log(wstringstream() << "Comparing " << actualFilePath << " with " << expectedFilePath);
@@ -28,6 +34,9 @@ void FileIOTest::AssertFileEquals(wstring_view actualFilePath, wstring_view expe
 void FileIOTest::TestFileIO() {
 
     auto filePath = String::ansi_to_wstring(".non_existing_test_file");
+    auto fileSystemPath = FileIO::ToPath(filePath);
+    std::filesystem::remove(fileSystemPath);
+
     try {
         const auto fileSize = FileIO::GetFileSize(filePath);
         Assert::Fail(L"Expected IOException instead of file size "+std::to_wstring(fileSize));
@@ -37,7 +46,7 @@ void FileIOTest::TestFileIO() {
     }
 
     std::ofstream fout;
-    fout.open(FileIO::ToPath(filePath), std::ios::binary | std::ios::out);
+    fout.open(fileSystemPath, std::ios::binary | std::ios::out);
 
     constexpr size_t arraySize = 40000;
     auto byteArray = std::make_unique<char[]>(arraySize);
@@ -49,4 +58,7 @@ void FileIOTest::TestFileIO() {
     if (fileSize != arraySize) {
         throw  std::runtime_error("Length of existing file must be 40000");
     }
+
+    Assert::BoolEquals(std::filesystem::remove(fileSystemPath), true);
+
 }

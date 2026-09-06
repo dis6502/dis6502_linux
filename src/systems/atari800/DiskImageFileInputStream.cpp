@@ -30,7 +30,7 @@ FileIO::FILE_SIZE DiskImageFileInputStream::GetFileSize() const {
 
 
 void DiskImageFileInputStream::Read(void* buffer, stream_size size) {
-    static constexpr stream_size max_size = std::numeric_limits<size_t>::max();
+    static constexpr stream_size max_size = std::numeric_limits<stream_size>::max();
     if (buffer == nullptr) {
         throw std::runtime_error("Buffer must not be nullptr");
     }
