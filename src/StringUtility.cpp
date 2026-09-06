@@ -1,8 +1,17 @@
 #include "PlatformCompat.h"
 #include "StringUtility.h"
+#include "Syntax.h"
 #include <algorithm>
+#include <cctype>
+#include <cstdint>
 #include <format>
+#include <ios>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <string.h>
+#include <vector>
+#include <wchar.h>
 #ifdef _WIN32
 #include <Windows.h>
 #endif
@@ -51,10 +60,11 @@ wstring String::FromCharArray(const char array[], size_t size) {
     if (array == nullptr) {
         return Empty();
     }
-    wchar_t buffer[size + 1];
+    std::vector<wchar_t> buffer;
+    buffer.reserve(size + 1);
     for (size_t i = 0; i < size; i++) { buffer[i] = array[i]; };
     buffer[size] = 0;
-    return wstring(buffer);
+    return wstring(buffer.data());
 }
 void String::AssertASCII(const wchar_t* szString) {
     for (size_t i = 0; i < Length(szString); i++) {
