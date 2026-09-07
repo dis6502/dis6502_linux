@@ -3,11 +3,15 @@
 * Dynamic layout for main window controls.
 */
 
-#include <algorithm>
+#define NOMINMAX
 
 #include "Application.h"
 
 #include "Layout.h"
+#include "UI.h"
+#include <algorithm>
+#include <memory>
+#include <Windows.h>
 
 extern std::unique_ptr<Application> g_Application;
 

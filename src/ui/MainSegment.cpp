@@ -1,7 +1,12 @@
 #include "Application.h"
+#include "CommonIO.h"
+#include "Encoding.h"
 #include "FileDialogs.h"
+#include "FileIO.h"
 #include "FileType.h"
 #include "Main.h"
+#include "MainController.h"
+#include "MainSegment.h"
 #include "MainWindow.h"
 #include "MemoryInspector.h"
 #include "OutputStream.h"
@@ -11,10 +16,13 @@
 #include "SegmentListPopupMenu.h"
 #include "SegmentListWindow.h"
 #include "SegmentPropertiesDialog.h"
+#include "SegmentTypes.h"
 #include "systems/ComputerSystem.h"
+#include "UI.h"
 #include "Workspace.h"
-
-#include "MainSegment.h"
+#include <memory>
+#include <string>
+#include <Windows.h>
 
 extern std::unique_ptr<Main> g_Main;
 extern std::unique_ptr<Workspace> g_Workspace;

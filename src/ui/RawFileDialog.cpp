@@ -1,11 +1,19 @@
 #include "Application.h"
-#include "FileIO.h"
-#include "MemoryInspectorControl.h"
 #include "Button.h"
-#include "RawFileDialog.h"
+#include "ByteArray.h"
+#include "CommonIO.h"
+#include "Control.h"
+#include "Dialog.h"
 #include "EditControl.h"
-
-#include <gsl/gsl>
+#include "FileIO.h"
+#include "Memory.h"
+#include "MemoryInspectorControl.h"
+#include "RawFileDialog.h"
+#include "Resource.h"
+#include "Syntax.h"
+#include "Window.h"
+#include <memory>
+#include <Windows.h>
 
 extern std::unique_ptr<Application> g_Application;
 

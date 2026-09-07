@@ -1,13 +1,10 @@
 /*
 ** MemoryInspector.cpp
 **
-** Handles memoryInspector window and associated menu.
+** Handles the memory inspector window and associated menu.
 */
-#include <algorithm>
-
 #include "Application.h"
 #include "DatatypeUtility.h"
-#include "Dialog.h"
 #include "FileHeader.h"
 #include "FindStringDialog.h"
 #include "InstructionSet.h"
@@ -15,20 +12,29 @@
 #include "Main.h"
 #include "MainDisassembly.h"
 #include "MainWindow.h"
+#include "Memory.h"
+#include "MemoryInspector.h"
 #include "MemoryInspectorControl.h"
 #include "MemoryInspectorControlTypes.h"
 #include "MemoryInspectorPopupMenu.h"
 #include "MemoryInspectorSelection.h"
 #include "MemoryInspectorStack.h"
 #include "MemoryInspectorWindow.h"
-#include "Profile.h"
+#include "MemoryType.h"
+#include "Resource.h"
 #include "Segment.h"
 #include "SegmentList.h"
+#include "SegmentTypes.h"
 #include "SelectSpritesDialog.h"
+#include "StringUtility.h"
+#include "Syntax.h"
 #include "systems/ComputerSystem.h"
+#include "Window.h"
 #include "Workspace.h"
+#include <memory>
+#include <string.h>
+#include <Windows.h>
 
-#include "MemoryInspector.h"
 
 extern std::unique_ptr<Main> g_Main;
 extern std::unique_ptr<Application> g_Application;
