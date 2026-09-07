@@ -1,10 +1,14 @@
-#include "OutputStream.h"
-
+#include "CommonIO.h"
 #include "Encoding.h"
 #include "File.h"
 #include "FileIO.h"
+#include "OutputStream.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include <cstdio>
 #include <filesystem>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 gsl::not_null<OutputStream*> OutputStream::OpenFile(wstring_view filePath, Encoding encoding) {

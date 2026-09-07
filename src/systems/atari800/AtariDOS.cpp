@@ -1,6 +1,19 @@
 #include "AtariDOS.h"
+#include "Byte.h"
+#include "ByteArray.h"
+#include "CommonIO.h"
+#include "DatatypeUtility.h"
+#include "FileIO.h"
+#include "Memory.h"
+#include "StringUtility.h"
+#include "Syntax.h"
+#include <cctype>
+#include <cstdio>
 #include <iomanip>
+#include <memory>
 #include <sstream>
+#include <string.h>
+
 
 /* See also https ://github.com/jhallen/atari-tools for infos */
 
@@ -724,10 +737,10 @@ AtariError AtariDOS::ReadSector(FILE* fd, AtariFile& info) {
 }
 
 
-FILE* OpenForRead(wstring_view diskImageFilePath) {
+static FILE* OpenForRead(wstring_view diskImageFilePath) {
     return FileIO::OpenFile(diskImageFilePath, L"rb");
 }
-FILE* OpenForReadWrite(wstring_view diskImageFilePath) {
+static FILE* OpenForReadWrite(wstring_view diskImageFilePath) {
     return FileIO::OpenFile(diskImageFilePath, L"r+b");
 }
 

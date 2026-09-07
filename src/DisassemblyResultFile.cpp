@@ -1,14 +1,18 @@
 #include "DisassemblyResultFile.h"
 
 #include "Application.h"
+#include "CommonIO.h"
 #include "DisassemblyLine.h"
 #include "DisassemblyResult.h"
 #include "DisassemblyResultWriter.h"
 #include "DisassemblySectionType.h"
 #include "File.h"
-#include "FileIO.h"
 #include "Profile.h"
-#include "StringUtility.h"
+#include "Resource.h"
+#include "Syntax.h"
+#include <climits>
+#include <memory>
+#include <stdexcept>
 #ifdef _WIN32
 #include <Windows.h>
 #endif

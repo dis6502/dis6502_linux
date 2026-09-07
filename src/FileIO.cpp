@@ -1,13 +1,27 @@
+#include "ByteArray.h"
 #include "CommonIO.h"
 #include "FileIO.h"
+#include "Resource.h"
 #include "StringUtility.h"
+#include "Syntax.h"
 #include "Text.h"
+#include <cerrno>
+#include <cstdio>
+#include <cstdlib>
 #include <filesystem>
-#include <gsl/gsl>
+#include <fstream>
+#include <gsl/util>
+#include <limits>
+#include <string>
+#include <system_error>
+#include <vector>
+#include <wchar.h>
 
 #ifdef _WIN32
+const char FileIO::FILE_SEPARATOR_CHAR = '\\';
 const wstring FileIO::FILE_SEPARATOR = L"\\";
 #else
+const char FileIO::FILE_SEPARATOR_CHAR = '/';
 const wstring FileIO::FILE_SEPARATOR = L"/";
 #endif
 

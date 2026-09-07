@@ -1,11 +1,18 @@
 #include "Application.h"
 #include "ApplicationSettingsSection.h"
+#include "CommonIO.h"
 #include "FileIO.h"
 #include "Profile.h"
 #include "Profile1X.h"
 #include "ProfileLogic.h"
+#include "Resource.h"
+#include "StringUtility.h"
+#include "Syntax.h"
 #include "systems/ComputerSystemType.h"
+#include "tinyxml2.h"
 #include "XML.h"
+#include <memory>
+#include <string>
 
 extern std::unique_ptr<Application> g_Application;
 

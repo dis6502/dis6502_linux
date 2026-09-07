@@ -3,11 +3,18 @@
  */
 
 #include "Application.h"
+#include "ByteArray.h"
+#include "CommonIO.h"
 #include "DiskImage.h"
 #include "FileIO.h"
 #include "Memory.h"
-#include <errno.h>
-#include <iostream>
+#include "Resource.h"
+#include "Syntax.h"
+#include <cerrno>
+#include <cstdio>
+#include <cstdlib>
+#include <memory>
+#include <string.h>
 
 extern std::unique_ptr<Application> g_Application;
 
