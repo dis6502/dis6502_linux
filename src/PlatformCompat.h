@@ -6,6 +6,7 @@
 #ifndef WIN32
 
 #include <cerrno>
+#include <cstdarg>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -14,6 +15,8 @@
 #include <cwctype>
 #include <string>
 #include <strings.h>
+
+std::wstring RewriteBareWideStringSpecifiers(const wchar_t* format);
 
 #define _TRUNCATE ((size_t)-1)
 
@@ -76,58 +79,6 @@ inline std::string WStringToUtf8Compat(std::wstring_view str) {
     return result;
 }
 
-// ---- wsprintf: old Win32 User32 API, unbounded but in practice capped
-// at 1024 wide chars (its historical real-world limit on Windows).
-//
-// Win32's wsprintf has no narrow/wide distinction for %s - in a wide
-// format string, %s always means "wide string", same as %ls. POSIX's
-// vswprintf disagrees: per the standard, a bare %s in a WIDE format
-// string takes a narrow char* (converted via the current locale) - %ls
-// is the one that takes wchar_t*. Every call site in this codebase
-// (ported straight from Windows) passes wchar_t*/wstring::c_str() to
-// %s, so forwarding the format string to vswprintf unchanged is
-// undefined behavior: vswprintf reads the wchar_t* as if it were a
-// char*, and on this platform's little-endian 4-byte wchar_t, that
-// hits the zero byte right after the first character - e.g. formatting
-// L"Start of code" through a bare %s silently truncates to L"S". This
-// rewrites every bare %s (not already %ls/%hs, and not a literal %%)
-// to %ls before handing the format string to vswprintf, so callers get
-// the same wide-string behavior as real Win32 wsprintf without having
-// to touch every call site individually. ----
-#include <cstdarg>
-#include <string>
-inline std::wstring RewriteBareWideStringSpecifiers(const wchar_t* format) {
-    std::wstring result;
-    for (const wchar_t* p = format; *p; ) {
-        if (*p != L'%') { result += *p++; continue; }
-        // Copy the '%' itself, then a literal '%%' just copies the
-        // second '%' too and moves on - nothing to rewrite.
-        result += *p++;
-        if (*p == L'%') { result += *p++; continue; }
-        // Flags.
-        while (*p == L'-' || *p == L'+' || *p == L' ' || *p == L'#' || *p == L'0') { result += *p++; }
-        // Width (digits or '*').
-        while ((*p >= L'0' && *p <= L'9') || *p == L'*') { result += *p++; }
-        // Precision.
-        if (*p == L'.') {
-            result += *p++;
-            while ((*p >= L'0' && *p <= L'9') || *p == L'*') { result += *p++; }
-        }
-        // Length modifier - if present, this specifier already says
-        // exactly what width it wants; leave it alone.
-        bool hasLengthModifier = false;
-        if (*p == L'h' || *p == L'l' || *p == L'j' || *p == L'z' || *p == L't' || *p == L'L' || *p == L'q') {
-            hasLengthModifier = true;
-            wchar_t modifier = *p;
-            result += *p++;
-            if (*p == modifier) { result += *p++; } // hh/ll
-        }
-        // Conversion character - insert 'l' before a bare 's' only.
-        if (*p == L's' && !hasLengthModifier) { result += L'l'; }
-        if (*p) { result += *p++; }
-    }
-    return result;
-}
 
 inline int wsprintf(wchar_t* buffer, const wchar_t* format, ...) {
     std::wstring fixedFormat = RewriteBareWideStringSpecifiers(format);
