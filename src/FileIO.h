@@ -1,19 +1,14 @@
 #pragma once
-
 #include "ByteArray.h"
-#include "CommonIO.h"
 #include "Syntax.h"
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
 #include <filesystem>
 #include <vector>
-
-// Include standard IO flags
-#include <fstream>
-
-// ---- _MAX_PATH: Windows CRT max-path-length constant ----
-#include <climits>
-#ifndef _MAX_PATH
-#define _MAX_PATH PATH_MAX
-#endif
+#ifndef _WIN32
+#include <limits.h>
+#endif 
 
 class FileIO final
 {
@@ -21,17 +16,20 @@ public:
     using FILE_SIZE = uintmax_t;
     using FILE_OFFSET = uintmax_t;
 
+
+#ifdef _WIN32
     static constexpr size_t FILE_PATH_SIZE = _MAX_PATH;
     static constexpr size_t FOLDER_PATH_SIZE = _MAX_PATH;
-
+    static const char FILE_SEPARATOR_CHAR = '\\';
+#else
+    static constexpr size_t FILE_PATH_SIZE = PATH_MAX;
+    static constexpr size_t FOLDER_PATH_SIZE = PATH_MAX;
+    static const char FILE_SEPARATOR_CHAR = '/';
+#endif
     using FILE_PATH = wchar_t[FILE_PATH_SIZE];
     using FOLDER_PATH = wchar_t[FOLDER_PATH_SIZE];
 
-#ifdef _WIN32
-    static const char FILE_SEPARATOR_CHAR = '\\';
-#else
-    static const char FILE_SEPARATOR_CHAR = '/';
-#endif
+
     static const wstring FILE_SEPARATOR;
     static const wstring EMPTY_FILE_PATH;
 

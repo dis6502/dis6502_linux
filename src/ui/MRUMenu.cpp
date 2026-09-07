@@ -1,8 +1,14 @@
+#include "FileIO.h"
 #include "MRUEntry.h"
 #include "MRUList.h"
 #include "MRUMenu.h"
 #include "StringUtility.h"
+#include "UI.h"
+#include <exception>
+#include <memory>
 #include <sstream>
+#include <vector>
+#include <Windows.h>
 
 MRUMenu::MRUMenu(UINT menuPosition, std::vector<UINT> itemIDList) :
     menuPosition(menuPosition), itemIDList(itemIDList) {}
@@ -39,7 +45,7 @@ void MRUMenu::FillMenu(HMENU hMenu, const MRUList& mruList) {
 
 
 const MRUEntry* MRUMenu::GetMRUEntry(HMENU hMenu, UINT itemID) const {
-    constexpr int MAX_LENGTH = 3 + _MAX_PATH;
+    constexpr int MAX_LENGTH = 3 + FileIO::FILE_PATH_SIZE;
     std::unique_ptr<wchar_t[]> szBuffer = std::make_unique<wchar_t[]>(MAX_LENGTH);
     auto hSubMenu = GetSubMenu(hMenu, menuPosition);
     GetMenuString(hSubMenu, itemID, szBuffer.get(), MAX_LENGTH - 1, MF_BYCOMMAND);

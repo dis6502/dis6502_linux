@@ -1,3 +1,4 @@
+#include "CommonIO.h"
 #include "FileIO.h"
 #include "StringUtility.h"
 #include "Text.h"
