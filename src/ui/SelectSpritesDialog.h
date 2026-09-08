@@ -24,7 +24,7 @@ public:
 	void GetSelection(Memory::offset&nBegin, Memory::offset& nEnd) const;
 
 protected:
-	bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+	bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 private:
 	typedef wchar_t ITEM_LINE[14];

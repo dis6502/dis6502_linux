@@ -52,7 +52,7 @@ void OutputStream::WriteString(wstring_view stringView) {
         buffer.resize(stringView.size());
         for (size_t i = 0; i < stringView.size(); i++) {
             wchar_t c = stringView.at(i);
-            if ((c == 10) || (32 <= c && c <= 127)) {
+            if ((c == 10) || (c == 13) || (32 <= c && c <= 127)) {
                 buffer[i] = c;
             }
             else {

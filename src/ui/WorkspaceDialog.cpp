@@ -19,7 +19,7 @@ bool WorkspaceDialog::Show() {
     return (ShowDialogBox() == TRUE);
 }
 
-bool WorkspaceDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool WorkspaceDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
 
     case WM_INITDIALOG:

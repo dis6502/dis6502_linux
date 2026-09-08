@@ -24,7 +24,7 @@ bool EquateRangeDialog::Show(EquateList& systemEquateList, EquateList& equateLis
 }
 
 
-bool EquateRangeDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool EquateRangeDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     if (dialogVisible) {
         return DefWindowProc(hDlg, message, wParam, lParam);

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Syntax.h"
-#include "UI.h"
-
+#include <Windows.h>
 
 // Wrapper for Windows device context.
 class DC {

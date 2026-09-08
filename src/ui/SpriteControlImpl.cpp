@@ -3,15 +3,10 @@
 **
 ** Sprite control implementation used to draw a graphic buffer using a specified Atari graphic mode.
 */
-#include "StringUtility.h"
-#include <algorithm>
-#include <memory.h>
-
 #define NOMINMAX
-#include "utils.h"
-#include <Windows.h>
 
-/* The following types and functions are used
+
+/* The following types and functions are used in utils.h
 *  DibNew
    DibBitCount
    DibMapToPalette
@@ -23,6 +18,11 @@
    DibInfo
 */
 
+#include "StringUtility.h"
+#include "utils.h"
+#include <algorithm>
+#include <Windows.h>
+#include "Window.h"
 #include "SpriteControlImpl.h"
 
 /*
@@ -653,7 +653,7 @@ LONG SpriteControlImpl::LButtonUp(WPARAM wParam, LPARAM lParam) {
 /*
 ** Sprite window proc.
 */
-LRESULT SpriteControlImpl::WndProc(UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT SpriteControlImpl::WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_SPRITE_SET_BUFFER:
         SetBuffer(wParam, lParam);
@@ -728,7 +728,7 @@ LRESULT SpriteControlImpl::WndProc(UINT message, WPARAM wParam, LPARAM lParam) {
 /*
 ** Sprite window proc.
 */
-LRESULT CALLBACK SpriteWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK SpriteWndProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     SpriteControlImpl control = SpriteControlImpl(hWnd);
     return control.WndProc(message, wParam, lParam);
 }

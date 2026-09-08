@@ -8,12 +8,13 @@
 #include "OutputStream.h"
 #include "StringUtility.h"
 #include "Workspace1X.h"
+#include <cmath>
 
 // Constants from workspace version 1X
 constexpr size_t MAX_BUF_LABEL_1X = 60000;
 constexpr size_t LABEL_MEM_SIZE_1X = MAX_BUF_LABEL_1X + 32;
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 EquateList::EquateList(WorkspaceProperty property) {
     this->property = property;
@@ -138,7 +139,7 @@ void EquateList::SetRange(wstring_view label, Memory::address labelAddress, Memo
 void EquateList::AddRange(wstring_view label, Memory::address labelAddress, Memory::address startAddress, Memory::address endAddress) {
 
     for (auto address = startAddress; address <= endAddress; address++) {
-        wsprintf(String::szBuffer, L"%s%s$%04hX", wstring(label).c_str(), (address > labelAddress ? "+" : "-"), abs(address - labelAddress));
+        swprintf(String::szBuffer, String::BUFFER_SIZE, L"%s%s$%04hX", wstring(label).c_str(), (address > labelAddress ? "+" : "-"), abs(address - labelAddress));
         auto equate = AddEquate();
         equate->Init(EquateType::LABEL, String::Format(), LabelAccess::READ_WRITE, address, L"");
     }

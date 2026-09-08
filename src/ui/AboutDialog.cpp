@@ -1,14 +1,11 @@
-#include "Application.h"
-#include "ListBox.h"
-
 #include "AboutDialog.h"
-#include "Byte.h"
+#include "Application.h"
 #include "FileIO.h"
+#include "ListBox.h"
 #include "StringUtility.h"
-#include <span>
+#include <span> 
 
-extern std::unique_ptr<Application> g_Application;
-
+extern Application* g_Application;
 
 AboutDialog::Module::Module(wstring_view name) : name(name), version(L""), description(L"") {}
 
@@ -20,7 +17,7 @@ void AboutDialog::Show() {
     ShowDialogBox();
 }
 
-bool AboutDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool AboutDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
     case WM_INITDIALOG: {
         CreateControls();

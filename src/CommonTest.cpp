@@ -2,7 +2,6 @@
 #include "ByteArray.h"
 #include "CommonTest.h"
 #include "DatatypeUtility.h"
-#include "Debug.h"
 #include "StringUtility.h"
 #include <vector>
 

@@ -1,6 +1,5 @@
 #include "Encoding.h"
 #include <algorithm>
-
 #include <map>
 
 EncodingInfo EncodingFactory::GetInfo(wstring_view key) {
@@ -23,23 +22,25 @@ EncodingInfo EncodingFactory::GetInfo(wstring_view key) {
 }
 
 EncodingInfo EncodingFactory::GetInfo(const Encoding encoding) {
-	const int O_TEXT=1;
-	const int O_BINARY=2;
-	const int O_UTF8=3;
-	
+#ifdef _WIN32
+    constexpr auto NEWLINE = L"\r\n";
+#else
+    constexpr auto NEWLINE = L"\n";
+#endif // _WIN32
+
     if (encoding == Encoding::ASCII) {
-        return EncodingInfo(Encoding::ASCII, L"ASCII", L"ASCII", L"\n", O_TEXT);
+        return EncodingInfo(Encoding::ASCII, L"ASCII", L"ASCII", NEWLINE);
     }
     else if (encoding == Encoding::ATASCII) {
-        return EncodingInfo(Encoding::ATASCII, L"ATASCII", L"ATASCII", L"\u009b", O_BINARY);
+        return EncodingInfo(Encoding::ATASCII, L"ATASCII", L"ATASCII", L"\u009b");
     }
     else if (encoding == Encoding::BINARY) {
-        return EncodingInfo(Encoding::BINARY, L"BINARY", L"Binary", L"\n", O_BINARY);
+        return EncodingInfo(Encoding::BINARY, L"BINARY", L"Binary", L"");
     }
     else if (encoding == Encoding::UTF8) {
-        return EncodingInfo(Encoding::UTF8, L"UTF8", L"UTF-8", L"\n", O_UTF8);
+        return EncodingInfo(Encoding::UTF8, L"UTF8", L"UTF-8", NEWLINE);
     }
-    return EncodingInfo(Encoding::UNKNOWN, L"UNKNOWN", L"Unknown", L"", 0);
+    return EncodingInfo(Encoding::UNKNOWN, L"UNKNOWN", L"Unknown", L"");
 }
 
 

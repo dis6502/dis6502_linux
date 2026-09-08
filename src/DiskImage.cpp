@@ -12,11 +12,10 @@
 #include "Syntax.h"
 #include <cerrno>
 #include <cstdio>
-#include <cstdlib>
-#include <memory>
 #include <string.h>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
+
 
 
 ImgError DiskImage::Seek(FILE* fd, const ImgInfo& info, const ImgRWPacket& sector) {

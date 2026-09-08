@@ -17,10 +17,11 @@
 #include <Windows.h>
 #endif
 
-extern std::unique_ptr<Application> g_Application;
 
-DisassemblyResultFile::DisassemblyResultFile() : result(nullptr), profile(nullptr) {
-}
+extern Application* g_Application;
+
+
+DisassemblyResultFile::DisassemblyResultFile() : result(nullptr), profile(nullptr) {}
 
 wstring DisassemblyResultFile::CreateIncludeFilePath(wstring_view mainFilePath, FileNumber fileNumber) {
 

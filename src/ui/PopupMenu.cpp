@@ -1,11 +1,9 @@
 #include "PopupMenu.h"
-
-
-#include "Application.h"
 #include "Text.h"
+#include "UIApplication.h"
 #include "Window.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern std::unique_ptr<UIApplication> g_UIApplication;
 
 
 PopupMenu::PopupMenu(wstring_view menuName) {
@@ -14,7 +12,7 @@ PopupMenu::PopupMenu(wstring_view menuName) {
         hTrackedMenu = hMenu;
     }
     else {
-        hMenu = LoadMenu(::g_Application->GetInstanceHandle(), wstring(menuName).c_str());
+        hMenu = LoadMenu(::g_UIApplication->GetInstanceHandle(), wstring(menuName).c_str());
         hTrackedMenu = GetSubMenu(hMenu, 0);
     }
 }

@@ -8,11 +8,11 @@
 #include <cstdlib> 
 #endif //  _CRTDBG_MAP_ALLOC
 
-#include <cstring>
-#include <memory> // for std::unique_ptr
+#include <cstdio>
+#include <cstdlib>
 #include <sstream>
-#include <stdexcept>
 #include <string>
+#include <string_view>
 
 using string = std::string;
 using wstring = std::wstring;

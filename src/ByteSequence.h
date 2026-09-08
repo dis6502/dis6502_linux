@@ -3,6 +3,7 @@
 #include "Syntax.h"
 
 #include "Byte.h"
+#include <memory>
 
 class ByteSequence {
 public:

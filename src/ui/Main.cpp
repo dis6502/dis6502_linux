@@ -42,6 +42,8 @@
 #include "systems/ComputerSystemType.h"
 #include "Text.h"
 #include "UI.h"
+#include "UIApplication.h"
+#include "Window.h"
 #include "Workspace.h"
 #include "WorkspaceFont.h"
 #include "WorkspaceLogic.h"
@@ -59,6 +61,7 @@
 #include <Syntax.h>
 #include <vector>
 #include <wchar.h>
+
 #include <Windows.h>
 
 LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
@@ -68,7 +71,8 @@ extern wstring binPath; // Part of workspace. Defined in Workspace1X.cpp, used b
 extern wstring diskPath; // Part of workspace. Defined in Workspace1X.cpp, used by Main/MainFile and Workspace Logic
 
 std::unique_ptr<Main> g_Main = nullptr;
-std::unique_ptr<Application> g_Application = nullptr;
+Application* g_Application = nullptr;
+std::unique_ptr<UIApplication> g_UIApplication = nullptr;
 std::unique_ptr<Workspace> g_Workspace = nullptr;
 
 std::unique_ptr<MemoryInspector> g_MemoryInspector = nullptr; // TODO SHould be MainMemoryInspector & Workspace
@@ -426,7 +430,7 @@ void Main::PaintMainWindow() {
 
 void Main::CreateControls() {
     // Register all classes once.
-    auto hInstance = ::g_Application->GetInstanceHandle();
+    auto hInstance = g_UIApplication->GetInstanceHandle();
     MainWindow::RegisterClassFor(hInstance, MainWndProc);
     MemoryInspectorControl::RegisterClassFor(hInstance);
     SpriteControl::RegisterClassFor(hInstance);
@@ -453,11 +457,12 @@ void Main::CreateControls() {
     // Setup log listbox.
     mainWindow->logListWindow->SetMouseWheelProc(MainMouseWheelProc);
 
-    ::g_Application->SetLogListWindow(mainWindow->logListWindow.get());
+    ::g_UIApplication->SetLogListWindow(mainWindow->logListWindow.get());
 }
 
 bool Main::InitApplication(HINSTANCE hInstance, wstring& commandLine, int nCmdShow) {
-    ::g_Application = std::make_unique<Application>(hInstance, L"dis6502.ini");
+    ::g_UIApplication = std::make_unique<UIApplication>(hInstance, L"dis6502.ini");
+    g_Application = g_UIApplication.get();
 
     // Create not workspace related logics.
     defaultFoldersLogic = std::make_unique<DefaultFoldersLogic>();
@@ -579,7 +584,8 @@ void Main::ExitApplication() {
     }
 
     // Release all instances inside the application scope.
-    ::g_Application.reset();
+    g_Application = nullptr;
+    ::g_UIApplication.reset();
 }
 
 MainWindow* Main::GetMainWindow() {
@@ -650,7 +656,7 @@ int Main::WinMainDelegate(HINSTANCE hInstance, const HINSTANCE hPrevInstance, ws
     return msg.wParam;
 }
 
-LRESULT Main::MainWndProcDelegate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT Main::MainWndProcDelegate(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_CREATE:
         return 0;
@@ -754,7 +760,7 @@ LRESULT Main::MainWndProcDelegate(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 /*
 ** WM_MOUSEWHEEL message
 */
-LRESULT CALLBACK Main::MainMouseWheelProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK Main::MainMouseWheelProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     static short zDelta = 0;
 
     POINT pt;
@@ -814,7 +820,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     return result;
 }
 
-LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+static LRESULT CALLBACK MainWndProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     try {
         return ::g_Main->MainWndProcDelegate(hWnd, message, wParam, lParam);
     }

@@ -15,7 +15,7 @@
 #include <Syntax.h>
 #include <Windows.h>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 
 DiskImageExecutableFileDialog::DiskImageExecutableFileDialog(const Window& parentWindow, HFONT hComputerFont) : Dialog(parentWindow, L"OPENDISKIMAGEEXECUTABLEFILEBOX") {
@@ -33,7 +33,7 @@ wstring DiskImageExecutableFileDialog::GetExecutableFilePath() const {
     return executableFilePath;
 }
 
-bool DiskImageExecutableFileDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool DiskImageExecutableFileDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     AtariFile info;
     AtariError error;
     bool bOK;

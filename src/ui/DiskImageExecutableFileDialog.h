@@ -14,7 +14,7 @@ public:
     wstring GetExecutableFilePath() const;
 
 protected:
-    bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
     void CreateControls() override;
 

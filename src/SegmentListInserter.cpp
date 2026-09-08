@@ -1,12 +1,10 @@
 #include "Application.h"
-#include "CommonIO.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
-#include "Workspace.h"
 #include <cassert>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 SegmentListInserter::SegmentListInserter(SegmentList& segmentList) {
     this->segmentList = &segmentList;

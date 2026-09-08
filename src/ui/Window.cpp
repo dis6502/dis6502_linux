@@ -1,10 +1,14 @@
-#include "Application.h"
-
-#include "MessageBoxDialog.h"
 #include "StringUtility.h"
+#include "UI.h"
+#include "UIApplication.h"
 #include "Window.h"
+#include <exception>
+#include <memory>
+#include <stdexcept>
+#include <Syntax.h>
+#include <Windows.h>
 
-extern std::unique_ptr<Application> g_Application;
+extern std::unique_ptr<UIApplication> g_UIApplication;
 
 
 Window::Window() {
@@ -33,7 +37,7 @@ HWND Window::GetHWnd() const {
 
 void Window::CreateWindowControl(wstring_view className, wstring_view windowName, DWORD dwStyle, HMENU hMenu, int x, int y, int nWidth, int nHeight) {
     HWND hParentWnd = (parentWindow == nullptr) ? NULL_HWND : parentWindow->GetHWnd();
-    HWND hWnd = CreateWindow(wstring(className).c_str(), wstring(windowName).c_str(), dwStyle, x, y, nWidth, nHeight, hParentWnd, hMenu, ::g_Application->GetInstanceHandle(), nullptr);  // ##c_str() OK
+    HWND hWnd = CreateWindow(wstring(className).c_str(), wstring(windowName).c_str(), dwStyle, x, y, nWidth, nHeight, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle(), nullptr);  // ##c_str() OK
 
     if (hWnd == NULL_HWND) {
 
@@ -44,8 +48,7 @@ void Window::CreateWindowControl(wstring_view className, wstring_view windowName
         wsprintf(szMessage,
             L"Error %lu during CreateWindow for window '%s' of class '%s'.\n"
             L"Actual parameters are: dwStyle=%lu hParentWnd=%p hMenu=%p  ::g_Application->GetHInstance()=%p\n",
-            lastError, wstring(windowName).c_str(), wstring(className).c_str(), dwStyle, hParentWnd, hMenu, ::g_Application->GetInstanceHandle());
-
+            lastError, wstring(windowName).c_str(), wstring(className).c_str(), dwStyle, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle());
         auto message = String::wstring_to_utf8(String::Format(L"Error in CreateWindowControl: %s", szMessage));
         safeExitWithExitCode(message.c_str(), lastError);
     }
@@ -110,7 +113,7 @@ void Window::SetRButtonDownProc(WNDPROC lpWndProc) {
     lpWM_RBUTTONDOWNProc = lpWndProc;
 }
 
-LRESULT CALLBACK Window::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK Window::WindowProc(HWND hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam) {
     Window* lpWindow = (Window*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
     if (lpWindow != nullptr) {
@@ -125,7 +128,7 @@ LRESULT CALLBACK Window::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-LRESULT Window::WindowProcInstance(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT Window::WindowProcInstance(HWND hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_DROPFILES:
         if (lpWM_DROPFILESProc != nullptr) {

@@ -15,7 +15,7 @@
 #include <memory>
 #include <Windows.h>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 
 RawFileDialog::RawFileDialog(const Window& parentWindow, HFONT hComputerFont) : Dialog(parentWindow, L"OPENRAWFILEBOX") {
@@ -66,7 +66,7 @@ void RawFileDialog::GetResult(Memory::offset& nBegin, Memory::size& nSize, Memor
     wAddr = this->wAddr;
 }
 
-bool RawFileDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool RawFileDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     switch (message) {
     case WM_INITDIALOG:

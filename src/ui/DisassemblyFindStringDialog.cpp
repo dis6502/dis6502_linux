@@ -17,7 +17,7 @@ wstring DisassemblyFindStringDialog::GetFindAscii() const {
     return findAscii;
 }
 
-bool DisassemblyFindStringDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool DisassemblyFindStringDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
     case WM_INITDIALOG:
         GetEditControl(IDC_FINDASCII).SetText(findAscii);

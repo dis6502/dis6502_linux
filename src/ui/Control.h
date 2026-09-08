@@ -1,31 +1,31 @@
 #pragma once
 
-#include "Syntax.h"
 #include "UI.h"
+#include "Window.h"
 
 class Control {
 public:
 
-	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK WndProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
 
-	Control(HWND hWnd);
-	virtual ~Control();
+    Control(HWND hWnd);
+    virtual ~Control();
 
-	void SetEnabled(bool enabled);
-	void SetFont(const HFONT& hFont);
+    void SetEnabled(bool enabled);
+    void SetFont(const HFONT& hFont);
 
     bool HasFocus() const;
-	void SetFocus();
+    void SetFocus();
 
-    void SetScrollRange(int bar, ScrollPosition minPosition,ScrollPosition maxPosition, BOOL update);
+    void SetScrollRange(int bar, ScrollPosition minPosition, ScrollPosition maxPosition, BOOL update);
     void SetScrollPosition(int bar, ScrollPosition scrollPosition, BOOL update);
 
-	HWND hWnd;
+    HWND hWnd;
 
 protected:
-	virtual LRESULT WndProc(UINT message, WPARAM wParam, LPARAM lParam);
+    virtual LRESULT WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
 
 private:
-	static Control* GetInstance(HWND hWND);
+    static Control* GetInstance(HWND hWND);
 
 };

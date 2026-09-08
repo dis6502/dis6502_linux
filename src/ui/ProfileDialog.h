@@ -18,7 +18,7 @@ public:
     bool Show(Profile& profile, const ComputerSystemTypeInfo& computerSystemTypeInfo);
 
 protected:
-    bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 private:
     ProfilesController* profilesController;

@@ -5,9 +5,9 @@
 */
 #pragma once
 
-#include "Syntax.h"
+// #include "MemoryInspectorControlTypes.h"
+#include "Window.h"
 #include <Windows.h>
-#include "MemoryInspectorControlTypes.h"
 
 constexpr UINT WM_DUMP_BASE = (WM_USER + 1234);
 
@@ -40,13 +40,13 @@ public:
     __declspec(dllexport) static void _cdecl RegisterClassFor(HINSTANCE hInstance);
 
     MemoryInspectorControlImpl(HWND hWnd);
-    LRESULT WndProc(UINT message, WPARAM wParam, LPARAM lParam);
+    LRESULT WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
 
 private:
     HWND hWnd;
 
     void InitScroll();
-    
+
     void SetBuffer(BYTE* buffer);
     BYTE* GetBuffer();
 

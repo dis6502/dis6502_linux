@@ -3,17 +3,18 @@
 
 ** Segment memoryInspector control implementation used to display a buffer in hexadecimal and in ASCII/ATASCII.
 */
-#include <algorithm>
-#include <memory.h>
-#include <string.h>
-
 #define NOMINMAX
-#include <Windows.h>
-#include <windowsx.h>
 
 #include "MemoryInspectorControlImpl.h"
+#include "MemoryInspectorControlTypes.h"
 #include "MemoryType.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "Window.h"
+#include <algorithm>
+#include <wchar.h>
+#include <Windows.h>
+#include <windowsx.h>
 
 /*
 ** structure where buffer size and graphic mode characteristics are saved.
@@ -68,7 +69,7 @@ static COLORREF dwMemoryInspectorColor[MEMORY_TYPE_ENUM_ITEM_COUNT] = {
 /*
 ** MemoryInspector window proc.
 */
-LRESULT CALLBACK MemoryInspectorWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+static LRESULT CALLBACK MemoryInspectorWndProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     MemoryInspectorControlImpl control = MemoryInspectorControlImpl(hWnd);
     return control.WndProc(message, wParam, lParam);
 }
@@ -1429,7 +1430,7 @@ void MemoryInspectorControlImpl::Char(WPARAM wParam) {
 /*
 ** MemoryInspectorControlImpl window proc.
 */
-LRESULT MemoryInspectorControlImpl::WndProc(UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT MemoryInspectorControlImpl::WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
 
     case WM_DUMP_SET_NUMBER_OF_BYTES_PER_LINE:

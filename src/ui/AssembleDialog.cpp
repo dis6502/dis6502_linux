@@ -102,7 +102,7 @@ LPCWSTR AssembleDialog::GetExpressionValue(LPCWSTR ptr, WORD* value, wstring& er
     return ptr;
 }
 
-bool AssembleDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool AssembleDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     wchar_t szAddress[6]{}; // With $
     wchar_t szInst[4]{};

@@ -12,7 +12,7 @@ constexpr auto PROFILE13_MAGIC = "DIS6502PRF13";
 constexpr auto PROFILE16_MAGIC = "DIS6502PRF16";
 constexpr auto PROFILE17_MAGIC = "DIS6502PRF17";
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 
 bool Profile1X::Load(Profile& profile, const ByteSequence& buffer) {

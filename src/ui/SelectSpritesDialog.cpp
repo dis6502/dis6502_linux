@@ -109,7 +109,7 @@ void SelectSpritesDialog::Free() {
     comboBox.reset();
 }
 
-bool SelectSpritesDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool SelectSpritesDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     switch (message) {
     case WM_INITDIALOG:

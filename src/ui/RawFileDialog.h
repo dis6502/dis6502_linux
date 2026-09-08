@@ -20,7 +20,7 @@ public:
     void GetResult(Memory::offset& nBegin, Memory::size& nSize, Memory::address& wAddr) const;
 
 protected:
-    bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
     void CreateControls() override;
     void DeleteControls() override;

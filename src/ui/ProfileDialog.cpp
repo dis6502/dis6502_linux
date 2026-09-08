@@ -157,7 +157,7 @@ void ProfileDialog::GetDialogValues(Profile& profile) {
     profile.directiveINCLUDEMaximumNumberOfLinesPerFile = GetEditControl(IDC_MAXINCLUDELINES).GetNumber();
 }
 
-bool ProfileDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool ProfileDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     switch (message) {
     case WM_INITDIALOG:

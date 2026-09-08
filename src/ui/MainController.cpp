@@ -4,13 +4,13 @@
 #include "MemoryInspector.h"
 #include <memory>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 extern std::unique_ptr<MemoryInspector> g_MemoryInspector;
 
 
 MainController::MainController(Main& main) : main(&main) { // TODO Make init or constructor parameters
-    this->application = g_Application.get();
+    this->application = g_Application;
     this->mainWindow = this->main->GetMainWindow();
 }
 

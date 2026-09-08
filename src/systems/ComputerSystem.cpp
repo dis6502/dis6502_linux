@@ -4,19 +4,18 @@
 #include "FileIO.h"
 #include "FileType.h"
 #include "InputStream.h"
+#include "Memory.h"
+#include "OutputStream.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
+#include "SegmentTypes.h"
 #include <algorithm>
 #include <memory>
-#include <Memory.h>
-#include <OutputStream.h>
-#include <SegmentTypes.h>
 #include <sstream>
 #include <stdexcept>
 #include <Syntax.h>
 
-extern std::unique_ptr<Application> g_Application;
-
+extern Application* g_Application;
 
 ComputerSystem::ComputerSystem(const ComputerSystemTypeInfo& computerSystemTypeInfo) :
     computerSystemTypeInfo(&computerSystemTypeInfo) {}

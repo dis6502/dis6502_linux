@@ -1,14 +1,12 @@
 #include "Application.h"
-
-#include "LowHighByteDialog.h"
 #include "Button.h"
 #include "EditControl.h"
+#include "LowHighByteDialog.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 
-LowHighByteDialog::LowHighByteDialog(Window& parentWindow) : Dialog(parentWindow, L"LOHIBYTEBOX") {
-}
+LowHighByteDialog::LowHighByteDialog(Window& parentWindow) : Dialog(parentWindow, L"LOHIBYTEBOX") {}
 
 bool LowHighByteDialog::Show(MemoryType memoryType, byte knownByte) {
     if (memoryType == MemoryType::LOBYTE) {
@@ -29,7 +27,7 @@ byte LowHighByteDialog::GetUnknownByte() const {
     return unknownByte;
 }
 
-bool LowHighByteDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool LowHighByteDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     switch (message) {
     case WM_INITDIALOG: {
@@ -47,7 +45,7 @@ bool LowHighByteDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM
         }
 
         case IDCANCEL:
-            return EndDialogBox( false);
+            return EndDialogBox(false);
 
         case IDC_LOBYTE:
         case IDC_HIBYTE:

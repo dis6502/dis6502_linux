@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 #include "Byte.h"
+#include "Syntax.h"
+#include <memory>
 
 class DIS_LINE;
 

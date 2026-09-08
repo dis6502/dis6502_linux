@@ -28,7 +28,7 @@ bool CommentDialog::Show(const DisassemblyResult& disassemblyResult, SegmentList
     return result;
 }
 
-bool CommentDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool CommentDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
     case WM_INITDIALOG:
         GetEditControl(IDC_COMMENT).SetFont(hFont);

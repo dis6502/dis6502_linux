@@ -1,22 +1,23 @@
 #pragma once
 
-#include "Syntax.h"
-
 #include "Dialog.h"
+#include "Syntax.h"
+#include "Window.h"
+#include <Windows.h>
 
 class Disassembly;
 
 
 class DisassemblyFindStringDialog : public Dialog {
 public:
-	DisassemblyFindStringDialog(Window& parentWindow);
+    DisassemblyFindStringDialog(Window& parentWindow);
 
-	bool Show(wstring_view findAscii);
-	wstring GetFindAscii() const;
+    bool Show(wstring_view findAscii);
+    wstring GetFindAscii() const;
 
 protected:
-    bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 private:
-	wstring findAscii;
+    wstring findAscii;
 };

@@ -3,7 +3,7 @@
 #include "EditControl.h"
 #include "StringUtility.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 EditControl::EditControl(HWND hWnd) : Control(hWnd) {}
 

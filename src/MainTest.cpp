@@ -37,7 +37,6 @@
 #include "WorkspaceLogic.h"
 #include "Writer.h"
 #include <chrono>
-#include <cstdlib>
 #include <exception>
 #include <fstream>
 #include <iostream>
@@ -46,7 +45,7 @@
 #include <stdexcept>
 
 using TestMode = MainTest::TestMode;
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 enum VariantBits : unsigned int {
     UseHexNotation = 1,

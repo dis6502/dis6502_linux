@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Syntax.h"
-
 class Allocatable final {
 public:
     Allocatable();

@@ -4,6 +4,7 @@
 #include "UI.h"
 #include "Window.h"
 #include <map>
+#include <Windows.h>
 
 /*
  * Macros for GetValues / SetValues
@@ -24,6 +25,7 @@ class Dialog : public Window {
 public:
 
     typedef int ITEM_ID;
+
     ~Dialog() override;
 
     Control& GetItem(ITEM_ID itemID);
@@ -32,7 +34,7 @@ public:
     ComboBox& GetComboBox(ITEM_ID itemID);
     EditControl& GetEditControl(ITEM_ID itemID);
     TextLabel& GetTextLabel(ITEM_ID itemID);
-    ListBox& GetListBox(ITEM_ID itemID);  
+    ListBox& GetListBox(ITEM_ID itemID);
 
 protected:
     HWND hDlg;
@@ -40,7 +42,7 @@ protected:
     Dialog(const Window& parentDialog, wstring_view templateName);
     INT_PTR ShowDialogBox();
 
-    virtual bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) = 0;
+    virtual bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) = 0;
 
     virtual void CreateControls();
     virtual void DeleteControls();
@@ -57,5 +59,5 @@ private:
 
     std::map<ITEM_ID, Control*> items;
 
-    static INT_PTR CALLBACK DialogFunc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+    static INT_PTR CALLBACK DialogFunc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
 };

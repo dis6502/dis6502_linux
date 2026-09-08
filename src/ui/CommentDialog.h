@@ -23,7 +23,7 @@ public:
 	bool Show(const DisassemblyResult& disassemblyResult, SegmentList& segmentList, SEGMENT_INDEX segmentIndex, Memory::offset memoryOffset, Memory::size memorySize, HFONT hFont);
 
 protected:
-    bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 private:
 	HFONT hFont = NULL_HFONT;

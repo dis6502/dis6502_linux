@@ -32,7 +32,7 @@
 extern wstring binPath;
 extern wstring diskPath;
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 extern std::unique_ptr<Workspace> g_Workspace;
 
 extern std::unique_ptr<FileDialogs> g_FileDialogs;

@@ -6,10 +6,10 @@
 #pragma once
 
 #define NOMINMAX
+#include "Window.h"
 #include <Windows.h>
-#include "Syntax.h"
 
-constexpr UINT WM_SPRITE_BASE = (WM_USER + 1234);
+constexpr Window::MESSAGE WM_SPRITE_BASE = (WM_USER + 1234);
 
 /*
 ** messages to set or get sprite control parameters
@@ -63,7 +63,7 @@ public:
     __declspec(dllexport) static void _cdecl RegisterClassFor(HINSTANCE hInstance);
 
     SpriteControlImpl(HWND hWnd);
-    LRESULT WndProc(UINT message, WPARAM wParam, LPARAM lParam);
+    LRESULT WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
 
 private:
     HWND hWnd;

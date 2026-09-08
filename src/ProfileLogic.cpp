@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "ApplicationSettingsSection.h"
 #include "CommonIO.h"
-#include "FileIO.h"
+#include "FileIO.h" 
 #include "Profile.h"
 #include "Profile1X.h"
 #include "ProfileLogic.h"
@@ -14,7 +14,7 @@
 #include <memory>
 #include <string>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 
 void ProfileLogic::LoadDefaultProfile(Profile& profile, const ComputerSystemTypeInfo& computerSystemTypeInfo) {
@@ -61,11 +61,11 @@ bool ProfileLogic::Load(Profile& profile, wstring_view filePath) {
 bool ProfileLogic::LoadAndSetDefaultProfile(Profile& profile, const ComputerSystemTypeInfo& computerSystemTypeInfo, wstring_view filePath) {
 
     if (Load(profile, filePath)) {
-            auto settingsSection = ::g_Application->GetSettingsSection(computerSystemTypeInfo.id);
+        auto settingsSection = ::g_Application->GetSettingsSection(computerSystemTypeInfo.id);
 
         settingsSection->WriteString(L"LastProfile", filePath);
 
-            return true;
+        return true;
     };
     return false;
 }
@@ -74,9 +74,9 @@ void ProfileLogic::Save(const Profile& profile, wstring_view filePath) {
     ::g_Application->SendInfoMessageWithID(IDS_LOG_SAVE_PROFILE_FILE, filePath);
 
     const auto xmlResult = XML::Save(profile, L"Profile", filePath); // TODO Use IOException
-        if (xmlResult != XML::Error::XML_SUCCESS) {
-            // Error: Cannot write to file {0}. Error code {1} - {2}
-            auto xmlResultText = String::ansi_to_wstring(XML::Document::ErrorIDToName(xmlResult));
+    if (xmlResult != XML::Error::XML_SUCCESS) {
+        // Error: Cannot write to file {0}. Error code {1} - {2}
+        auto xmlResultText = String::ansi_to_wstring(XML::Document::ErrorIDToName(xmlResult));
         ::g_Application->SendErrorMessageWithID(IDS_FILE_IO_ERR_WRITING_FILE, filePath, std::to_wstring(xmlResult), xmlResultText);
     }
 }

@@ -5,15 +5,15 @@
 
 #define NOMINMAX
 
-#include "Application.h"
 
+#include "Application.h"
 #include "Layout.h"
 #include "UI.h"
 #include <algorithm>
 #include <memory>
 #include <Windows.h>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 
 PartLayout::PartLayout(Layout& layout) :
@@ -24,8 +24,7 @@ PartLayout::PartLayout(Layout& layout) :
     width(0),
     lines(0),
     height(0),
-    layout(&layout) {
-}
+    layout(&layout) {}
 
 gsl::not_null<Layout*> PartLayout::GetLayout() const {
     return layout;
@@ -42,8 +41,7 @@ Layout::Layout() :
     disassembly(*this),
     xrefList(*this),
     logList(*this),
-    font(NULL_HFONT) {
-}
+    font(NULL_HFONT) {}
 
 HFONT Layout::GetFont() const {
     return font;

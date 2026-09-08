@@ -23,7 +23,7 @@ bool SegmentPropertiesDialog::Show(Segment& segment) {
     return ShowDialogBox();
 }
 
-bool SegmentPropertiesDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool SegmentPropertiesDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
 
     case WM_INITDIALOG:

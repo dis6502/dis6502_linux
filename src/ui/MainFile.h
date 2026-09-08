@@ -1,10 +1,8 @@
 #pragma once
 
-#include <string_view>
-
-#include "Syntax.h"
-
 #include "MainController.h"
+#include "Syntax.h"
+#include "Text.h"
 
 class Segment;
 class FileInputStream;

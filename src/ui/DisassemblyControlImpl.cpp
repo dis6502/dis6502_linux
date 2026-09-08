@@ -3,17 +3,26 @@
 
 ** Disassembly control implementation used to display a disassembly listing.
 */
-#include "StringUtility.h"
-#include <algorithm>
-#include <memory.h>
-#include <StringUtility.h>
-
 #define NOMINMAX
+
+#include "Control.h"
+#include "DC.h"
 #include "DisassemblyControlImpl.h"
+#include "DisassemblyControlTypes.h"
 #include "DisassemblyLine.h"
 #include "DisassemblyResult.h"
 #include "DisassemblySectionType.h"
+#include "Memory.h"
+#include "StringUtility.h"
+#include "Syntax.h"
+#include "UI.h"
+#include "Window.h"
+#include <algorithm>
+#include <SegmentTypes.h>
+#include <stdexcept>
+#include <wchar.h>
 #include <Windows.h>
+#include <XRef.h>
 
 /*
 ** maximum history size.
@@ -82,7 +91,7 @@ wchar_t szLabelDefinition[128];
 /*
 ** DisassemblyControlImpl window proc.
 */
-LRESULT CALLBACK DisassemblyControWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+static LRESULT CALLBACK DisassemblyControWndProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     DisassemblyControlImpl control = DisassemblyControlImpl(hWnd);
     return control.WndProc(message, wParam, lParam);
 }
@@ -1134,7 +1143,7 @@ void DisassemblyControlImpl::VScroll(WPARAM wParam, LPARAM lParam) {
 /*
 ** Dis window proc.
 */
-LRESULT DisassemblyControlImpl::WndProc(UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT DisassemblyControlImpl::WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_DIS_SET_RESULT:
         SetResult(lParam);

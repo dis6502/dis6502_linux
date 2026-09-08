@@ -1,5 +1,3 @@
-#include "Application.h"
-
 #include "Button.h"
 #include "CheckBox.h"
 #include "ComboBox.h"
@@ -10,9 +8,21 @@
 #include "ListBox.h"
 #include "MessageBoxDialog.h"
 #include "StringUtility.h"
+#include "Syntax.h"
 #include "TextLabel.h"
+#include "UI.h"
+#include "UIApplication.h"
+#include "Window.h"
+#include <cstdint>
+#include <exception>
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <Windows.h>
 
-extern std::unique_ptr<Application> g_Application;
+extern std::unique_ptr<UIApplication> g_UIApplication;
 
 std::map<HWND, Dialog*> Dialog::instances;
 
@@ -28,7 +38,7 @@ Dialog::~Dialog() {
 }
 
 INT_PTR Dialog::ShowDialogBox() {
-    auto hInstance = ::g_Application->GetInstanceHandle();
+    auto hInstance = ::g_UIApplication->GetInstanceHandle();
 
     const auto result = DialogBoxParamW(hInstance, templateName.c_str(), parentWindow->GetHWnd(), DialogFunc, (LPARAM)this);
     if (result == (INT_PTR)(-1)) {
@@ -67,7 +77,7 @@ bool Dialog::EndDialogBox(INT_PTR nResult) {
    function to process unwanted messages. Unwanted messages are processed internally by the dialog box
    window procedure.
 **/
-INT_PTR CALLBACK Dialog::DialogFunc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+INT_PTR CALLBACK Dialog::DialogFunc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam) {
     Dialog* dialog = nullptr;
     // https://wiki.winehq.org/List_Of_Windows_Messages
     // http://blog.airesoft.co.uk/2009/11/wm_messages/

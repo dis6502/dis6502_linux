@@ -13,7 +13,7 @@ public:
 	bool Show(EquateList& equateList, bool editable, wstring_view address);
 
 protected:
-	bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+	bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 	VOID CreateControls() override;
 

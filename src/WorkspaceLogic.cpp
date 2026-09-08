@@ -22,7 +22,7 @@
 #include "XML.h"
 #include <sstream>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 WorkspaceLogic::WorkspaceLogic(EquateListLogic& equateListLogic) {
     this->equateListLogic = &equateListLogic;

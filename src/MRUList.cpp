@@ -7,7 +7,7 @@
 #include "MRUEntry.h"
 #include "StringUtility.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 MRUList::MRUList(wstring_view sectionName, size_t maxEntries) :
     settingsSection(g_Application->GetSettingsSection(sectionName)),

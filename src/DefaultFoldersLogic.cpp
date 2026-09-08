@@ -8,7 +8,7 @@
 #include <list>
 #include <memory>
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 DefaultFoldersLogic::DefaultFoldersLogic() {
     folderTypeList = std::make_unique<std::list<FolderType>>();

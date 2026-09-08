@@ -1,10 +1,7 @@
 #pragma once
 
-#include "Syntax.h"
-#include "UI.h"
-
 #include "Dialog.h"
-#include "Segment.h"
+#include "Syntax.h"
 
 class MemoryInspectorControl;
 class Segment;
@@ -12,16 +9,16 @@ class Segment;
 
 class AssembleDialog : public Dialog {
 public:
-	AssembleDialog(Window& parentWindow);
+    AssembleDialog(Window& parentWindow);
 
-	bool Show(Segment* segment, MemoryInspectorControl* memoryInspectorControl);
+    bool Show(Segment* segment, MemoryInspectorControl* memoryInspectorControl);
 
 protected:
-    bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 private:
-	Segment* segment;
-	MemoryInspectorControl* memoryInspectorControl;
+    Segment* segment;
+    MemoryInspectorControl* memoryInspectorControl;
 
-	LPCWSTR GetExpressionValue(LPCWSTR ptr, WORD *value, wstring& error);
+    LPCWSTR GetExpressionValue(LPCWSTR ptr, WORD* value, wstring& error);
 };

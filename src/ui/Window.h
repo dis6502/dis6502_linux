@@ -5,6 +5,8 @@
 
 class Window {
 public:
+    typedef unsigned int MESSAGE;
+
 	HWND GetHWnd() const;
 
 	void SetTitle(wstring_view title);
@@ -41,6 +43,6 @@ private:
 	WNDPROC lpWM_MOUSEWHEELProc;
 	WNDPROC lpWM_RBUTTONDOWNProc;
 
-	static LRESULT CALLBACK WindowProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-	virtual LRESULT CALLBACK WindowProcInstance(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK WindowProc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
+    virtual LRESULT CALLBACK WindowProcInstance(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
 };

@@ -50,7 +50,7 @@ bool DisassemblyProgressDialog::IsCancelled() {
 ** Call disassembly process while displaying a dialog box.
 ** The user can click on CANCEL to abort the process.
 */
-bool DisassemblyProgressDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool DisassemblyProgressDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     static constexpr int WM_USER_COMMAND = WM_USER + 4321;
 

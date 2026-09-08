@@ -1,9 +1,13 @@
 #pragma once
 
-#include "Syntax.h"
-
+#include "Main.h"
 #include "MainController.h"
 #include "SegmentListPopupMenu.h"
+#include "SegmentTypes.h"
+#include "UI.h"
+#include "Window.h"
+#include <memory>
+#include <Windows.h>
 
 class SegmentList;
 class SegmentListWindow;
@@ -17,8 +21,8 @@ public:
     long Proc(HWND hWnd, WPARAM wParam);
     void PerformCommands(COMMAND command, bool editMode);
 
-    static LRESULT CALLBACK DropFilesProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-    static LRESULT CALLBACK RButtonDownProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK DropFilesProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK RButtonDownProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
 
 private:
     SegmentList* segmentList;

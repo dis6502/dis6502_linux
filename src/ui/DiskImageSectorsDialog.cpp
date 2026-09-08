@@ -40,7 +40,7 @@ INT_PTR DiskImageSectorsDialog::Show(wstring_view diskImageFilePath) {
     return ShowDialogBox();
 }
 
-bool DiskImageSectorsDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool DiskImageSectorsDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     WORD wAddr;
     ITEM_LINE szItemLine;
     int nItemCount;

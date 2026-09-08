@@ -7,11 +7,10 @@
 #include "ListBox.h"
 #include "StringUtility.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 EquateDialog::EquateDialog(Window& parentWindow) : Dialog(parentWindow, L"EQUATEBOX"),
-equateList(nullptr), editable(false) {
-}
+equateList(nullptr), editable(false) {}
 
 bool EquateDialog::Show(EquateList& equateList, bool editable, wstring_view address) {
     this->equateList = &equateList;
@@ -21,7 +20,7 @@ bool EquateDialog::Show(EquateList& equateList, bool editable, wstring_view addr
 }
 
 
-bool EquateDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool EquateDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     int itemCount = 0;
 
     auto listBox = GetListBox(IDC_EQUATE_LIST);

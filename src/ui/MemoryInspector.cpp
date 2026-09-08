@@ -29,6 +29,7 @@
 #include "StringUtility.h"
 #include "Syntax.h"
 #include "systems/ComputerSystem.h"
+#include "UIApplication.h"
 #include "Window.h"
 #include "Workspace.h"
 #include <memory>
@@ -37,7 +38,8 @@
 
 
 extern std::unique_ptr<Main> g_Main;
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
+extern std::unique_ptr<UIApplication> g_UIApplication;
 extern std::unique_ptr<Workspace> g_Workspace;
 
 extern SegmentList* lpSegmentList;
@@ -50,8 +52,7 @@ MemoryInspector::MemoryInspector() :
     memoryInspectorControl(nullptr),
     segmentList(nullptr),
     memoryInspectorSelection(*g_Workspace)
-{
-}
+{}
 
 MemoryInspector::~MemoryInspector() {
     if (popupMenu != nullptr) {
@@ -1088,7 +1089,7 @@ void MemoryInspector::CopySelection() {
     const auto size = memoryInspectorSelection.GetSize();
     auto valueArray = &memoryInspectorSelection.segment->memoryBlock.lpData[begin];
     auto text = DatatypeUtility::ByteArrayToHexString(valueArray, size, false);
-    ::g_Application->SetClipboardText(text);
+    ::g_UIApplication->SetClipboardText(text);
 }
 
 void MemoryInspector::PasteAtSelection(bool after) { // TODO: This does not work currently, because CopySelection was changed from binary to hex string

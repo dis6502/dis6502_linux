@@ -19,9 +19,9 @@
 #include "systems/ComputerSystem.h"
 #include "Workspace.h"
 #include "WorkspaceDialog.h"
-#include "WorkspaceLogic.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
+
 extern std::unique_ptr<Workspace> g_Workspace;
 
 extern std::unique_ptr<MemoryInspector> g_MemoryInspector;

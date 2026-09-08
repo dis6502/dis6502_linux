@@ -5,7 +5,7 @@
 #include "CheckBox.h"
 #include "Button.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 
 
 MemoryInspectorFindStringDialog::MemoryInspectorFindStringDialog(Window& parentWindow) :
@@ -19,7 +19,7 @@ bool MemoryInspectorFindStringDialog::Show(MemoryInspector& memoryInspector) {
 	return ShowDialogBox();
 }
 
-bool MemoryInspectorFindStringDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool MemoryInspectorFindStringDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
 	// Recursion triggered by event?
 	if (recursion) {

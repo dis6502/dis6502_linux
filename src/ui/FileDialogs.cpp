@@ -1,14 +1,12 @@
+#include "DefaultFolders.h"
 #include "FileDialogs.h"
+#include "FileType.h"
+#include "Text.h"
+#include "UIApplication.h"
+#include "Window.h"
 #include <Windows.h>
 
-#include "Application.h"
-#include "DefaultFolders.h"
-#include "FileType.h"
-#include "StringUtility.h"
-#include "Text.h"
-#include "Window.h"
-
-extern std::unique_ptr<Application> g_Application;
+extern std::unique_ptr<UIApplication> g_UIApplication;
 
 void FileDialogs::SetDefaultFolders(DefaultFolders& defaultFolders) {
     this->defaultFolders = &defaultFolders;
@@ -62,7 +60,7 @@ FileDialogResult FileDialogs::GetOpenFileName_(const Window& parentWindow, wstri
     OPENFILENAME of = {};
     of.lStructSize = sizeof(OPENFILENAME);
     of.hwndOwner = parentWindow.GetHWnd();
-    of.hInstance = ::g_Application->GetInstanceHandle();
+    of.hInstance = ::g_UIApplication->GetInstanceHandle();
     of.lpstrFilter = filterPattern.data();
     of.lpstrCustomFilter = nullptr;
     of.nMaxCustFilter = 0L;
@@ -141,7 +139,7 @@ FileDialogResult FileDialogs::ChooseSaveFileName(const Window& parentWindow, wst
     OPENFILENAME of = {};
     of.lStructSize = sizeof(OPENFILENAME);
     of.hwndOwner = parentWindow.GetHWnd();
-    of.hInstance = ::g_Application->GetInstanceHandle();
+    of.hInstance = ::g_UIApplication->GetInstanceHandle();
     of.lpstrFilter = filterPattern.data();
     of.lpstrCustomFilter = nullptr;
     of.nMaxCustFilter = 0L;

@@ -11,7 +11,7 @@
 
 #include "SegmentWriteBootDiskDialog.h"
 
-extern std::unique_ptr<Application> g_Application;
+extern Application* g_Application;
 extern std::unique_ptr<FileDialogs> g_FileDialogs;
 
 
@@ -25,7 +25,7 @@ void SegmentWriteBootDiskDialog::Show(gsl::not_null<const Segment*> segment, boo
     ShowDialogBox();
 }
 
-bool SegmentWriteBootDiskDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool SegmentWriteBootDiskDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     switch (message) {
     case WM_INITDIALOG: {

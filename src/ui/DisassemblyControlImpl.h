@@ -8,12 +8,12 @@
 #define NOMINMAX
 #include <Windows.h>
 
-#include "Syntax.h"
 #include "Control.h"
 #include "DC.h"
+#include "Syntax.h"
 
-#include "DisassemblyResult.h"
 #include "DisassemblyControlTypes.h"
+#include "DisassemblyResult.h"
 
 constexpr UINT WM_DIS_BASE = (WM_USER + 1234);
 typedef DWORD* LP_DIS_HISTORY;
@@ -23,7 +23,7 @@ typedef DWORD* LP_DIS_HISTORY;
 */
 typedef enum {
     WM_DIS_SET_RESULT = WM_DIS_BASE,        // lParam = DisassemblyResult address
-    WM_DIS_SET_LINE_NUMBERS_ACTIVE,         // wParam = TRUE if line number sould be displayed
+    WM_DIS_SET_LINE_NUMBERS_ACTIVE,         // wParam = TRUE if line numbers should be displayed
     WM_DIS_GET_LINE_NUMBERS_ACTIVE,         // return TRUE if line number is displayed
     WM_DIS_SET_SCROLL_LINE_NUMBER,          // lParam = first line to display (DWORD)
     WM_DIS_GET_SCROLL_LINE_NUMBER,          // return first line displayed (DWORD)
@@ -31,11 +31,11 @@ typedef enum {
     WM_DIS_SYNC_LINE,                       // center a line in the window. Do not change selection. lParam is the line number
     WM_DIS_SELECT_LINE,                     // center a line in the window. Select line. lParam is the line number
     WM_DIS_SELECT_LINE_WITH_INFO,           // select a line by searching for information in DIS_LINE structure. LOWORD(lParam) = offset and HIWORD(lParam) = segment
-    WM_DIS_EXTEND_SEL,                      // extens seleiction, if present, to HIWORD(lParam) = segment and LOWORD(lParam) = offset
+    WM_DIS_EXTEND_SEL,                      // extends the selection, if present, to HIWORD(lParam) = segment and LOWORD(lParam) = offset
     WM_DIS_SELECT_DEFINITION,               // select line where a label is defined. lParam = address of label name
     WM_DIS_SELECT_ALL_REFERENCES,           // select all the lines where a label is referenced including definition. lParam = address of label name
-    WM_DIS_GET_LABEL_REFERENCE,             // return the label reference in the line under mouse cursor
-    WM_DIS_GET_LABEL_DEFINITION,            // return the label definition in the line under mouse cursor
+    WM_DIS_GET_LABEL_REFERENCE,             // return the label reference in the line under the mouse cursor
+    WM_DIS_GET_LABEL_DEFINITION,            // return the label definition in the line under the mouse cursor
     WM_DIS_RESET_HISTORY,                   // reset the history
     WM_DIS_GET_HISTORY_INDEX,               // return the history index (0 for no history)
     WM_DIS_BACK_IN_HISTORY                  // jump to the previous position in history
@@ -51,7 +51,7 @@ public:
     __declspec(dllexport) static void _cdecl RegisterClassFor(HINSTANCE hInstance);
 
     DisassemblyControlImpl(HWND hWnd);
-    LRESULT WndProc(UINT message, WPARAM wParam, LPARAM lParam) override;
+    LRESULT WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam) override;
 
 private:
     using LineCount = DisassemblyResult::LineCount;

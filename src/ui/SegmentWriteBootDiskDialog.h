@@ -15,7 +15,7 @@ public:
 	void Show(gsl::not_null<const Segment*> segment, bool withInitAddress, Memory::address initAddress);
 
 protected:
-	bool ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+	bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
 
 private:
     const Segment* segment;

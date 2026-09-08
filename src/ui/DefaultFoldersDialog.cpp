@@ -1,4 +1,3 @@
-#include <Windows.h>
 #define STRICT_TYPED_ITEMIDS
 
 #include "DefaultFolders.h"
@@ -7,12 +6,14 @@
 #include "EditControl.h"
 #include "FileIO.h"
 #include "FolderType.h"
+#include "Syntax.h"
 #include "systems/ComputerSystemType.h"
 #include "Text.h"
 #include "Window.h"
 #include <Resource.h>
 #include <ShObjIdl_core.h>
-#include <Syntax.h>
+#include <Windows.h>
+
 
 DefaultFoldersDialog::DefaultFoldersDialog(Window& parentWindow) : Dialog(parentWindow, L"DEFAULTFOLDERSBOX") {}
 
@@ -22,7 +23,7 @@ bool DefaultFoldersDialog::Show(HWND hWndParent, DefaultFolders& defaultFolders)
     return ShowDialogBox();
 }
 
-bool DefaultFoldersDialog::ProcessDialogMessage(UINT message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool DefaultFoldersDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
     case WM_INITDIALOG: {
         auto& text = defaultFolders->GetComputerSystemTypeInfo()->text;

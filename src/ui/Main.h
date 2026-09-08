@@ -1,31 +1,31 @@
 #pragma once
 
-#include "Syntax.h"
-#include "UI.h"
-#include "WorkspaceChangedListener.h"
-enum class FileType;
-#include "systems/ComputerSystemFactory.h"
-#include "DefaultFoldersLogic.h"
 #include "DefaultFolders.h"
+#include "DefaultFoldersLogic.h"
+#include "EquateListLogic.h"
+#include "Layout.h"
+#include "MainDisassembly.h"
+#include "MainFile.h"
+#include "MainMemoryInspector.h"
+#include "MainMenu.h"
+#include "MainSegment.h"
+#include "MainWindow.h"
+#include "MainXRef.h"
+#include "MRUController.h"
 #include "ProfileLogic.h"
 #include "ProfilesController.h"
-#include "WorkspaceLogic.h"
-#include "MRUController.h"
-#include "Layout.h"
-#include "MainWindow.h"
-#include "MainMenu.h"
-#include "MainFile.h"
-#include "EquateListLogic.h"
-#include "MainSegment.h"
-#include "MainMemoryInspector.h"
-#include "MainDisassembly.h"
-#include "MainXRef.h"
-#include "WorkspaceTypes.h"
+#include "Syntax.h"
+#include "systems/ComputerSystemFactory.h"
 #include "Text.h"
-#include <Windows.h>
+#include "UI.h"
+#include "WorkspaceChangedListener.h"
+#include "WorkspaceLogic.h"
+#include "WorkspaceTypes.h"
 #include <memory>
 #include <vector>
+#include <Windows.h>
 
+enum class FileType;
 class Workspace;
 
 class Main final : private WorkspaceChangedListener {
@@ -61,8 +61,8 @@ public:
 
     int WinMainDelegate(HINSTANCE hInstance, const HINSTANCE hPrevInstance, wstring_view commandLine, int nCmdShow);
 
-    LRESULT MainWndProcDelegate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-    static LRESULT CALLBACK MainMouseWheelProc(HWND, UINT, WPARAM, LPARAM);
+    LRESULT MainWndProcDelegate(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK MainMouseWheelProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
 
 private:
     static const UINT WM_OPENCMDLINE = WM_USER + 248;

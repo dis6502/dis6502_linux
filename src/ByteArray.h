@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Syntax.h"
-
 #include "Byte.h"
 #include "ByteSequence.h"
+#include "Syntax.h"
+#include <cstring>
+#include <memory>
 
 // A ByteArray is a fixed-size modifiable non-const ower of a byte[].
 // Creating a ByteArray from a byte[] takes over the ownership of the byte [],

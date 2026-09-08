@@ -1,9 +1,8 @@
 
 
-#include "Application.h"
-#include "MemoryInspectorControlImpl.h"
-
 #include "MemoryInspectorControl.h"
+#include "MemoryInspectorControlImpl.h"
+#include "MemoryInspectorControlTypes.h"
 
 
 void MemoryInspectorControl::RegisterClassFor(HINSTANCE hInstance) {

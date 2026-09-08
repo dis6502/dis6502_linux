@@ -140,7 +140,7 @@ void MainSegment::PerformCommands(COMMAND wCommand, bool editMode) {
 /*
 ** WM_DROPFILES message, static callback
 */
-LRESULT CALLBACK MainSegment::DropFilesProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK MainSegment::DropFilesProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     instance->DropFilesProc(reinterpret_cast<HDROP>(wParam));
     return 0;
 }
@@ -162,7 +162,7 @@ void MainSegment::DropFilesProc(HDROP hDrop) {
 /*
 ** WM_RBUTTONDOWN message, static callback
 */
-LRESULT CALLBACK MainSegment::RButtonDownProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK MainSegment::RButtonDownProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
     instance->RButtonDownProc();
     return 0;
 }
