@@ -1,5 +1,3 @@
-#include "SegmentList.h"
-
 #include "Comment.h"
 #include "Debug.h"
 #include "Equate.h"
@@ -9,16 +7,26 @@
 #include "InstructionSet.h"
 #include "Memory.h"
 #include "Segment.h"
+#include "SegmentList.h"
 #include "StringUtility.h"
 #include "Workspace.h"
 #include <cassert>
-#include <gsl/util>
 #ifdef _WIN32
 #include <Windows.h>
 #endif
-
+#include "Byte.h"
+#include "LabelAccess.h"
+#include "MemoryType.h"
 #include "SegmentListChangedListener.h"
 #include "SegmentListInserter.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
+#include "Word.h"
+#include "XML.h"
+#include <algorithm>
+#include <exception>
+#include <memory>
+#include <stdexcept>
 
 SegmentList::SegmentList(Workspace* workspace) {
     this->workspace = workspace;

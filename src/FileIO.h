@@ -1,6 +1,7 @@
 #pragma once
 #include "ByteArray.h"
 #include "Syntax.h"
+#include "Text.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -47,5 +48,7 @@ public:
     static void SetCurrentWorkingDirectory(wstring_view folderPath); // Throws IOException
 
     static std::filesystem::path ToPath(wstring_view filePath);
+    static wstring FormatError(Text::TextID textID, wstring_view filePath);
+    static void GetError(wstring& errorNumberString, wstring& errorMessageString);
 
 };

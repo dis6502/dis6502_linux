@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Syntax.h"
-#include "UI.h"
 #include "Window.h"
 #include <map>
 #include <Windows.h>
@@ -13,7 +12,7 @@
 #define GetItemText(ID, ATTR) GetDlgItemText(hDlg, (ID), (ATTR), sizeof( (ATTR) ));
 #define SetItemTextAndSize(ID, ATTR) SendDlgItemMessageW(hDlg, (ID), EM_LIMITTEXT, sizeof( (ATTR) ) - 1, 0); SetDlgItemTextW(hDlg, (ID), (ATTR));
 
-class Button;
+#include "Button.h"
 class CheckBox;
 class ComboBox;
 class Control;

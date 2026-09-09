@@ -1,15 +1,26 @@
-#include <algorithm>
-
 #include "Application.h"
-#include "Button.h"
+#include "Control.h"
+
+#include "ByteArray.h"
+#include "CommonIO.h"
+#include "Dialog.h"
 #include "EditControl.h"
 #include "FileDialogs.h"
+#include "FileIO.h"
 #include "FileType.h"
+#include "Memory.h"
+#include "Resource.h"
 #include "Segment.h"
+#include "SegmentWriteBootDiskDialog.h"
+#include "Syntax.h"
 #include "systems/atari800/AtariDiskImage.h"
 #include "systems/atari800/AtariDOS.h"
-
-#include "SegmentWriteBootDiskDialog.h"
+#include "Window.h"
+#include <algorithm>
+#include <cstdio>
+#include <memory>
+#include <string.h>
+#include <Windows.h>
 
 extern Application* g_Application;
 extern std::unique_ptr<FileDialogs> g_FileDialogs;
@@ -127,11 +138,17 @@ void SegmentWriteBootDiskDialog::WriteBootDisk(HWND hDlg, wstring_view filePath)
     }
 
     case AtariError::DISK_NOT_FOUND:
-        ::g_Application->SendFileErrorMessageWithID(IDS_ERR_READING_FILE, filePath); // TODO Proper error message
-        break;
+    {
+        IOException ioException(FileIO::FormatError(IDS_ERR_READING_FILE, filePath));
+        ::g_Application->SendErrorMessageWithException(ioException);
+    }
+    break;
 
     default:
-        ::g_Application->SendErrorMessageWithID(IDS_ERR_READING_ATR, filePath);
-        break;
+    {
+        IOException ioException(FileIO::FormatError(IDS_ERR_READING_ATR, filePath));
+        ::g_Application->SendErrorMessageWithException(ioException);
+    }
+    break;
     }
 }

@@ -6,8 +6,9 @@
 #include "Syntax.h"
 #include "Text.h"
 #include <cerrno>
+#include <cstddef>
 #include <cstdio>
-#include <cstdlib>
+// #include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <gsl/util>
@@ -29,6 +30,35 @@ const wstring FileIO::EMPTY_FILE_PATH = L"";
 
 std::filesystem::path FileIO::ToPath(wstring_view filePath) {
     return std::filesystem::path(String::wstring_to_utf8(filePath));
+}
+
+void FileIO::GetError(wstring& errorNumberString, wstring& errorMessageString) {
+#ifdef _WIN32
+
+    errno_t errno;
+    _get_errno(&errno);
+
+    errorNumberString = std::to_wstring(errno);
+    errorMessageString = wstring(_wcserror(errno));
+
+#else
+    errorNumberString = std::to_wstring(errno);
+    char* narrow = strerror(errno);
+    size_t len = strlen(narrow) + 1;
+    wchar_t* wide = new wchar_t[len];
+    if (wide) {
+        mbstowcs(wide, narrow, len);
+    }
+    errorMessageString = wstring(wide);
+    delete[] wide;
+#endif
+}
+
+wstring FileIO::FormatError(Text::TextID textID, wstring_view filePath) {
+    wstring errorNumberString, errorMessageString;
+    GetError(errorNumberString, errorMessageString);
+
+    return Text::Format(textID, filePath, errorNumberString, errorMessageString);
 }
 
 bool FileIO::FileExists(wstring_view filePath) {
@@ -107,38 +137,15 @@ FILE* FileIO::OpenFile(wstring_view filePath, wstring_view mode) {
 #endif
 
     if (fd == 0) {
-		wstring errorNumberString;
-		wstring errorMessageString;
-		
-		#ifdef _WIN32
- 
-		errno_t errno;
-        _get_errno(&errno);
-		
-		errorNumberString =std::to_wstring(errno);
-        errorMessageString = wstring(_wcserror(errno));
-
-		#else
-		
-		char *narrow = strerror(errno);
-	   	size_t len = strlen(narrow) + 1;
-	   	wchar_t *wide = new wchar_t[len];
-	   	if (wide) {
-	       mbstowcs(wide, narrow, len);
-	   	}
-	   	errorMessageString = wstring(wide);
-	   	delete[] wide;
-	
-		#endif
 
         if (mode.starts_with(L"r")) {
-            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, filePath, errorNumberString, errorMessageString));
+            throw IOException(FormatError(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, filePath));
         }
         else if (mode.starts_with(L"r+")) {
-            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_WRITE_ACCESS, filePath, errorNumberString, errorMessageString));
+            throw IOException(FormatError(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_WRITE_ACCESS, filePath));
         }
         else {
-            throw IOException(Text::Format(IDS_FILE_IO_EX_OPENING_FILE_FOR_WRITE_ACCESS, filePath, errorNumberString, errorMessageString));
+            throw IOException(FormatError(IDS_FILE_IO_EX_OPENING_FILE_FOR_WRITE_ACCESS, filePath));
         }
     }
     return fd;

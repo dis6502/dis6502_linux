@@ -1,9 +1,6 @@
 #include "File.h"
 #include "FileIO.h"
-#include "StringUtility.h"
-#ifdef _WIN32
-#include <Windows.h>
-#endif
+
 
 File::File(wstring_view filePath): File() {
     this->filePath = filePath;
@@ -17,8 +14,7 @@ File::File(const File& parentFile, wstring_view fileName) : File() {
     filePath.append(fileName);
 }
 
-File::File(const File& other) : File(other.filePath) {
-}
+File::File(const File& other) : File(other.filePath) {}
 
 File& File::operator=(const File& other) {
     filePath = other.filePath;

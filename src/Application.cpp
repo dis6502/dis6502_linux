@@ -40,11 +40,3 @@ void Application::ThrowErrorMessageWithID(Text::TextID textID, wstring_view v0, 
 void Application::SendErrorMessageWithException(const std::exception& ex) {
     SendErrorMessageWithID(IDS_ERR_EXCEPTION, String::utf8_to_wstring(ex.what()));
 }
-
-void Application::SendFileErrorMessageWithID(Text::TextID textID, wstring_view filePath) {
-    errno_t errorNumber;
-
-    _get_errno(&errorNumber);
-    auto errorMessage = wstring(_wcserror(errorNumber));
-    SendErrorMessageWithID(textID, filePath, std::to_wstring(errorNumber), errorMessage);
-}

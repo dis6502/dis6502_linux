@@ -1,33 +1,39 @@
-#include <algorithm>
-
 #include "Application.h"
+#include "ByteArray.h"
 #include "ByteSequence.h"
+#include "CommonIO.h"
 #include "DisassemblyResultFile.h"
-#include "DisassemblyResultWriter.h"
 #include "DiskImage.h"
 #include "DiskImageExecutableFileDialog.h"
 #include "DiskImageSectorsDialog.h"
+#include "File.h"
 #include "FileDialogs.h"
-#include "FileInputStream.h"
 #include "FileIO.h"
 #include "FileType.h"
 #include "Main.h"
+#include "MainController.h"
+#include "MainFile.h"
 #include "Memory.h"
 #include "MRUController.h"
 #include "RawFileDialog.h"
+#include "Resource.h"
 #include "Segment.h"
 #include "SegmentList.h"
 #include "SegmentListInserter.h"
+#include "StringUtility.h"
+#include "Syntax.h"
 #include "systems/atari800/AtariDOS.h"				// TODO: Move DOS/Disk handling and merge to ComputerSystem
 #include "systems/atari800/DiskImageFileInputStream.h"  // TODO: Move DOS/Disk handling and merge to ComputerSystem
 #include "systems/ComputerSystem.h"
-#include "systems/ComputerSystemType.h"
+#include "Text.h"
 #include "Window.h"
 #include "Workspace.h"
-#include "WorkspaceFont.h"
 #include "WorkspaceLogic.h"
-
-#include "MainFile.h"
+#include <algorithm>
+#include <gsl/pointers>
+#include <list>
+#include <memory>
+#include <Windows.h>
 
 extern wstring binPath;
 extern wstring diskPath;
@@ -93,6 +99,7 @@ void MainFile::OpenCassetteImageFile(const Window& parentWindow, wstring_view fi
 }
 
 void MainFile::OpenDiskImageExecutableFile(const Window& parentWindow, wstring_view filePath, bool add) {
+    wstring errorNumberString, errorMessageString;
 
     // Check if disk is DOS disk at all.
     AtariFile info;
@@ -127,7 +134,8 @@ void MainFile::OpenDiskImageExecutableFile(const Window& parentWindow, wstring_v
     }
 
     case AtariError::DISK_NOT_FOUND:
-        g_Application->SendFileErrorMessageWithID(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, diskPath); // TODO: Make IOException
+        FileIO::GetError(errorNumberString, errorMessageString);
+        g_Application->SendErrorMessageWithID(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, diskPath, errorNumberString, errorMessageString);
         break;
 
     case AtariError::NO_ENTRY_FOUND:
