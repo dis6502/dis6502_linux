@@ -1,8 +1,5 @@
 #include "DisassemblyWriter.h"
 #include "StringUtility.h"
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 
 DisassemblyWriter::DisassemblyWriter(Disassembly& disassembly, Workspace& workspace) :
     wDisNbBytes(0) {
@@ -60,7 +57,7 @@ void DisassemblyWriter::FLUSH_BYTES() {
             wcscat(szBytes, profile->quoteForASCIIStrings.c_str());
             break;
         case MemoryType::STORE:
-            wsprintf(szBytes + wcslen(szBytes), L"%hu", wDisNbBytes);
+            String::Printf(szBytes + wcslen(szBytes), L"%hu", wDisNbBytes);
             break;
         default:
             break;
@@ -91,7 +88,7 @@ void DisassemblyWriter::DUMP_STORE() {
     memoryType = MemoryType::STORE;
 
     if (wDisNbBytes == 0) {
-        wsprintf(szBytes, L"%s%s ", GetLineBuffer(), profile->directiveDS.c_str());
+        String::Printf(szBytes, L"%s%s ", GetLineBuffer(), profile->directiveDS.c_str());
     }
 
     wDisNbBytes++;
@@ -110,18 +107,18 @@ void DisassemblyWriter::DUMP_BYTE(Memory::byte bByte) {
 
     if (profile->useHexNotation) {
         if (wDisNbBytes == 0) {
-            wsprintf(szBytes, L"%s%s %s%02hX", GetLineBuffer(), profile->directiveBYTE.c_str(), profile->hexNotationPrefix.c_str(), bByte);
+            String::Printf(szBytes, L"%s%s %s%02hX", GetLineBuffer(), profile->directiveBYTE.c_str(), profile->hexNotationPrefix.c_str(), bByte);
         }
         else {
-            wsprintf(szBytes + wcslen(szBytes), L"%s%s%02hX", profile->directiveBYTESeparator.c_str(), profile->hexNotationPrefix.c_str(), bByte);
+            String::Printf(szBytes + wcslen(szBytes), L"%s%s%02hX", profile->directiveBYTESeparator.c_str(), profile->hexNotationPrefix.c_str(), bByte);
         }
     }
     else {
         if (wDisNbBytes == 0) {
-            wsprintf(szBytes, L"%s%s %hu", GetLineBuffer(), profile->directiveBYTE.c_str(), bByte);
+            String::Printf(szBytes, L"%s%s %hu", GetLineBuffer(), profile->directiveBYTE.c_str(), bByte);
         }
         else {
-            wsprintf(szBytes + wcslen(szBytes), L"%s%hu", profile->directiveBYTESeparator.c_str(), bByte);
+            String::Printf(szBytes + wcslen(szBytes), L"%s%hu", profile->directiveBYTESeparator.c_str(), bByte);
         }
     }
 
@@ -141,18 +138,18 @@ void DisassemblyWriter::DUMP_WORD(Memory::word wWord) {
 
     if (profile->useHexNotation) {
         if (wDisNbBytes == 0) {
-            wsprintf(szBytes, L"%s%s %s%04hX", GetLineBuffer(), profile->directiveWORD.c_str(), profile->hexNotationPrefix.c_str(), wWord);
+            String::Printf(szBytes, L"%s%s %s%04hX", GetLineBuffer(), profile->directiveWORD.c_str(), profile->hexNotationPrefix.c_str(), wWord);
         }
         else {
-            wsprintf(szBytes + wcslen(szBytes), L"%s%s%04hX", profile->directiveBYTESeparator.c_str(), profile->hexNotationPrefix.c_str(), wWord);
+            String::Printf(szBytes + wcslen(szBytes), L"%s%s%04hX", profile->directiveBYTESeparator.c_str(), profile->hexNotationPrefix.c_str(), wWord);
         }
     }
     else {
         if (wDisNbBytes == 0) {
-            wsprintf(szBytes, L"%s%s %hu", GetLineBuffer(), profile->directiveWORD.c_str(), wWord);
+            String::Printf(szBytes, L"%s%s %hu", GetLineBuffer(), profile->directiveWORD.c_str(), wWord);
         }
         else {
-            wsprintf(szBytes + wcslen(szBytes), L"%s%hu", profile->directiveBYTESeparator.c_str(), wWord);
+            String::Printf(szBytes + wcslen(szBytes), L"%s%hu", profile->directiveBYTESeparator.c_str(), wWord);
         }
     }
 
@@ -175,7 +172,7 @@ void DisassemblyWriter::DUMP_STRING(byte bChar) {
         memoryType = MemoryType::STRING;
 
         if (wDisNbBytes == 0) {
-            wsprintf(szBytes, L"%s%s %s%c", GetLineBuffer(), profile->directiveBYTE.c_str(), profile->quoteForASCIIStrings.c_str(), bChar);
+            String::Printf(szBytes, L"%s%s %s%c", GetLineBuffer(), profile->directiveBYTE.c_str(), profile->quoteForASCIIStrings.c_str(), bChar);
         }
         else {
             auto len = wcslen(szBytes);
@@ -219,7 +216,7 @@ void DisassemblyWriter::DUMP_SBYTE(byte bByte) {
         memoryType = MemoryType::SBYTE;
 
         if (wDisNbBytes == 0) {
-            wsprintf(szBytes, L"%s%s %s%c", GetLineBuffer(), profile->directiveSBYTE.c_str(), profile->quoteForASCIIStrings.c_str(), cInternal);
+            String::Printf(szBytes, L"%s%s %s%c", GetLineBuffer(), profile->directiveSBYTE.c_str(), profile->quoteForASCIIStrings.c_str(), cInternal);
         }
         else {
             auto len = wcslen(szBytes);
@@ -243,10 +240,10 @@ void DisassemblyWriter::DUMP_LABEL(const wchar_t* szLabel) {
     memoryType = MemoryType::LABEL;
 
     if (wDisNbBytes == 0) {
-        wsprintf(szBytes, L"%s%s %s", GetLineBuffer(), profile->directiveWORD.c_str(), szLabel);
+        String::Printf(szBytes, L"%s%s %s", GetLineBuffer(), profile->directiveWORD.c_str(), szLabel);
     }
     else {
-        wsprintf(szBytes + wcslen(szBytes), L"%s%s", profile->directiveBYTESeparator.c_str(), szLabel);
+        String::Printf(szBytes + wcslen(szBytes), L"%s%s", profile->directiveBYTESeparator.c_str(), szLabel);
     }
 
     wDisNbBytes++;

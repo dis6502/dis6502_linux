@@ -9,13 +9,11 @@
 #include "File.h"
 #include "Profile.h"
 #include "Resource.h"
+#include "StringUtility.h"
 #include "Syntax.h"
 #include <climits>
 #include <memory>
 #include <stdexcept>
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 
 
 extern Application* g_Application;
@@ -39,7 +37,7 @@ wstring DisassemblyResultFile::CreateIncludeFilePath(wstring_view mainFilePath, 
 
     if (fileNumber > 0) {
         wstring buffer = L".000";
-        wsprintf(buffer.data(), L".%03u", fileNumber);
+        String::Printf(buffer.data(), L".%03u", fileNumber);
         result.append(buffer);
     }
     else {

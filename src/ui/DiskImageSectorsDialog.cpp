@@ -15,6 +15,7 @@
 #include <memory>
 #include <Memory.h>
 #include <Resource.h>
+#include <StringUtility.h>
 #include <Windows.h>
 
 DiskImageSectorsDialog::DiskImageSectorsDialog(const Window& parentWindow, HFONT hComputerFont) : Dialog(parentWindow, L"OPENDISKIMAGESECTORSBOX") {
@@ -91,7 +92,7 @@ bool DiskImageSectorsDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam
                 memoryInspectorControl->GetSelection(wBegin, wEnd, true);
 
                 const Memory::size wSize = wEnd - wBegin + 1;
-                wsprintfW(szItemLine, ITEM_LINE_FORMAT, wCurrentSectorNumber, wAddr, wBegin, wSize);
+                String::Printf(szItemLine, ITEM_LINE_FORMAT, wCurrentSectorNumber, wAddr, wBegin, wSize);
 
                 GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST).AddString(szItemLine);
 

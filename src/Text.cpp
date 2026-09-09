@@ -9,7 +9,7 @@ wstring Text::Get(Text::TextID textID) {
     wchar_t szText[MAX_STRING_LENGTH];
 
     if (::LoadString(g_UIApplication->GetInstanceHandle(), textID, szText, sizeof(szText)) == 0) {
-        wsprintfW(szText, L"String with ID %u not found.", textID);
+        String::Printf(szText, L"String with ID %u not found.", textID);
     }
     return wstring(szText);
 }

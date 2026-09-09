@@ -36,9 +36,6 @@
 #include <stdexcept>
 #include <string>
 #include <wchar.h>
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 
 
 Disassembly::Disassembly() :lineWriter(1024) {
@@ -171,7 +168,7 @@ void Disassembly::AddLine(const wchar_t* szLine, DisassemblySectionType disassem
             break;
         }
         AddLineInBuffer(disLine, profile->commentPrefix.c_str(), pBuf);
-        wsprintf(szComment, L"%s %s", profile->commentPrefix.c_str(), text.c_str());
+        String::Printf(szComment, L"%s %s", profile->commentPrefix.c_str(), text.c_str());
         AddLineInBuffer(disLine, szComment, pBuf);
         AddLineInBuffer(disLine, profile->commentPrefix.c_str(), pBuf);
 
@@ -277,7 +274,7 @@ void Disassembly::AddUserComment(wstring_view comment, DisassemblySectionType di
             }
         }
 
-        wsprintf(lpFullText, L"%s %s", profile->commentPrefix.c_str(), lpStart);
+        String::Printf(lpFullText, L"%s %s", profile->commentPrefix.c_str(), lpStart);
         markSize = 0;
         systemAddress = 0;
         AddLine(lpFullText, disassemblySectionType);
@@ -619,7 +616,7 @@ void Disassembly::AddOrgOrBlock(SEGMENT_INDEX segmentIndex, Memory::address wPC)
         wstring label;
         if (equate == nullptr) {
             const auto& labelSegment = segmentList->FindBySDXBlockNumber(segment->bSDXBlockNumber);
-            wsprintf(String::szBuffer, Segment::szDefaultLabelFormat, segmentList->GetSegmentIndex(labelSegment), segment->wBegin);
+            String::Printf(String::szBuffer, Segment::szDefaultLabelFormat, segmentList->GetSegmentIndex(labelSegment), segment->wBegin);
             label = String::Format();
         }
         else {
@@ -1744,7 +1741,7 @@ void Disassembly::Pass5() {
                 AddOrgOrBlock(segmentIndex, 0);
                 AddLineWriter();
                 AddEmptyCommentLine();
-                wsprintf(String::szBuffer, L"S%03hXEND", segmentIndex);
+                String::Printf(String::szBuffer, L"S%03hXEND", segmentIndex);
                 auto endLabel = String::Format();
                 lineWriter.Clear().String(endLabel);
                 if (profile->showColonAfterLabel) {
@@ -1903,7 +1900,7 @@ void Disassembly::GenerateCodeEquates() {
     AddressLabelList::AddressLabelVector addressLabelsVector;
     segment->GetAddressLabels()->Enumerate(addressLabelsVector);
     for (const auto& addressLabel : addressLabelsVector) {
-        wsprintf(String::szBuffer, L"L%04hX", addressLabel->GetAddress());
+        String::Printf(String::szBuffer, L"L%04hX", addressLabel->GetAddress());
         AddLabel(String::Format(), addressLabel->GetAddress(), DisassemblySectionType::CODE_EQUATES, String::Empty());
     }
 }

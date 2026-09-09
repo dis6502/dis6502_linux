@@ -5,6 +5,7 @@
 #include "Segment.h"
 #include "SpriteControl.h"
 #include "EditControl.h"
+#include "StringUtility.h"
 #include "TextLabel.h"
 
 #include "SpriteControlImpl.h"
@@ -171,10 +172,10 @@ bool SelectSpritesDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, L
                 ITEM_LINE szLine;
                 // TODO Have dedicated memory formatter, see memory:to_hex_string
                 if ((wEnd != SPRITE_NO_SELECTION) && (wEnd >= wIndex)) {
-                    wsprintf(szLine, L"$%04hX - $%04hX", memoryInspectorSelection->segment->wBegin + wIndex, memoryInspectorSelection->segment->wBegin + wEnd);
+                    String::Printf(szLine, L"$%04hX - $%04hX", memoryInspectorSelection->segment->wBegin + wIndex, memoryInspectorSelection->segment->wBegin + wEnd);
                 }
                 else {
-                    wsprintf(szLine, L"$%04hX", memoryInspectorSelection->segment->wBegin + wIndex);
+                    String::Printf(szLine, L"$%04hX", memoryInspectorSelection->segment->wBegin + wIndex);
                 }
 
                 GetEditControl(IDC_ADDRESSSTART).SetText(szLine);
@@ -224,10 +225,10 @@ void SelectSpritesDialog::SelectGoto() {
 
     ITEM_LINE szLine;
     if ((wEnd != SPRITE_NO_SELECTION) && (wEnd >= wIndex)) {
-        wsprintf(szLine, L"$%04hX - $%04hX", memoryInspectorSelection->segment->wBegin + wIndex, memoryInspectorSelection->segment->wBegin + wEnd);
+        String::Printf(szLine, L"$%04hX - $%04hX", memoryInspectorSelection->segment->wBegin + wIndex, memoryInspectorSelection->segment->wBegin + wEnd);
     }
     else {
-        wsprintf(szLine, L"$%04hX", memoryInspectorSelection->segment->wBegin + wIndex);
+        String::Printf(szLine, L"$%04hX", memoryInspectorSelection->segment->wBegin + wIndex);
     }
     SetDlgItemText(hDlg, IDC_ADDRESSSTART, szLine);
 }

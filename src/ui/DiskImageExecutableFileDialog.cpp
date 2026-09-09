@@ -44,7 +44,7 @@ bool DiskImageExecutableFileDialog::ProcessDialogMessage(MESSAGE message, WPARAM
 
         error = atariDisk->FindFirst(info);
         while (error == AtariError::OK) {
-            wsprintf(String::szBuffer, L" %s %s %4hu %4hu", (info.IsLocked() ? L"*" : L" "), info.GetFileName83().c_str(), info.GetSectorCount(), info.GetStartSectorNumber());
+            String::Printf(String::szBuffer, L" %s %s %4hu %4hu", (info.IsLocked() ? L"*" : L" "), info.GetFileName83().c_str(), info.GetSectorCount(), info.GetStartSectorNumber());
 
             GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).AddString(String::Format(), (void*)(uintptr_t)info.GetDirectoryIndex());
             error = atariDisk->FindNext(info);

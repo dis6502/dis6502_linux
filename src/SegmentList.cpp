@@ -11,9 +11,6 @@
 #include "StringUtility.h"
 #include "Workspace.h"
 #include <cassert>
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 #include "Byte.h"
 #include "LabelAccess.h"
 #include "MemoryType.h"
@@ -445,10 +442,10 @@ wstring SegmentList::DefineLabelAtAddress(SEGMENT_INDEX segmentIndex, Memory::ad
     }
     if (found) {
         if (segment->szLabelPrefix.empty() && segment->IsSDX()) {
-            wsprintf(szLabelBuffer, Segment::szDefaultLabelFormat, segmentIndex, address);
+            String::Printf(szLabelBuffer, Segment::szDefaultLabelFormat, segmentIndex, address);
         }
         else {
-            wsprintf(szLabelBuffer, Segment::szLabelFormat, segment->szLabelPrefix.c_str(), address);
+            String::Printf(szLabelBuffer, Segment::szLabelFormat, segment->szLabelPrefix.c_str(), address);
         }
         defined = true;
         return szLabelBuffer;
@@ -465,10 +462,10 @@ wstring SegmentList::BuildAddress(SEGMENT_INDEX segmentIndex, Memory::address wA
         if ((addressLabel->IsAligned()) || (wAddr == wNearestAddr) || (wNearestAddr == 0) || (bNoNearest)) {
             wAddr = addressLabel->GetAddress();
             if (segment->IsSDX()) {
-                wsprintf(String::szBuffer, Segment::szDefaultLabelFormat, segmentIndex, wAddr);
+                String::Printf(String::szBuffer, Segment::szDefaultLabelFormat, segmentIndex, wAddr);
             }
             else {
-                wsprintf(String::szBuffer, L"L%04hX", wAddr);
+                String::Printf(String::szBuffer, L"L%04hX", wAddr);
             }
         }
         else {
@@ -476,14 +473,14 @@ wstring SegmentList::BuildAddress(SEGMENT_INDEX segmentIndex, Memory::address wA
             auto equate = workspace->GetUserEquateList()->FindEquateByAddress(wNearestAddr, labelAccess, true);
             if (equate) {
                 equate->AddLabelReference(labelAccess);
-                wsprintf(String::szBuffer, L"%s+%hu", equate->GetLabel(), wAddr - wNearestAddr);
+                String::Printf(String::szBuffer, L"%s+%hu", equate->GetLabel(), wAddr - wNearestAddr);
             }
             else {
                 if (segment->IsSDX()) {
-                    wsprintf(String::szBuffer, Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, wAddr - wNearestAddr);
+                    String::Printf(String::szBuffer, Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, wAddr - wNearestAddr);
                 }
                 else {
-                    wsprintf(String::szBuffer, L"L%04hX+%hu", wNearestAddr, wAddr - wNearestAddr);
+                    String::Printf(String::szBuffer, L"L%04hX+%hu", wNearestAddr, wAddr - wNearestAddr);
                 }
             }
         }
@@ -491,7 +488,7 @@ wstring SegmentList::BuildAddress(SEGMENT_INDEX segmentIndex, Memory::address wA
     }
     addressLabel = globalSegment.GetAddressLabels()->FindAddressLabel(wAddr);
     if (addressLabel) {
-        wsprintf(String::szBuffer, L"L%04hX", wAddr);
+        String::Printf(String::szBuffer, L"L%04hX", wAddr);
         return String::Format();;
     }
     return String::Empty();;
@@ -536,7 +533,7 @@ wstring SegmentList::GetLabelAtAddressInternal(SEGMENT_INDEX segmentIndex, Memor
             const auto wNearestAddr = addressLabel->GetNearestAddress();
             if ((addressLabel->IsAligned()) || (wAddr == wNearestAddr)) {
                 wAddr = addressLabel->GetAddress();
-                wsprintf(String::szBuffer, Segment::szDefaultLabelFormat, segmentIndex, wAddr);
+                String::Printf(String::szBuffer, Segment::szDefaultLabelFormat, segmentIndex, wAddr);
             }
             else {
                 wAddr = addressLabel->GetAddress();
@@ -544,10 +541,10 @@ wstring SegmentList::GetLabelAtAddressInternal(SEGMENT_INDEX segmentIndex, Memor
                 const Memory::offset offset = wAddr - wNearestAddr;
                 if (equate) {
                     equate->AddLabelReference(labelAccess);
-                    wsprintf(String::szBuffer, L"%s+%hu", equate->GetLabel(), offset);
+                    String::Printf(String::szBuffer, L"%s+%hu", equate->GetLabel(), offset);
                 }
                 else {
-                    wsprintf(String::szBuffer, Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, offset);
+                    String::Printf(String::szBuffer, Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, offset);
                 }
             }
             return String::Format();

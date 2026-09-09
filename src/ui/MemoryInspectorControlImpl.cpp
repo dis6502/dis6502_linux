@@ -532,7 +532,7 @@ void MemoryInspectorControlImpl::PrintLine(HDC hDC, WORD wLine, WORD wNbLines) {
     // draw start address
     wHeight = (wLine - wScroll) * wFontHeight;
     const auto wNumberOfBytesPerLine = MemoryInspectorControlImpl::GetNumberOfBytesPerLine();
-    wsprintf(szBuf, L"%04hX\x7C", wStart + (wLine * wNumberOfBytesPerLine));
+    String::Printf(szBuf, L"%04hX\x7C", wStart + (wLine * wNumberOfBytesPerLine));
     SetTextColor(hDC, RGB(0, 0, 0));
     TextOut(hDC, 1, wHeight, szBuf, String::Length(szBuf));
     if (wLine == wNbLines - 1) {
@@ -569,7 +569,7 @@ void MemoryInspectorControlImpl::PrintLine(HDC hDC, WORD wLine, WORD wNbLines) {
         }
 
         cOldType = cType;
-        wsprintf(szBuf, L"%02hX ", bByte);
+        String::Printf(szBuf, L"%02hX ", bByte);
         SetTextColor(hDC, dwMemoryInspectorColor[cType]);
         wPos = (wFontWidth * (5 + (3 * wRow))) + 1;
         TextOut(hDC, wPos, wHeight, szBuf, String::Length(szBuf));

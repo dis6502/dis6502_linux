@@ -7,9 +7,6 @@
 #include "StringUtility.h"
 #include "Symbol.h"
 // #include <algorithm> // TODO For sorting, should be in each list
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 
 // TODO: Move all formats to central place
 const wchar_t* Segment::szLabelFormat = L"%sL%04hX";
@@ -89,39 +86,39 @@ wstring Segment::ToString() const {
     // Read the header depending on the type.
     switch (wHeader) {
     case FileHeader::SDX_RELOC_BLK:
-        wsprintf(szBuffer, L"%s blk %hu $%04hX-$%04hX len %hu mem $%02hX", wstring(GetSDXBlockType()).c_str(), (unsigned int)bSDXBlockNumber, wBegin, wEnd, size, (Memory::word)bSDXControlByte);
+        String::Printf(szBuffer, L"%s blk %hu $%04hX-$%04hX len %hu mem $%02hX", wstring(GetSDXBlockType()).c_str(), (unsigned int)bSDXBlockNumber, wBegin, wEnd, size, (Memory::word)bSDXControlByte);
         break;
 
     case FileHeader::SDX_FIX_UP_BLK:
-        wsprintf(szBuffer, L"Fixups blk %hu len %hu", (unsigned int)bSDXBlockNumber, size);
+        String::Printf(szBuffer, L"Fixups blk %hu len %hu", (unsigned int)bSDXBlockNumber, size);
         break;
 
     case FileHeader::SDX_SYM_REQUIRED:
         // trim trailing whitespaces
         symbol = String::Trim(szSDXSymbol);
-        wsprintf(szBuffer, L"SymReq fixup len %-4hu %s", size, symbol.c_str());
+        String::Printf(szBuffer, L"SymReq fixup len %-4hu %s", size, symbol.c_str());
         break;
 
     case FileHeader::SDX_SYM_DEFINED:
         // trim trailing whitespaces
         symbol = String::Trim(szSDXSymbol);
-        wsprintf(szBuffer, L"SymDef blk %hu ofs $%04hX %s", (unsigned int)bSDXBlockNumber, wBegin, symbol.c_str());
+        String::Printf(szBuffer, L"SymDef blk %hu ofs $%04hX %s", (unsigned int)bSDXBlockNumber, wBegin, symbol.c_str());
         break;
 
     case FileHeader::ATARI_BINARY:
-        wsprintf(szBuffer, L"StdBin %04hX-$%04hX len %04hX (%hu)", wBegin, wEnd, size, size);
+        String::Printf(szBuffer, L"StdBin %04hX-$%04hX len %04hX (%hu)", wBegin, wEnd, size, size);
         break;
 
     case FileHeader::SDX_FIXED_BLK:
-        wsprintf(szBuffer, L"StdBlk $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
+        String::Printf(szBuffer, L"StdBlk $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
         break;
 
     default:
         if (bBinary) {
-            wsprintf(szBuffer, L"Binary $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
+            String::Printf(szBuffer, L"Binary $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
         }
         else {
-            wsprintf(szBuffer, L"Raw    $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
+            String::Printf(szBuffer, L"Raw    $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
         }
         break;
     }

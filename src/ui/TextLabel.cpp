@@ -21,7 +21,7 @@ wstring TextLabel::GetText() const {
 
 void TextLabel::SetNumber(unsigned int value) {
     static wchar_t szNumber[11]; //  4294967295
-    wsprintf(szNumber, L"%u", value);
+    String::Printf(szNumber, L"%u", value);
     SetText(szNumber);
 }
 

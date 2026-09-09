@@ -45,7 +45,7 @@ void Window::CreateWindowControl(wstring_view className, wstring_view windowName
         const auto lastError = GetLastError();
 
         wchar_t szMessage[1024];
-        wsprintf(szMessage,
+        String::Printf(szMessage,
             L"Error %lu during CreateWindow for window '%s' of class '%s'.\n"
             L"Actual parameters are: dwStyle=%lu hParentWnd=%p hMenu=%p  ::g_Application->GetHInstance()=%p\n",
             lastError, wstring(windowName).c_str(), wstring(className).c_str(), dwStyle, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle());

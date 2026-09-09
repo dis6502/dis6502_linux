@@ -108,7 +108,7 @@ void EquateRangeDialog::FillCombobox(const EquateList& equateList) {
 
     for (auto& equate : equateList.GetEquates()) {
         if (!equate->IsRange()) {
-            wsprintf(String::szBuffer, ITEM_FORMAT, equate->GetLabel(), equate->GetLabelValue());
+            String::Printf(String::szBuffer, ITEM_FORMAT, equate->GetLabel(), equate->GetLabelValue());
             baseEquateComboBox->AddString(String::Format(), equate);
 
             if (this->addressSpecified && equate->GetLabelValue() == this->address) {

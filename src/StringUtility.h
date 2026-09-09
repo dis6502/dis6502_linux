@@ -3,6 +3,9 @@
 #include "Syntax.h"
 #include <cstdint>
 
+// Forward-declared instead of including <Windows.h>, to keep this header free of Win32 dependencies.
+extern "C" __declspec(dllimport) int __cdecl wsprintfW(wchar_t*, const wchar_t*, ...);
+
 // TODO: Replace remaining usage of char array by strings
 void strclr(char* szString);
 void strclr(wchar_t* szString);
@@ -51,6 +54,9 @@ public:
     static const size_t BUFFER_SIZE = 1000;
     static wchar_t* szBuffer;
     static wstring Format();
+
+    // Drop-in replacement for wsprintf
+    template <typename ... Args> static void Printf(wchar_t* buffer, wchar_t const* const format, Args const& ... args) { wsprintfW(buffer, format, Argument(args) ...); }
 
     // Transition to Unicode
     static string wstring_to_ansi(wstring_view s);

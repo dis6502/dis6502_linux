@@ -905,7 +905,7 @@ void DisassemblyControlImpl::PrintAll(DC dc) {
                 throw std::runtime_error("Line too long");
             }
             if (lineNumbersActive) {
-                wsprintf(szBuf, L"%04lu %s", lineNumber, pDisText);
+                String::Printf(szBuf, L"%04lu %s", lineNumber, pDisText);
             }
             else {
                 wcscpy(szBuf, pDisText);
@@ -919,8 +919,8 @@ void DisassemblyControlImpl::PrintAll(DC dc) {
             }
             szBuf[iLength] = 0;
             if ((iBufSize >= 42) && (szBuf[35] != ';') && (disLine->address) && (disLine->selected)) {
-                wsprintf(&szBuf[35], L"; $%04hX", disLine->address);
-                szBuf[42] = ' '; // Overwrites 0 from wsprintf, so the rest of the line is displayed
+                String::Printf(&szBuf[35], L"; $%04hX", disLine->address);
+                szBuf[42] = ' '; // Overwrites 0 from String::Printf, so the rest of the line is displayed
             }
 
             // All sections other than the system and user equates are never greyed out.

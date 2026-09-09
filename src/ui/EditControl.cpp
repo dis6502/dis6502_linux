@@ -22,7 +22,7 @@ void EditControl::SetText(wstring_view text) {
 
 void EditControl::SetNumber(unsigned int value) {
     static wchar_t szNumber[11]; //  4294967295
-    wsprintf(szNumber, L"%u", value);
+    String::Printf(szNumber, L"%u", value);
     SetText(szNumber);
 }
 
@@ -35,7 +35,7 @@ unsigned int EditControl::GetNumber() const {
 
 void EditControl::SetByte(byte value) {
     static wchar_t szByte[3];
-    wsprintf(szByte, L"%02hX", value);
+    String::Printf(szByte, L"%02hX", value);
     SetText(szByte);
 }
 
@@ -50,7 +50,7 @@ byte EditControl::GetByte() const {
 void EditControl::SetAddress(Memory::address address) {
     SetTextSize(4);
     static wchar_t szAddress[5];
-    wsprintf(szAddress, L"%04hX", address);
+    String::Printf(szAddress, L"%04hX", address);
     SetText(szAddress);
 }
 

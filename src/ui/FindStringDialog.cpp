@@ -38,7 +38,7 @@ int FindStringDialog::GetAsciiStringLength() const {
 bool FindStringDialog::ConvertAsciiStringToHexString() {
     int nIndex = 0;
     for (size_t i = 0; i < String::Length(szFindAscii); i++) {
-        wsprintf(&szFindHex[nIndex], L"%02hX ", szFindAscii[i] & 0xFF);
+        String::Printf(&szFindHex[nIndex], L"%02hX ", szFindAscii[i] & 0xFF);
         nIndex += HEX_CHARS_PER_BYTE;
     }
 

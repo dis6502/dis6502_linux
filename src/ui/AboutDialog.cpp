@@ -82,12 +82,12 @@ void AboutDialog::GetModuleVersion(Module& module) {
                     const auto version2 = wordSpan[1];
                     wchar_t* lpValue = nullptr;
 
-                    wsprintf(lpName, L"\\StringFileInfo\\%04hX%04hX\\ProductVersion", version1, version2);
+                    String::Printf(lpName, L"\\StringFileInfo\\%04hX%04hX\\ProductVersion", version1, version2);
                     if (VerQueryValue(versionData.get(), lpName, (LPVOID*)&lpValue, &size)) {
                         module.version = wstring(lpValue);
                     }
 
-                    wsprintf(lpName, L"\\StringFileInfo\\%04hX%04hX\\FileDescription", version1, version2);
+                    String::Printf(lpName, L"\\StringFileInfo\\%04hX%04hX\\FileDescription", version1, version2);
                     if (VerQueryValue(versionData.get(), lpName, (LPVOID*)&lpValue, &size)) {
                         module.description = wstring(lpValue);
                     }

@@ -129,7 +129,7 @@ bool AssembleDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM
 
         nFirst = nBegin;
         wAddress = nFirst + segment->wBegin;
-        wsprintf(szAddress, L"$%04hX", wAddress);
+        String::Printf(szAddress, L"$%04hX", wAddress);
 
         SetItemTextAndSize(IDC_ASMADDR, szAddress);
 
@@ -351,20 +351,20 @@ bool AssembleDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM
 
                             switch (wLen) {
                             case 1:
-                                wsprintf(szResult, L"$%02hX ; %s", opcode, szBuf);
+                                String::Printf(szResult, L"$%02hX ; %s", opcode, szBuf);
                                 error = szResult;
                                 break;
 
                             case 2:
                                 segment->SetData(nFirst + 1, (byte)(value & 0xFF));
-                                wsprintf(szResult, L"$%02hX $%02hX ; %s", opcode, Memory::to_low_byte(value), szBuf);
+                                String::Printf(szResult, L"$%02hX $%02hX ; %s", opcode, Memory::to_low_byte(value), szBuf);
                                 error = szResult;
                                 break;
 
                             case 3:
                                 segment->SetData(nFirst + 1, (byte)(value & 0xFF));
                                 segment->SetData(nFirst + 2, (byte)((value >> 8) & 0xFF));
-                                wsprintf(szResult, L"$%02hX $%02hX $%02hX ; %s", opcode, Memory::to_low_byte(value), Memory::to_high_byte(value), szBuf);
+                                String::Printf(szResult, L"$%02hX $%02hX $%02hX ; %s", opcode, Memory::to_low_byte(value), Memory::to_high_byte(value), szBuf);
                                 error = szResult;
                                 break;
                             }

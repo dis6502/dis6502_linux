@@ -2,9 +2,6 @@
 #include "Debug.h"
 #include "Equate.h"
 #include "StringUtility.h"
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 
 wstring Equate::ExtractAddress(wstring_view label) {
     if (label.length() < 5) {
@@ -341,15 +338,15 @@ wstring Equate::ToString() const {
         break;
 
     case EquateType::COMMENT:
-        wsprintf(String::szBuffer, L"; %s", GetComment());
+        String::Printf(String::szBuffer, L"; %s", GetComment());
         break;
 
     case EquateType::LABEL:
         if (!comment.empty()) {
-            wsprintf(String::szBuffer, L"%s %s $%04hX; %s", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue(), GetComment());
+            String::Printf(String::szBuffer, L"%s %s $%04hX; %s", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue(), GetComment());
         }
         else {
-            wsprintf(String::szBuffer, L"%s %s $%04hX", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue());
+            String::Printf(String::szBuffer, L"%s %s $%04hX", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue());
         }
         break;
 
