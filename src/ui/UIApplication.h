@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Application.h"
+#include "ApplicationSettingsSection.h"
+#include "Syntax.h"
+#include "Text.h"
 #include <Windows.h>
 
 class LogListWindow;
@@ -14,13 +17,16 @@ public:
 
     HINSTANCE GetInstanceHandle() const;
 
-    wstring GetModuleFilePath(wstring_view relativeFilePath) const;
-    ApplicationSettingsSection* GetSettingsSection(wstring_view name);
+    wstring GetModuleFilePath(wstring_view relativeFilePath) const override;
+    ApplicationSettingsSection* GetSettingsSection(wstring_view name) override;
 
     void SetLogListWindow(LogListWindow* logListWindow);
 
     void SetClipboardText(wstring_view text);
 
+
+protected:
+    wstring GetText(Text::TextID textID) const override;
 
 private:
     HINSTANCE hInstance;

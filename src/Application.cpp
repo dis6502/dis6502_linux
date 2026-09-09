@@ -5,17 +5,21 @@
 #include "StringUtility.h"
 #include "Syntax.h"
 #include "Text.h"
-#include <cstddef>
 #include <exception>
 #include <string>
-#include <wchar.h>
 
+
+Application* g_Application = nullptr;
 
 Application::Application() {}
 
 
 Application::~Application() {
     settingsSections.clear();
+}
+
+wstring Application::GetText(Text::TextID textID) const {
+    return std::to_wstring(textID);
 }
 
 void Application::SendLogMessage(const wchar_t* szText) {

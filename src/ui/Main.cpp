@@ -71,7 +71,7 @@ extern wstring binPath; // Part of workspace. Defined in Workspace1X.cpp, used b
 extern wstring diskPath; // Part of workspace. Defined in Workspace1X.cpp, used by Main/MainFile and Workspace Logic
 
 std::unique_ptr<Main> g_Main = nullptr;
-Application* g_Application = nullptr;
+extern Application* g_Application;
 std::unique_ptr<UIApplication> g_UIApplication = nullptr;
 std::unique_ptr<Workspace> g_Workspace = nullptr;
 

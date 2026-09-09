@@ -1,11 +1,12 @@
 #include "Application.h"
 #include "ApplicationSettingsSection.h"
 #include "FileIO.h"
+#include "StringUtility.h"
+#include "Syntax.h"
 #include "UIApplication.h"
 #include <exception>
 #include <filesystem>
 #include <string.h>
-#include <Syntax.h>
 #include <utility>
 #include <Windows.h>
 
@@ -20,6 +21,15 @@ HINSTANCE UIApplication::GetInstanceHandle() const {
     return hInstance;
 }
 
+wstring UIApplication::GetText(Text::TextID textID) const {
+
+    wchar_t szText[Text::MAX_STRING_LENGTH];
+
+    if (::LoadString(GetInstanceHandle(), textID, szText, sizeof(szText)) == 0) {
+        String::Printf(szText, L"String with ID %u not found.", textID);
+    }
+    return wstring(szText);
+}
 
 wstring UIApplication::GetModuleFilePath(wstring_view relativeFilePath) const {
     FileIO::FILE_PATH szFilePathBuffer;

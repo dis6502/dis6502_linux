@@ -1,17 +1,12 @@
+#include "Application.h"
 #include "StringUtility.h"
+#include "Syntax.h"
 #include "Text.h"
-#include "UIApplication.h"
 
-extern std::unique_ptr<UIApplication> g_UIApplication;
+extern Application* g_Application;
 
 wstring Text::Get(Text::TextID textID) {
-
-    wchar_t szText[MAX_STRING_LENGTH];
-
-    if (::LoadString(g_UIApplication->GetInstanceHandle(), textID, szText, sizeof(szText)) == 0) {
-        String::Printf(szText, L"String with ID %u not found.", textID);
-    }
-    return wstring(szText);
+    return g_Application->GetText(textID);
 }
 
 wstring Text::Format(Text::TextID textID, wstring_view v0, wstring_view v1, wstring_view v2, wstring_view v3, wstring_view v4, wstring_view v5, wstring_view v6, wstring_view v7, wstring_view v8, wstring_view v9) {

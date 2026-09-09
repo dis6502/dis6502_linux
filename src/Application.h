@@ -11,6 +11,7 @@ typedef char TITLE[80];
 class Window;
 
 class Application {
+    friend Text;
 
 public:
     virtual ~Application();
@@ -31,6 +32,6 @@ protected:
 
     Application();
 
-
+    virtual wstring GetText(Text::TextID textID) const;
     virtual void SendLogMessage(const wchar_t* szText);
 };

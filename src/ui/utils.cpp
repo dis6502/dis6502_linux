@@ -23,12 +23,12 @@
 
 #include <Windows.h>
 #include <windowsx.h> // For GlobalFreePtr, GlobalReAllocPtr, hmemcpy
-#include <memory.h>
 #include "utils.h"
 
 #if defined(WIN32) || defined(_WIN32)
 #define _huge
 #endif
+#include <string.h>
 
 #define BFT_ICON   0x4349   /* 'IC' */
 #define BFT_BITMAP 0x4d42   /* 'BM' */
@@ -348,8 +348,7 @@ static void xlatRle8(BYTE FAR* pb, DWORD dwSize, BYTE FAR* xlat)
 }
 
 static void xlatRle4(BYTE FAR* pb, DWORD dwSize, BYTE FAR* xlat)
-{
-}
+{}
 
 static void hmemmove(BYTE _huge* d, BYTE _huge* s, LONG len)
 {
