@@ -1,24 +1,30 @@
 #include "AboutDialog.h"
 #include "Application.h"
+#include "DefaultFolders.h"
 #include "EquateList.h"
 #include "EquateListController.h"
 #include "FileType.h"
 #include "Main.h"
+#include "MainController.h"
 #include "MainFile.h"
 #include "MainMenu.h"
 #include "MainWindow.h"
 #include "MainWindowMenu.h"
+#include "Memory.h"
 #include "MemoryInspector.h"
 #include "MemoryInspectorSelection.h"
 #include "MRUController.h"
 #include "MRUEntry.h"
-#include "Profile.h"
 #include "Segment.h"
 #include "SegmentList.h"
+#include "SegmentTypes.h"
 #include "SegmentWriteBootDiskDialog.h"
+#include "Text.h"
+#include "UI.h"
 #include "systems/ComputerSystem.h"
 #include "Workspace.h"
 #include "WorkspaceDialog.h"
+#include <memory>
 
 extern Application* g_Application;
 
@@ -160,8 +166,8 @@ void MainMenu::PerformFileMenuCommands(COMMAND command, bool editMode) {
     case IDM_MRU_WORKSPACE_3:
     case IDM_MRU_WORKSPACE_4:
     case IDM_MRU_WORKSPACE_5: {
-        const auto hFileMenu = mainWindow->mainWindowMenu->GetSubMenuHandle(0);
-        const auto entry = mruController->GetMRUEntry(hFileMenu, (UINT)command);
+        const auto fileMenu = mainWindow->mainWindowMenu->GetSubMenuHandle(0);
+        const auto entry = mruController->GetMRUEntry(fileMenu, (UINT)command);
 
         if (entry != nullptr) {
             // Copy because opening will change the entry in the MRU list

@@ -1,8 +1,11 @@
+#include "Byte.h"
+#include "ByteSequence.h"
 #include "Profile.h"
 
 #include "Application.h"
 #include "ApplicationSettingsSection.h"
 #include "StringUtility.h"
+#include <cstddef>
 
 #include "Profile1X.h"
 

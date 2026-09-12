@@ -1,10 +1,9 @@
 #pragma once
-#include <Control.h>
-#include <Windows.h>
+#include "Control.h"
 
 class Button : public Control {
 public:
-    Button(HWND hWnd);
+    Button(WindowHandle hWnd);
 
     Button() = delete;
     Button(const Button& a) = delete;			// copy constructor

@@ -3,7 +3,11 @@
 
 #include "DisassemblyControl.h"
 #include "DisassemblyResult.h"
+#include "Memory.h"
+#include "SegmentTypes.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include <cstddef>
 
 void DisassemblyControl::RegisterClassFor(HINSTANCE hInstance) {
     DisassemblyControlImpl::RegisterClassFor(hInstance);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Syntax.h"
+#include <cctype>
 
 /**
  * Make original C functions available without warings about unsigned char.

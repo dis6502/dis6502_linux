@@ -12,17 +12,17 @@
 #include "DisassemblyLine.h"
 #include "DisassemblyResult.h"
 #include "DisassemblySectionType.h"
+#include "Font.h"
 #include "Memory.h"
 #include "StringUtility.h"
 #include "Syntax.h"
-#include "UI.h"
 #include "Window.h"
 #include <algorithm>
-#include <SegmentTypes.h>
+#include "SegmentTypes.h"
 #include <stdexcept>
 #include <wchar.h>
 #include <Windows.h>
-#include <XRef.h>
+#include "XRef.h"
 
 /*
 ** maximum history size.
@@ -43,7 +43,7 @@ public:
     DisassemblyResult* result;                          // address of result to draw
     WORD           wFactor;                             // how much lines represents a scroll of 1 position
     DisassemblyResult::LineNumber scrollLineNumber;     // first line display, one-based
-    ScrollPosition wMaxScrollPosition;                  // maximum scroll position
+    Control::ScrollPosition wMaxScrollPosition;                  // maximum scroll position
     DisassemblyResult::LineCount  maxLineCount;         // number of lines displayed in the window
     HFONT          hFont;                               // font used to display lines
     WORD           wFontWidth;                          // font width in pixels
@@ -157,7 +157,7 @@ void  DisassemblyControlImpl::SetFactor(WORD wFactor) {
 }
 
 
-ScrollPosition DisassemblyControlImpl::GetMaxScrollPosition() const {
+Control::ScrollPosition DisassemblyControlImpl::GetMaxScrollPosition() const {
     return GetWindowWord(hWnd, FIELD_OFFSET(DisStruct, wMaxScrollPosition));
 }
 
@@ -347,9 +347,8 @@ LRESULT DisassemblyControlImpl::ExtendSelectionTo(SEGMENT_NUMBER segmentNumber, 
     return FALSE;
 }
 
-HFONT DisassemblyControlImpl::GetFont() const {
-
-    return (HFONT)GetWindowLongPtr(hWnd, FIELD_OFFSET(DisStruct, hFont));
+Font* DisassemblyControlImpl::GetFont() const {
+    return  (Font*)GetWindowLongPtr(hWnd, FIELD_OFFSET(DisStruct, hFont));
 
 }
 
@@ -358,22 +357,22 @@ HFONT DisassemblyControlImpl::GetFont() const {
 ** WM_SETFONT message
 ** Sets font to use.
 */
-void DisassemblyControlImpl::SetFont(HFONT hFont) {
+void DisassemblyControlImpl::SetFont(Font* font) {
 
-    SetWindowLongPtr(hWnd, FIELD_OFFSET(DisStruct, hFont), (LONG_PTR)hFont);
+    SetWindowLongPtr(hWnd, FIELD_OFFSET(DisStruct, hFont), (LONG_PTR)font);
 
     auto dc = DC(GetDC(hWnd));
-    HFONT hOldFont = NULL_HFONT;
-    if (hFont) {
-        hOldFont = dc.SelectFont(hFont);
+    Font* oldFont;
+    if (font != nullptr) {
+        oldFont = dc.SelectFont(font);
     }
     TEXTMETRIC tm{};
     dc.GetTextMetrics(tm);
     SetWindowWord(hWnd, FIELD_OFFSET(DisStruct, wFontWidth), (WORD)tm.tmAveCharWidth);
     SetWindowWord(hWnd, FIELD_OFFSET(DisStruct, wFontHeight), (WORD)tm.tmHeight);
 
-    if (hFont) {
-        dc.SelectFont(hOldFont);
+    if (font != nullptr) {
+        dc.SelectFont(oldFont);
     }
     ReleaseDC(hWnd, dc.hDC);
 }
@@ -400,7 +399,7 @@ void DisassemblyControlImpl::Size() { // TODO: Rename to AdaptSize()?
 */
 void DisassemblyControlImpl::Create() {
 
-    SetFont(NULL_HFONT);
+    SetFont(nullptr);
     SetFactor(1);
     SetResult(NULL);
     SetScrollLineNumber(0);
@@ -867,8 +866,7 @@ void DisassemblyControlImpl::PrintOneLineInColor(DC dc, WORD wFontHeight, bool s
 ** Repaint complete control.
 */
 void DisassemblyControlImpl::PrintAll(DC dc) {
-    HFONT hFont;
-    HFONT hOldFont;
+    Font* oldFont;
     WORD wNbLines;
     wchar_t* szBuf;
 
@@ -890,9 +888,9 @@ void DisassemblyControlImpl::PrintAll(DC dc) {
     szBuf = new wchar_t[iBufSize];
 
     // Select font and print all lines.
-    hFont = GetFont();
-    if (hFont) {
-        hOldFont = dc.SelectFont(hFont);
+    auto font = GetFont();
+    if (font != nullptr) {
+        oldFont = dc.SelectFont(font);
     }
 
     for (auto i = GetResult()->CreateLineIterator(); i->HasNext();) {
@@ -940,8 +938,8 @@ void DisassemblyControlImpl::PrintAll(DC dc) {
 
     delete[] szBuf;
     FillRestOfWindow(dc);
-    if (hFont) {
-        dc.SelectFont(hOldFont);
+    if (font != nullptr) {
+        dc.SelectFont(oldFont);
     }
 }
 
@@ -1231,7 +1229,7 @@ LRESULT DisassemblyControlImpl::WndProc(Window::MESSAGE message, WPARAM wParam, 
 
 
     case WM_SETFONT:
-        SetFont((HFONT)wParam);
+        SetFont(Font::GetInstance((HFONT)wParam));
         Size();
         break;
 
@@ -1285,5 +1283,5 @@ LRESULT DisassemblyControlImpl::WndProc(Window::MESSAGE message, WPARAM wParam, 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
-    return LRESULT_0;
+    return Window::LRESULT_0;
 }

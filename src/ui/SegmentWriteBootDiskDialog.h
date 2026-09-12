@@ -4,8 +4,9 @@
 
 #include "Dialog.h"
 #include "SegmentTypes.h"
-#include "Byte.h"
 #include "ByteArray.h"
+#include "Memory.h"
+#include "Window.h"
 #include <gsl/gsl>
 
 class SegmentWriteBootDiskDialog: public Dialog {

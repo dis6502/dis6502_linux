@@ -1,8 +1,17 @@
 #include "MemoryBlock.h"
+#include "Byte.h"
+#include "ByteArray.h"
+#include "ByteSequence.h"
 #include "InputStream.h"
+#include "Memory.h"
+#include "MemoryType.h"
 #include "OutputStream.h"
+#include "XML.h"
+#include <cstddef>
+#include <cstring>
 #include <gsl/gsl>
 #include <sstream>
+#include <stdexcept>
 MemoryBlock::MemoryBlock() :
     size(0),
     lpData(nullptr),
@@ -136,6 +145,6 @@ void MemoryBlock::DeserializeFrom(const XML::Element& element) {
     memcpy(this->lpData, lpData, realSize);
     memcpy(this->lpType, lpType, realSize);
 
-    delete lpData;
-    delete lpType;
+    delete[] lpData;
+    delete[] lpType;
 }

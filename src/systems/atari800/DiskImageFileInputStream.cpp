@@ -1,5 +1,6 @@
 #include "AtariDOS.h"
 
+#include "CommonIO.h"
 #include "DiskImageFileInputStream.h"
 
 DiskImageFileInputStream::DiskImageFileInputStream() : valid(false), position(0) {

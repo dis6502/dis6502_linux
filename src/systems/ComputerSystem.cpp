@@ -13,7 +13,7 @@
 #include <memory>
 #include <sstream>
 #include <stdexcept>
-#include <Syntax.h>
+#include "Syntax.h"
 
 extern Application* g_Application;
 

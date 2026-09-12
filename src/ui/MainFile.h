@@ -4,6 +4,7 @@
 #include "Syntax.h"
 #include "Text.h"
 
+class ByteSequence;
 class Segment;
 class FileInputStream;
 enum class FileType;

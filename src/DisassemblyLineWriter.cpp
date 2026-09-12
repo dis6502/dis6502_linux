@@ -10,6 +10,7 @@
 #include "StringUtility.h"
 #include "Syntax.h"
 #include "Workspace.h"
+#include "gsl/pointers"
 #include <algorithm>
 #include <cctype>
 #include <cstdio>

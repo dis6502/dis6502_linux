@@ -3,6 +3,7 @@
 #include "Syntax.h"
 
 #include "PartWindow.h"
+#include "Window.h"
 
 
 class SegmentListWindow : public PartWindow {

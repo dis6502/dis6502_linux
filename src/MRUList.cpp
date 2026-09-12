@@ -6,6 +6,11 @@
 #include "FileType.h"
 #include "MRUEntry.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "gsl/pointers"
+#include <cstddef>
+#include <string>
+#include <vector>
 
 extern Application* g_Application;
 

@@ -1,8 +1,10 @@
 #pragma once
+#include "Memory.h"
 #include "Syntax.h"
 #include "Dialog.h"
 
 #include "Equate.h"
+#include "Window.h"
 class EquateList;
 
 class EquateRangeDialog :public Dialog {

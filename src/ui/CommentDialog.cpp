@@ -1,15 +1,20 @@
-#include "Application.h"
-#include "DisassemblyResult.h"
-#include "SegmentList.h"
-#include "EditControl.h"
 #include "CommentDialog.h"
+#include "Dialog.h"
+#include "DisassemblyResult.h"
+#include "EditControl.h"
+#include "Font.h"
+#include "Memory.h"
+#include "Resource.h"
+#include "SegmentList.h"
+#include "SegmentTypes.h"
+#include "Window.h"
+#include <Windows.h>
 
 
-CommentDialog::CommentDialog(Window& parentWindow) : Dialog(parentWindow, L"ADDCOMMENTBOX") {
-}
+CommentDialog::CommentDialog(Window& parentWindow) : Dialog(parentWindow, L"ADDCOMMENTBOX") {}
 
-bool CommentDialog::Show(const DisassemblyResult& disassemblyResult, SegmentList& segmentList, SEGMENT_INDEX segmentIndex, Memory::offset offset, Memory::size size, HFONT hFont) {
-    this->hFont = hFont;
+bool CommentDialog::Show(const DisassemblyResult& disassemblyResult, SegmentList& segmentList, SEGMENT_INDEX segmentIndex, Memory::offset offset, Memory::size size, Font* font) {
+    this->font = font;
 
     if (size == 0xFFFF) {
         disassemblyResult.FindOffsetAtStartOfInstruction(segmentIndex, offset, size);
@@ -31,7 +36,7 @@ bool CommentDialog::Show(const DisassemblyResult& disassemblyResult, SegmentList
 bool CommentDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
     case WM_INITDIALOG:
-        GetEditControl(IDC_COMMENT).SetFont(hFont);
+        GetEditControl(IDC_COMMENT).SetFont(font);
         GetEditControl(IDC_COMMENT).SetText(comment);
         return true;
 

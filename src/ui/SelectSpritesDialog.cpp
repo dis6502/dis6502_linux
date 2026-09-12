@@ -1,14 +1,19 @@
 #include "Application.h"
 #include "ComboBox.h"
+#include "Dialog.h"
+#include "Memory.h"
 #include "MemoryInspector.h"
 #include "MemoryInspectorSelection.h"
 #include "Segment.h"
 #include "SpriteControl.h"
 #include "EditControl.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "Text.h"
 #include "TextLabel.h"
 
 #include "SpriteControlImpl.h"
+#include <memory>
 
 #include "SelectSpritesDialog.h"
 

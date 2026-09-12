@@ -2,6 +2,7 @@
 
 #include "Byte.h"
 #include "Syntax.h"
+#include <cstddef>
 #include <memory>
 
 class DIS_LINE;

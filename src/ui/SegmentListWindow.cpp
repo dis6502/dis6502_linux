@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "PartWindow.h"
+#include "Syntax.h"
 
 #include "SegmentListWindow.h"
 

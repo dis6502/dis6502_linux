@@ -14,6 +14,7 @@
 #include "Syntax.h"
 #include "WorkspaceTypes.h"
 #include "XML.h"
+#include "gsl/pointers"
 #include <memory>
 #include <vector>
 

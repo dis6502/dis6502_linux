@@ -4,6 +4,7 @@
 
 #include "Byte.h"
 #include "Word.h"
+#include <cstddef>
 
 class DatatypeUtility {
 public:

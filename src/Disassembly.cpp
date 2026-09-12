@@ -33,6 +33,7 @@
 #include "Syntax.h"
 #include "Word.h"
 #include "Workspace.h"
+#include "gsl/pointers"
 #include <stdexcept>
 #include <string>
 #include <wchar.h>

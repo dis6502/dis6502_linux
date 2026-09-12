@@ -1,5 +1,14 @@
 #include "DisassemblyWriter.h"
+#include "Byte.h"
+#include "Disassembly.h"
+#include "DisassemblyLineWriter.h"
+#include "DisassemblyOpcodeBuffer.h"
+#include "Memory.h"
+#include "MemoryType.h"
 #include "StringUtility.h"
+#include "systems/ComputerSystem.h"
+#include "Workspace.h"
+#include <cwchar>
 
 DisassemblyWriter::DisassemblyWriter(Disassembly& disassembly, Workspace& workspace) :
     wDisNbBytes(0) {

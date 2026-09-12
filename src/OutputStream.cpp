@@ -5,6 +5,7 @@
 #include "OutputStream.h"
 #include "StringUtility.h"
 #include "Syntax.h"
+#include "gsl/pointers"
 #include <cstdio>
 #include <filesystem>
 #include <stdexcept>

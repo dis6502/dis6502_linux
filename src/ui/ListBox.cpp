@@ -1,10 +1,14 @@
-#include "Dialog.h"
+#include "Control.h"
 #include "ListBox.h"
 #include "StringUtility.h"
+#include "Text.h"
+#include "Window.h"
+#include <stdexcept>
+#include "Syntax.h"
+#include <Windows.h>
 
 
-
-ListBox::ListBox(HWND hWnd) : Control(hWnd) {}
+ListBox::ListBox(WindowHandle hWnd) : Control(hWnd) {}
 
 void ListBox::Clear() {
     SendMessage(hWnd, LB_RESETCONTENT, 0, 0);

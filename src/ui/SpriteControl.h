@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "Window.h"
-#include "Byte.h"
 #include "ByteSequence.h"
 
 class SpriteControl : public Window {

@@ -2,9 +2,12 @@
 
 #include "Encoding.h"
 #include "File.h"
-#include "FileIO.h"
 #include "OutputStream.h"
-#include "StringUtility.h"
+#include "Profile.h"
+#include "Syntax.h"
+#include <cstddef>
+#include <stdexcept>
+#include <string>
 
 DisassemblyResultWriter::DisassemblyResultWriter(const Profile& profile) :
     profile(&profile), file(), outputStream(nullptr), lineNumber(0) {

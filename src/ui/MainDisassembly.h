@@ -1,11 +1,16 @@
 #pragma once
 
+#include "Byte.h"
+#include "Memory.h"
+#include "MemoryType.h"
+#include "SegmentTypes.h"
 #include "Syntax.h"
 #include "MainController.h"
 #include "DisassemblyLine.h"
 #include "DisassemblyResult.h"
 #include "DisassemblySection.h"
 #include "MemoryInspector.h" // TODO: Should not be a direct usage
+#include "XRef.h"
 
 class DisassemblyControl;
 class MainXRef;

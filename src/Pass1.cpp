@@ -1,5 +1,11 @@
 #include "Pass1.h"
 
+#include "Byte.h"
+#include "FileHeader.h"
+#include "Fixup.h"
+#include "Memory.h"
+#include "Segment.h"
+#include "SegmentTypes.h"
 #include "Workspace.h"
 #include "SegmentList.h"
 #include "MemoryBlockIterator.h"

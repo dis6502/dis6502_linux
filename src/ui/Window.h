@@ -1,51 +1,72 @@
 #pragma once
 
 #include "Syntax.h"
-#include "UI.h"
 #include <Windows.h>
 
-class Window {
+class AbstractWindow {
 public:
-    typedef unsigned int MESSAGE;
-    typedef __int64 LPARAM;
-    typedef unsigned __int64 WPARAM;
+    using WindowHandle = HWND;
+    using MESSAGE = unsigned int;
+    using WPARAM = unsigned __int64;
+    using LPARAM = __int64;
+    using LRESULT = __int64;
+    using INT_PTR = __int64;
+    using ChildID = int;
+    using WindowStyle = unsigned long;
+    using PositionFlags = unsigned int;
 
-    HWND GetHWnd() const;
+    using WindowProcedure = LRESULT(__stdcall*)(WindowHandle, MESSAGE, WPARAM, LPARAM);
+
+
+    static constexpr WPARAM WPARAM_0 = 0;
+    static constexpr LPARAM LPARAM_0 = 0;
+    static constexpr LRESULT LRESULT_0 = 0;
+};
+
+class Font;
+
+class Window :public AbstractWindow {
+public:
+
+    static Window* WINDOW_TOP;
+
+    WindowHandle GetHWnd() const;
 
     void SetTitle(wstring_view title);
-    void SetFont(HFONT hFont);
+    void SetFont(Font* font);
 
-    void SetPosition(HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags);
+    void SetPosition(Window* windowInsertAfter, int X, int Y, int cx, int cy, PositionFlags flags);
 
     bool HasFocus() const;
     void SetFocus();
 
-    void SetMouseWheelProc(WNDPROC lpWndProc);
-    void SetRButtonDownProc(WNDPROC lpWndProc);
+    void SetMouseWheelProc(WindowProcedure lpWndProc);
+    void SetRButtonDownProc(WindowProcedure lpWndProc);
 
     void SetDragAcceptFiles(bool bAccept);
-    void SetDropFilesProc(WNDPROC lpWndProc);
+    void SetDropFilesProc(WindowProcedure lpWndProc);
 
 protected:
     const Window* parentWindow;
-    HWND hWnd;
+    WindowHandle hWnd;
 
     Window();
     Window(const Window& parentWindow);
     virtual ~Window();
 
-    void CreateWindowControl(wstring_view className, wstring_view windowName, DWORD dwStyle, HMENU hMenu, int x, int y, int nWidth, int nHeight);
-    void CreateChildControl(wstring_view className, DWORD dwStyle, ChildID childID, int X, int Y, int nWidth, int nHeight);
-    void InitControl(wstring_view className, HWND hWnd);
+    void CreateWindowControl(wstring_view className, wstring_view windowName, WindowStyle style, HMENU hMenu, int x, int y, int nWidth, int nHeight);
+    void CreateChildControl(wstring_view className, WindowStyle style, ChildID childID, int X, int Y, int nWidth, int nHeight);
+    void InitControl(wstring_view className, WindowHandle hWnd);
 
 private:
     wstring className;
-    WNDPROC lpWndProc;
+    WindowProcedure lpWndProc;
 
-    WNDPROC lpWM_DROPFILESProc;
-    WNDPROC lpWM_MOUSEWHEELProc;
-    WNDPROC lpWM_RBUTTONDOWNProc;
+    WindowProcedure lpWM_DROPFILESProc;
+    WindowProcedure lpWM_MOUSEWHEELProc;
+    WindowProcedure lpWM_RBUTTONDOWNProc;
 
-    static LRESULT CALLBACK WindowProc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
-    virtual LRESULT CALLBACK WindowProcInstance(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
+    // Win32 callback requires __stdcall
+    static LRESULT __stdcall WindowProc(WindowHandle hWND, MESSAGE message, WPARAM wParam, LPARAM lParam);
+    virtual LRESULT WindowProcInstance(WindowHandle hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam);
 };

@@ -1,21 +1,22 @@
 #pragma once
 
 #include "Syntax.h"
-#include "UI.h"
 #include "MRUEntry.h"
 
 #include <vector>
+#include <Windows.h>
 
+class Menu;
 class MRUList;
 
 class MRUMenu
 {
 public:
 	MRUMenu(UINT menuPosition, std::vector<UINT> itemIDList);
-	~MRUMenu() = default;
+	~MRUMenu();
 
-	void FillMenu(HMENU hMenu, const MRUList& mruList);
-	const MRUEntry* GetMRUEntry(HMENU hMenu, UINT itemID) const;
+	void FillMenu(Menu* menu, const MRUList& mruList);
+	const MRUEntry* GetMRUEntry(Menu* menu, UINT itemID) const;
 
 private:
 	const UINT menuPosition;
@@ -28,5 +29,7 @@ private:
 	};
 
 	std::vector<MenuEntry*> menuEntries;
+
+	void ClearMenuEntries();
 };
 

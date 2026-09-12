@@ -5,7 +5,7 @@
 #include "Memory.h"
 #include "SegmentTypes.h"
 #include "Syntax.h"
-#include <ByteSequence.h>
+#include "ByteSequence.h"
 #include <gsl/pointers>
 #include <vector>
 

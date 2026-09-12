@@ -1,6 +1,8 @@
 #include "MRUEntry.h"
 
 #include "FileType.h"
+#include "Syntax.h"
+#include "gsl/pointers"
 
 MRUEntry::MRUEntry(wstring_view filePath, FileType fileType) :
 	filePath(filePath), fileType(fileType) {

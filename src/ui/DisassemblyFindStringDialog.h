@@ -3,7 +3,6 @@
 #include "Dialog.h"
 #include "Syntax.h"
 #include "Window.h"
-#include <Windows.h>
 
 class Disassembly;
 

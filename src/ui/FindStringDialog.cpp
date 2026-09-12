@@ -1,11 +1,16 @@
 #include "Application.h"
 
+#include "Byte.h"
 #include "DatatypeUtility.h"
+#include "Dialog.h"
 #include "EditControl.h"
 #include "FindStringDialog.h"
 #include "MessageBoxDialog.h"
 #include "StringUtility.h"
+#include "Syntax.h"
 #include "Text.h"
+#include <cstddef>
+#include <cwchar>
 
 FindStringDialog::FindStringDialog(int nMaxChars) {
     this->nMaxChars = nMaxChars;
@@ -18,8 +23,8 @@ FindStringDialog::FindStringDialog(int nMaxChars) {
 }
 
 FindStringDialog::~FindStringDialog() {
-    delete szFindAscii;
-    delete szFindHex;
+    delete[] szFindAscii;
+    delete[] szFindHex;
 }
 
 void FindStringDialog::SetAsciiString(Dialog& dialog, wstring_view asciiString) {

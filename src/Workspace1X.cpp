@@ -11,6 +11,7 @@
 #include "StringUtility.h"
 #include "Syntax.h"
 #include "Workspace.h"
+#include "gsl/util"
 #include "Workspace1X.h"
 #include <string.h>
 

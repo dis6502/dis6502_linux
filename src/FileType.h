@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Syntax.h"
-#include <span>
 
 enum class FolderType;
 

@@ -1,15 +1,13 @@
 #pragma once
 
-#include "Syntax.h"
-#include "UI.h"
 #include "Control.h"
+#include "Syntax.h"
 #include "Text.h"
-#include <vector>
 
 class ListBox : public Control {
 
 public:
-    ListBox(HWND hWnd);
+    ListBox(WindowHandle hWnd);
 
     void Clear();
 

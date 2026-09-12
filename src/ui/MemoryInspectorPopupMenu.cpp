@@ -1,11 +1,13 @@
 #include "MemoryInspectorPopupMenu.h"
 #include "MemoryInspectorSelection.h"
+#include "PopupMenu.h"
 #include "Resource.h"
 
 #include "Segment.h"
 #include "SegmentList.h"
 #include "Workspace.h"
-#include <gsl/util>
+#include <memory>
+#include <utility>
 #include <vector>
 
 extern std::unique_ptr<Workspace> g_Workspace;

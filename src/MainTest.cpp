@@ -43,6 +43,7 @@
 #include <memory>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 using TestMode = MainTest::TestMode;
 extern Application* g_Application;
@@ -100,7 +101,7 @@ void MainTest::Log(wstring_view pattern, wstring_view v0, wstring_view v1, wstri
 }
 
 
-void AssertAddressEquals(Memory::address current, Memory::address expected) {
+static void AssertAddressEquals(Memory::address current, Memory::address expected) {
     if (current != expected) {
         throw std::runtime_error("No equal");
     }

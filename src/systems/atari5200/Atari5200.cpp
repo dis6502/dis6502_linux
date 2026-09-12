@@ -1,5 +1,6 @@
 #include "Atari5200.h"
 
+#include "CommonIO.h"
 #include "FileInputStream.h"
 #include "FileType.h"
 #include "OutputStream.h"

@@ -1,8 +1,11 @@
 #include "DisassemblyLine.h"
 #include "DisassemblyPopupMenu.h"
 #include "Equate.h"
+#include "MemoryType.h"
+#include "PopupMenu.h"
 #include "Resource.h"
 #include "SegmentTypes.h"
+#include "Syntax.h"
 #include "Text.h"
 
 DisassemblyPopupMenu::DisassemblyPopupMenu() : PopupMenu(L"DISASSEMBLY_POPUP_MENU") {

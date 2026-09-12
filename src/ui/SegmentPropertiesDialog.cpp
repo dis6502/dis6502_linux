@@ -1,12 +1,16 @@
 #include "Application.h"
 #include "CheckBox.h"
 #include "ComboBox.h"
+#include "Dialog.h"
 #include "EditControl.h"
 #include "InstructionSet.h"
+#include "Memory.h"
 #include "MessageBoxDialog.h"
+#include "ProcessorType.h"
 #include "Segment.h"
 #include "Text.h"
 #include "Workspace.h"
+#include <memory>
 
 #include "SegmentPropertiesDialog.h"
 

@@ -48,6 +48,7 @@
 #include "WorkspaceFont.h"
 #include "WorkspaceLogic.h"
 #include "WorkspaceTypes.h"
+#include <cstdlib>
 #include <exception>
 #include <filesystem>
 #include <gsl/pointers>
@@ -55,10 +56,10 @@
 #include <locale>
 #include <malloc.h>
 #include <memory>
-#include <Resource.h>
+#include "Resource.h"
 #include <string>
 #include <strsafe.h>
-#include <Syntax.h>
+#include "Syntax.h"
 #include <vector>
 #include <wchar.h>
 
@@ -142,7 +143,7 @@ void  Main::ToggleViewDoubleFontHeight() {
     ::g_Workspace->NotifyFontChanged();
 };
 
-HFONT Main::GetResizedFont() {
+Font* Main::GetResizedFont() {
     return WorkspaceFont::GetResizedFont(*g_Workspace);
 }
 
@@ -656,7 +657,7 @@ int Main::WinMainDelegate(HINSTANCE hInstance, const HINSTANCE hPrevInstance, ws
     return msg.wParam;
 }
 
-LRESULT Main::MainWndProcDelegate(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
+Window::LRESULT Main::MainWndProcDelegate(Window::WindowHandle hWnd, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam) {
     switch (message) {
     case WM_CREATE:
         return 0;
@@ -760,7 +761,7 @@ LRESULT Main::MainWndProcDelegate(HWND hWnd, Window::MESSAGE message, WPARAM wPa
 /*
 ** WM_MOUSEWHEEL message
 */
-LRESULT CALLBACK Main::MainMouseWheelProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
+Window::LRESULT CALLBACK Main::MainMouseWheelProc(Window::WindowHandle hWnd, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam) {
     static short zDelta = 0;
 
     POINT pt;

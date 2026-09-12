@@ -1,3 +1,5 @@
+#include "Assertions.h"
+#include "Byte.h"
 #include "MemoryType.h"
 
 #include "MemoryInspectorTest.h"

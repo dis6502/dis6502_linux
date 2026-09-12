@@ -1,4 +1,5 @@
 #include "Atari800.h"
+#include "CommonIO.h"
 #include "Debug.h"
 #include "FileHeader.h"
 #include "FileType.h"

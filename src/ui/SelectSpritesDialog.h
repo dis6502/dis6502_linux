@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "Dialog.h"
-#include "SegmentTypes.h"
 #include "Memory.h"
 #include "SpriteControl.h"
 #include "ComboBox.h"
+#include "Window.h"
+#include <memory>
 
 class MemoryInspectorSelection;
 class SpriteControl;

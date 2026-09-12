@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "SegmentTypes.h"
+
+#include <gsl/pointers>
 
 class SegmentList;
 

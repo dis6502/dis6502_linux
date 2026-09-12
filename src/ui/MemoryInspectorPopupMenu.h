@@ -2,7 +2,7 @@
 
 #include "MemoryType.h"
 #include "PopupMenu.h"
-#include "Syntax.h"
+#include <utility>
 #include <vector>
 
 class Workspace;

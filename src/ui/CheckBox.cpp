@@ -1,11 +1,11 @@
-#include "Application.h"
-
 #include "CheckBox.h"
+#include "Control.h"
+#include "Window.h"
 #include "Windowsx.h" // For Button_Set/GetCheck
+#include <Windows.h>
 
-extern Application* g_Application;
 
-CheckBox::CheckBox(HWND hWnd) : Control(hWnd) {}
+CheckBox::CheckBox(WindowHandle hWnd) : Control(hWnd) {}
 
 
 void CheckBox::SetChecked(bool checked) {

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "Window.h"
 #include "MainWindowMenu.h"
+#include <memory>
 
 class Layout;
 class Main;

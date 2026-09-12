@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Font.h"
 #include "Syntax.h"
 #include <Windows.h>
+#include <cstddef>
 
 // Wrapper for Windows device context.
 class DC {
@@ -10,7 +12,7 @@ public:
     static HBRUSH GetStockBrush(int i);
 
     DC(HDC hDC);
-    HFONT SelectFont(HFONT hFont);
+    Font* SelectFont(Font* font);
     HBRUSH SelectBrush(HBRUSH hBrush);
 
     void GetTextMetrics(TEXTMETRIC& textMetric);

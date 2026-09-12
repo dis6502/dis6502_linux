@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ProfileLogic.h"
-#include "Syntax.h"
 
 class Profile;
 class ComputerSystemTypeInfo;

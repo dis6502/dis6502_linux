@@ -3,6 +3,7 @@
 #include "StringUtility.h"
 #include "Syntax.h"
 #include <Windows.h>
+#include <cstddef>
 
 Console::Console() : allocated(false) {
 
@@ -21,10 +22,10 @@ void Console::WriteLine(wstring_view message) {
 
     wstring messageString(message);
 
-    // Output within Visual Studio
+    // Output within the Visual Studio output window.
     Debug::Log(messageString);
 
-    // Output within command line window
+    // Output within the command line window.
     DWORD dwBuff = 0;
     auto hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     WriteConsole(hStdOut, messageString.c_str(), messageString.length(), &dwBuff, NULL);  // #.c_str() OK

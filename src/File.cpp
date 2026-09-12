@@ -1,13 +1,15 @@
 #include "File.h"
 #include "FileIO.h"
+#include "Syntax.h"
+#include <utility>
 
 
-File::File(wstring_view filePath): File() {
+File::File(wstring_view filePath) : File() {
     this->filePath = filePath;
 }
 
 File::File(const File& parentFile, wstring_view fileName) : File() {
-     filePath = parentFile.GetPath();
+    filePath = parentFile.GetPath();
     if (filePath.at(filePath.size() - 1) != FileIO::FILE_SEPARATOR_CHAR) {
         filePath.append(FileIO::FILE_SEPARATOR);
     }

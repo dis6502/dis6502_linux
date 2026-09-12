@@ -1,13 +1,19 @@
 #include "Application.h"
 #include "AssembleDialog.h"
+#include "Byte.h"
 #include "Character.h"
+#include "Dialog.h"
 #include "EditControl.h"
 #include "Equate.h"
 #include "InstructionSet.h"
 #include "Memory.h"
 #include "MemoryInspectorControl.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "Text.h"
 #include "Workspace.h"
+#include <cwchar>
+#include <memory>
 
 extern std::unique_ptr<Workspace> g_Workspace;
 

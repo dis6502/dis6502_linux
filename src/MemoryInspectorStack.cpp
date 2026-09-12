@@ -1,4 +1,5 @@
 #include "MemoryInspectorStack.h"
+#include "Memory.h"
 
 
 MemoryInspectorStack::MemoryInspectorStack() {

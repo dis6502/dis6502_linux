@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Main.h"
 #include "MainController.h"
 #include "SegmentListPopupMenu.h"
 #include "SegmentTypes.h"
@@ -9,6 +8,7 @@
 #include <memory>
 #include <Windows.h>
 
+class Main;
 class SegmentList;
 class SegmentListWindow;
 

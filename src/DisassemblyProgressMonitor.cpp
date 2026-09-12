@@ -1,5 +1,10 @@
 #include "Application.h"
 #include "Disassembly.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
+#include "Text.h"
+#include <chrono>
+#include <string>
 #include "DisassemblyProgressMonitor.h"
 
 

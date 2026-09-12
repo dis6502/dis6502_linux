@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Syntax.h"
 #include "Byte.h"
 #include "MemoryType.h"
 #include "Memory.h"
+#include <cstddef>
 
 class MemoryBlock;
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Syntax.h"
+#include <cstddef>
+#include <cstdint>
 
 constexpr size_t WORKSPACE_MAGIC_SIZE = 12;
 

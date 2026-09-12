@@ -1,28 +1,30 @@
 #pragma once
 
+#include "Byte.h"
 #include "Dialog.h"
 #include "DiskImage.h"
 #include "MemoryInspectorControl.h"
 #include "Syntax.h"
 #include "Window.h"
+#include "Word.h"
 #include <gsl/pointers>
 #include <list>
 #include <memory>
-#include <Windows.h>
 
+class Font;
 
 class DiskImageSectorsDialog : public Dialog {
 public:
     class Item;
     typedef Item* LP_ITEM;
 
-    DiskImageSectorsDialog(const Window& parentWindow, HFONT hComputerFont);
+    DiskImageSectorsDialog(const Window& parentWindow, Font* computerFont);
 
     INT_PTR Show(wstring_view diskImageFilePath);
 
     std::list<gsl::not_null<Item*>> GetItems();
 
-    byte* ReadSector(WORD wSector, int& nSectorSize);
+    byte* ReadSector(word wSector, int& nSectorSize);
 
 protected:
     bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
@@ -32,7 +34,7 @@ protected:
 
 private:
     // Set in constructor.
-    HFONT hComputerFont;
+    Font* computerFont;
     ImgInfo diskImageInfo;
     ImgRWPacket sector;
 
@@ -42,25 +44,25 @@ private:
     // Set in event handling
     std::unique_ptr<MemoryInspectorControl> memoryInspectorControl;
 
-    WORD wCurrentSectorNumber;
+    word wCurrentSectorNumber;
     int nCurrentSectorSize;
 
     static constexpr auto ITEM_LINE_FORMAT = L"%6hu %04hX %02hX    %04hX";
 
     typedef wchar_t ITEM_LINE[80];
-    std::list<gsl::not_null<Item*>> items;
+    std::list<std::unique_ptr<Item>> items;
 
     void ClearItems();
 
     void Scroll(WPARAM wParam);
-    void ReadAndDisplaySector(WORD wSector);
+    void ReadAndDisplaySector(word wSector);
 };
 
 
 class DiskImageSectorsDialog::Item {
 public:
-    WORD wSector;
-    WORD wAddr;
-    WORD wBegin;
-    WORD wSize;
+    word wSector;
+    word wAddr;
+    word wBegin;
+    word wSize;
 };

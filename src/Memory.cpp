@@ -2,6 +2,9 @@
 
 #include "DatatypeUtility.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include <stdexcept>
+#include <string>
 
 wstring Memory::size_to_hex_string(Memory::size size) {
     if (size < Memory::MAX_SIZE) {

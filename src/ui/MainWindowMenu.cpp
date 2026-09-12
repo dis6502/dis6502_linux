@@ -1,10 +1,14 @@
 #include "MainWindowMenu.h"
+#include "Menu.h"
+#include "Text.h"
+#include "UI.h"
 #include "UIApplication.h"
+#include <memory>
 
 extern std::unique_ptr<UIApplication> g_UIApplication;
 
 MainWindowMenu::MainWindowMenu() {
-    hMenu = NULL_HMENU;
+    menu = nullptr;
 }
 
 MainWindowMenu::~MainWindowMenu() {
@@ -14,7 +18,7 @@ MainWindowMenu::~MainWindowMenu() {
 }
 
 void MainWindowMenu::CreateControl(HWND hMainWnd) {
-    hMenu = GetMenu(hMainWnd);
+    menu = Menu::GetInstance(GetMenu(hMainWnd));
 
     AddIconToMenu(ID_FILE_NEW, IDI_FILE_NEW);
 
@@ -46,16 +50,16 @@ void MainWindowMenu::CreateControl(HWND hMainWnd) {
     AddIconToMenu(ID_HELP_ABOUT, IDI_HELP_ABOUT);
 }
 
-HMENU MainWindowMenu::GetSubMenuHandle(UINT uMenuPos) const {
-    return GetSubMenu(hMenu, uMenuPos);
+Menu* MainWindowMenu::GetSubMenuHandle(UINT uMenuPos) const {
+    return Menu::GetInstance(GetSubMenu(menu->hMenu, uMenuPos));
 }
 
 void MainWindowMenu::SetEnabled(UINT uIDEnableItem, bool enabled) {
-    EnableMenuItem(hMenu, uIDEnableItem, MF_BYCOMMAND | (enabled ? MF_ENABLED : MF_GRAYED));
+    EnableMenuItem(menu->hMenu, uIDEnableItem, MF_BYCOMMAND | (enabled ? MF_ENABLED : MF_GRAYED));
 }
 
 void MainWindowMenu::SetChecked(UINT uIDCheckItem, bool checked) {
-    CheckMenuItem(hMenu, uIDCheckItem, MF_BYCOMMAND | (checked ? MF_CHECKED : MF_UNCHECKED));
+    CheckMenuItem(menu->hMenu, uIDCheckItem, MF_BYCOMMAND | (checked ? MF_CHECKED : MF_UNCHECKED));
 }
 
 HBITMAP MainWindowMenu::MakeBitMapTransparent(HBITMAP hbmSrc) {
@@ -96,6 +100,6 @@ void MainWindowMenu::AddIconToMenu(UINT uPosition, int nIconId) {
     GetIconInfo(hIcon, &iconinfo);
     auto hBitmap = iconinfo.hbmColor;
     hBitmap = MakeBitMapTransparent(hBitmap);
-    SetMenuItemBitmaps(hMenu, uPosition, MF_BITMAP | MF_BYCOMMAND, hBitmap, hBitmap);
+    SetMenuItemBitmaps(menu->hMenu, uPosition, MF_BITMAP | MF_BYCOMMAND, hBitmap, hBitmap);
     bitmaps.push_back(hBitmap);
 }

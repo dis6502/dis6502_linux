@@ -3,8 +3,9 @@
 #include "DisassemblyResultTest.h"
 
 #include "Assertions.h"
-#include "FileIO.h"
+#include "File.h"
 #include "StringUtility.h"
+#include "Syntax.h"
 
 void DisassemblyResultFileTest::TestDisassemblyResultFile(File folder) {
 

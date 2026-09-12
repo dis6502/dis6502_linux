@@ -1,7 +1,5 @@
-#include "Application.h"
-
 #include "Button.h"
+#include "Control.h"
 
 
-Button::Button(HWND hWnd) : Control(hWnd) {
-}
+Button::Button(WindowHandle hWnd) : Control(hWnd) {}

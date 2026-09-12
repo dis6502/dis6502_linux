@@ -1,4 +1,7 @@
 #include "Symbol.h"
+#include "Memory.h"
+#include "Syntax.h"
+#include "XML.h"
 
 
 Symbol::Symbol(Memory::address address, wstring_view symbol) :

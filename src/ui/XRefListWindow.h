@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "PartWindow.h"
+#include "Window.h"
 
 
 class XRefListWindow : public PartWindow {

@@ -1,6 +1,7 @@
 #include "Atari800Test.h"
 
 #include "Assertions.h"
+#include "CommonIO.h"
 #include "InputStream.h"
 #include "OutputStream.h"
 #include <sstream>

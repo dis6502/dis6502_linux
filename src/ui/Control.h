@@ -1,31 +1,35 @@
 #pragma once
 
-#include "UI.h"
+#include "Font.h"
 #include "Window.h"
 
-class Control {
+class Control : public AbstractWindow {
 public:
 
-    static LRESULT CALLBACK WndProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
+    using ScrollPosition = int;
 
-    Control(HWND hWnd);
+    // Win32 callback requires __stdcall
+    // TODO: Make private?
+    static LRESULT __stdcall WndProc(WindowHandle hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam);
+
+    Control(WindowHandle hWnd);
     virtual ~Control();
 
     void SetEnabled(bool enabled);
-    void SetFont(const HFONT& hFont);
+    void SetFont(Font* font);
 
     bool HasFocus() const;
     void SetFocus();
 
-    void SetScrollRange(int bar, ScrollPosition minPosition, ScrollPosition maxPosition, BOOL update);
-    void SetScrollPosition(int bar, ScrollPosition scrollPosition, BOOL update);
+    void SetScrollRange(int bar, ScrollPosition minPosition, ScrollPosition maxPosition, bool update);
+    void SetScrollPosition(int bar, ScrollPosition scrollPosition, bool update);
 
-    HWND hWnd;
+    WindowHandle hWnd;
 
 protected:
-    virtual LRESULT WndProc(Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
+    virtual LRESULT WndProc(MESSAGE message, WPARAM wParam, LPARAM lParam);
 
 private:
-    static Control* GetInstance(HWND hWND);
+    static Control* GetInstance(WindowHandle hWND);
 
 };

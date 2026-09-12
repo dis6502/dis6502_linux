@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "PopupMenu.h"
 #include "SegmentTypes.h"

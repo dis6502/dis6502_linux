@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "PartWindow.h"
 
 #include "XRefListWindow.h"
 

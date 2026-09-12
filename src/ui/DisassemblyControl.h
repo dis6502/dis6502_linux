@@ -4,13 +4,14 @@
 */
 #pragma once
 
+#include "Memory.h"
 #include "Syntax.h"
 
-#include "DisassemblyControlTypes.h" 
 #include "SegmentTypes.h"
 #include "DisassemblyResult.h"
 
 #include "Window.h"
+#include <cstddef>
 
 
 class DisassemblyControl : public Window {

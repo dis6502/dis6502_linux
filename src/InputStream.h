@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Syntax.h"
 #include "Stream.h"
 
 class InputStream: public Stream {

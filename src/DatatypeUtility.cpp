@@ -1,7 +1,15 @@
+#include <algorithm>
+#include <cstddef>
 #include <ctype.h>
 
 #include "DatatypeUtility.h"
+#include "Byte.h"
+#include "Syntax.h"
+#include "Word.h"
 #include <ios>
+#include <locale>
+#include <stdexcept>
+#include <string>
 
 const wstring_view DatatypeUtility::HEX_CHARACTERS = { L"0123456789ABCDEF" };
 

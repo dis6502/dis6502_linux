@@ -37,7 +37,7 @@ Dialog::~Dialog() {
     }
 }
 
-INT_PTR Dialog::ShowDialogBox() {
+Dialog::DialogFuncResult Dialog::ShowDialogBox() {
     auto hInstance = ::g_UIApplication->GetInstanceHandle();
 
     const auto result = DialogBoxParamW(hInstance, templateName.c_str(), parentWindow->GetHWnd(), DialogFunc, (LPARAM)this);
@@ -53,12 +53,10 @@ INT_PTR Dialog::ShowDialogBox() {
 void Dialog::CreateControls() {}
 
 void Dialog::DeleteControls() {
-    for (auto item : items) { // OK: Creates copy of item itself
-        delete item.second;
-    }
+    items.clear();
 }
 
-bool Dialog::EndDialogBox(INT_PTR nResult) {
+bool Dialog::EndDialogBox(DialogFuncResult nResult) {
     DeleteControls();
     const auto result = EndDialog(hDlg, nResult);
 
@@ -77,7 +75,7 @@ bool Dialog::EndDialogBox(INT_PTR nResult) {
    function to process unwanted messages. Unwanted messages are processed internally by the dialog box
    window procedure.
 **/
-INT_PTR CALLBACK Dialog::DialogFunc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam) {
+Dialog::DialogFuncResult CALLBACK Dialog::DialogFunc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam) {
     Dialog* dialog = nullptr;
     // https://wiki.winehq.org/List_Of_Windows_Messages
     // http://blog.airesoft.co.uk/2009/11/wm_messages/
@@ -136,93 +134,58 @@ HWND Dialog::GetItemHandle(ITEM_ID itemID) const {
 
 Control& Dialog::GetItem(ITEM_ID itemID) {
     auto it = items.find(itemID);
-    Control* result = nullptr;
     if (it == items.end()) {
-        result = new Control(GetItemHandle(itemID));
-        items.insert(std::pair(itemID, result));
+        it = items.emplace(itemID, std::make_unique<Control>(GetItemHandle(itemID))).first;
     }
-    else {
-        result = it->second;
-    }
-    return *result;
+    return *it->second;
 }
 
 Button& Dialog::GetButton(ITEM_ID itemID) {
     auto it = items.find(itemID);
-    Button* result = nullptr;
     if (it == items.end()) {
-        result = new Button(GetItemHandle(itemID));
-        items.insert(std::pair(itemID, result));
+        it = items.emplace(itemID, std::make_unique<Button>(GetItemHandle(itemID))).first;
     }
-    else {
-        result = static_cast<Button*>(it->second);
-    }
-    return *result;
+    return static_cast<Button&>(*it->second);
 }
 
 CheckBox& Dialog::GetCheckBox(ITEM_ID itemID) {
     auto it = items.find(itemID);
-    CheckBox* result = nullptr;
     if (it == items.end()) {
-        result = new CheckBox(GetItemHandle(itemID));
-        items.insert(std::pair(itemID, result));
+        it = items.emplace(itemID, std::make_unique<CheckBox>(GetItemHandle(itemID))).first;
     }
-    else {
-        result = static_cast<CheckBox*>(it->second);
-    }
-    return *result;
+    return static_cast<CheckBox&>(*it->second);
 }
 
 ComboBox& Dialog::GetComboBox(ITEM_ID itemID) {
     auto it = items.find(itemID);
-    ComboBox* result = nullptr;
     if (it == items.end()) {
-        result = new ComboBox(GetItemHandle(itemID));
-        items.insert(std::pair(itemID, result));
+        it = items.emplace(itemID, std::make_unique<ComboBox>(GetItemHandle(itemID))).first;
     }
-    else {
-        result = static_cast<ComboBox*>(it->second);
-    }
-    return *result;
+    return static_cast<ComboBox&>(*it->second);
 }
 
 EditControl& Dialog::GetEditControl(ITEM_ID itemID) {
     auto it = items.find(itemID);
-    EditControl* result = nullptr;
     if (it == items.end()) {
-        result = new EditControl(GetItemHandle(itemID));
-        items.insert(std::pair(itemID, result));
+        it = items.emplace(itemID, std::make_unique<EditControl>(GetItemHandle(itemID))).first;
     }
-    else {
-        result = static_cast<EditControl*>(it->second);
-    }
-    return *result;
+    return static_cast<EditControl&>(*it->second);
 }
 
 TextLabel& Dialog::GetTextLabel(ITEM_ID itemID) {
     auto it = items.find(itemID);
-    TextLabel* result = nullptr;
     if (it == items.end()) {
-        result = new TextLabel(GetItemHandle(itemID));
-        items.insert(std::pair(itemID, result));
+        it = items.emplace(itemID, std::make_unique<TextLabel>(GetItemHandle(itemID))).first;
     }
-    else {
-        result = static_cast<TextLabel*>(it->second);
-    }
-    return *result;
+    return static_cast<TextLabel&>(*it->second);
 }
 
 
 ListBox& Dialog::GetListBox(ITEM_ID itemID) {
     auto it = items.find(itemID);
-    ListBox* result = nullptr;
     if (it == items.end()) {
-        result = new ListBox(GetItemHandle(itemID));
-        items.insert(std::pair(itemID, result));
+        it = items.emplace(itemID, std::make_unique<ListBox>(GetItemHandle(itemID))).first;
     }
-    else {
-        result = static_cast<ListBox*>(it->second);
-    }
-    return *result;
+    return static_cast<ListBox&>(*it->second);
 }
 

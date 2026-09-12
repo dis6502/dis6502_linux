@@ -1,4 +1,6 @@
 #include "Fixup.h"
+#include "Memory.h"
+#include "XML.h"
 
 
 Fixup::Fixup() :

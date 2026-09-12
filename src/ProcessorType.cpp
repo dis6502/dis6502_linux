@@ -1,7 +1,11 @@
 #include "ProcessorType.h"
+#include "Syntax.h"
 
 #include <algorithm>
+#include <iterator>
 #include <map>
+#include <stdexcept>
+#include <vector>
 
 
 const ProcessorTypeInfo& ProcessorTypeFactory::GetInfo(wstring_view key) {

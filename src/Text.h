@@ -2,6 +2,7 @@
 
 #include "Resource.h"
 #include "Syntax.h"
+#include <cstddef>
 
 /**
 * Format texts from application's resource file.

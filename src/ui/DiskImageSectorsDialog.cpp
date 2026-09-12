@@ -1,32 +1,34 @@
-
-#include "Button.h"
-#include "Control.h"
+#include "Byte.h"
 #include "Dialog.h"
 #include "DiskImage.h"
 #include "DiskImageSectorsDialog.h"
 #include "EditControl.h"
 #include "ListBox.h"
+#include "Memory.h"
 #include "MemoryInspectorControl.h"
+#include "Resource.h"
+#include "StringUtility.h"
 #include "Syntax.h"
 #include "TextLabel.h"
 #include "Window.h"
-#include <cstdio>
+#include "Word.h"
+#include "gsl/pointers"
+#include "Font.h"
+#include <cwchar>
 #include <list>
 #include <memory>
-#include <Memory.h>
-#include <Resource.h>
-#include <StringUtility.h>
+#include <utility>
 #include <Windows.h>
 
-DiskImageSectorsDialog::DiskImageSectorsDialog(const Window& parentWindow, HFONT hComputerFont) : Dialog(parentWindow, L"OPENDISKIMAGESECTORSBOX") {
-    this->hComputerFont = hComputerFont;
+DiskImageSectorsDialog::DiskImageSectorsDialog(const Window& parentWindow, Font* computerFont) : Dialog(parentWindow, L"OPENDISKIMAGESECTORSBOX") {
+    this->computerFont = computerFont;
 
     diskImageFilePath = L"";
     wCurrentSectorNumber = 0;
     nCurrentSectorSize = -1;
 }
 
-INT_PTR DiskImageSectorsDialog::Show(wstring_view diskImageFilePath) {
+Window::INT_PTR DiskImageSectorsDialog::Show(wstring_view diskImageFilePath) {
     this->diskImageFilePath = diskImageFilePath;
 
     DiskImage::GetInfo(diskImageFilePath, diskImageInfo);
@@ -42,7 +44,7 @@ INT_PTR DiskImageSectorsDialog::Show(wstring_view diskImageFilePath) {
 }
 
 bool DiskImageSectorsDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
-    WORD wAddr;
+    word wAddr;
     ITEM_LINE szItemLine;
     int nItemCount;
     bool bSelected;
@@ -60,12 +62,12 @@ bool DiskImageSectorsDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam
             nItemCount = sectorsListBox.GetCount();
 
             for (int iItem = 0; iItem < nItemCount; iItem++) {
-                auto item = new Item();
+                auto item = std::make_unique<Item>();
 
                 auto itemText = sectorsListBox.GetStringAtIndex(iItem);
                 swscanf(itemText.c_str(), ITEM_LINE_FORMAT, &item->wSector, &item->wAddr, &item->wBegin, &item->wSize);
 
-                items.push_back(item);
+                items.push_back(std::move(item));
             }
 
             return EndDialogBox(TRUE);
@@ -162,14 +164,14 @@ void DiskImageSectorsDialog::CreateControls() {
 
     memoryInspectorControl = std::make_unique<MemoryInspectorControl>(*this, IDC_DISK_IMAGE_SECTORS_SECTOR_DUMP);
     memoryInspectorControl->BindControl();
-    memoryInspectorControl->SetFont(hComputerFont);
+    memoryInspectorControl->SetFont(computerFont);
     memoryInspectorControl->SetNumberOfBytesPerLine(16);
 
     //memoryInspectorControl->SetBuffer(lpFileBuffer, (WORD)fileSize); TOD Set buffer
     //memoryInspectorControl->ClearSelection();
 
-    GetTextLabel(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST_HEADER).SetFont(hComputerFont);
-    GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST).SetFont(hComputerFont);
+    GetTextLabel(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST_HEADER).SetFont(computerFont);
+    GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST).SetFont(computerFont);
 
     GetButton(IDC_DISK_IMAGE_SECTORS_REMOVE_SECTOR).SetEnabled(false);
     GetButton(IDC_DISK_IMAGE_SECTORS_ADD_SECTOR).SetEnabled(false);
@@ -234,25 +236,25 @@ void DiskImageSectorsDialog::Scroll(WPARAM wParam) {
     ReadAndDisplaySector(sectorNumber);
 }
 
-byte* DiskImageSectorsDialog::ReadSector(WORD wSector, int& nSectorSize) {
+byte* DiskImageSectorsDialog::ReadSector(word wSector, int& nSectorSize) {
     DiskImage::ReadAbsoluteSector(sector, wSector, nSectorSize);
 
     return sector.cSectorData.get();
 }
 
 std::list<gsl::not_null<DiskImageSectorsDialog::Item*>> DiskImageSectorsDialog::GetItems() {
-    return items;
+    std::list<gsl::not_null<Item*>> result;
+    for (const auto& item : items) {
+        result.push_back(item.get());
+    }
+    return result;
 }
 
 void DiskImageSectorsDialog::ClearItems() {
-    for (const auto& item : items) {
-        delete item;
-    }
-
     items.clear();
 }
 
-void DiskImageSectorsDialog::ReadAndDisplaySector(WORD wSector) {
+void DiskImageSectorsDialog::ReadAndDisplaySector(word wSector) {
     if (wSector != wCurrentSectorNumber) {
         wCurrentSectorNumber = wSector;
 

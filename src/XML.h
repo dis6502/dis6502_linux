@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Syntax.h"
-#include "PlatformCompat.h"
+#include "PlatformCompat.h"	// _stricmp
 
 #include "tinyxml2.h"	// tinyxml2::...
+#include <cstddef>
 #include <gsl/gsl>
 
 #include "OutputStream.h"

@@ -1,11 +1,14 @@
 #include "Application.h"
 #include "Button.h"
+#include "Dialog.h"
 #include "EditControl.h"
 #include "Equate.h"
 #include "EquateDialog.h"
 #include "EquateList.h"
 #include "ListBox.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "Text.h"
 
 extern Application* g_Application;
 

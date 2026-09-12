@@ -8,6 +8,7 @@
 #include "ByteArray.h"
 #include "Syntax.h"
 #include "Word.h"
+#include <cstdio>
 
  /*
  ** Error codes written in nResult field.

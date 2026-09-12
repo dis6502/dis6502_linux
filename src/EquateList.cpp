@@ -1,14 +1,34 @@
 #include "Application.h"
+#include "Byte.h"
 #include "ByteArray.h"
+#include "CommonIO.h"
 #include "DatatypeUtility.h"
 #include "EquateList.h"
+#include "Encoding.h"
+#include "Equate.h"
+#include "EquateListChangedListener.h"
 #include "EquateType.h"
 #include "FileIO.h"
 #include "InputStream.h"
+#include "LabelAccess.h"
+#include "Memory.h"
 #include "OutputStream.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "Text.h"
+#include "Word.h"
 #include "Workspace1X.h"
+#include "WorkspaceTypes.h"
+#include "XML.h"
+#include "gsl/pointers"
 #include <cmath>
+#include <cstddef>
+#include <cstring>
+#include <cwchar>
+#include <exception>
+#include <new>
+#include <string>
+#include <vector>
 
 // Constants from workspace version 1X
 constexpr size_t MAX_BUF_LABEL_1X = 60000;

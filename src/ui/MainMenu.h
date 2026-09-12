@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "MainController.h"
+#include "UI.h"
 
 class MRUController;
 

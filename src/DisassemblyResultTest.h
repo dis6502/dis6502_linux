@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Syntax.h"
+#include <cstddef>
+
 class DisassemblyResult;
 
 class DisassemblyResultTest {

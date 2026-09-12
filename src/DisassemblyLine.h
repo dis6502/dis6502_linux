@@ -1,8 +1,11 @@
 #pragma once
 
+#include "DisassemblyResultTypes.h"
 #include "Memory.h"
-#include "Segment.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
 #include "XRef.h"
+#include "gsl/pointers"
 
 /*
 ** Structure of each line in the disassembly

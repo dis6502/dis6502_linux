@@ -1,6 +1,16 @@
 #include "DisassemblyResult.h"
 
 #include "DisassemblyLine.h"
+#include "DisassemblySectionType.h"
+#include "Memory.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
+#include "XRef.h"
+#include "gsl/pointers"
+#include <cstddef>
+#include <cwchar>
+#include <memory>
+#include <vector>
 
 std::vector<DisassemblySectionType> DisassemblyResult::sectionTypes =
 { DisassemblySectionType::SYSTEM_EQUATES, DisassemblySectionType::USER_EQUATES, DisassemblySectionType::CODE_EQUATES, DisassemblySectionType::CODE_LINES };

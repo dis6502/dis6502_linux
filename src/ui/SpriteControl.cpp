@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "ByteSequence.h"
 #include "SpriteControlImpl.h"
 
 #include "SpriteControl.h"

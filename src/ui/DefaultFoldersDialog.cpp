@@ -1,3 +1,4 @@
+#include <cstddef>
 #define STRICT_TYPED_ITEMIDS
 
 #include "DefaultFolders.h"
@@ -10,7 +11,7 @@
 #include "systems/ComputerSystemType.h"
 #include "Text.h"
 #include "Window.h"
-#include <Resource.h>
+#include "Resource.h"
 #include <ShObjIdl_core.h>
 #include <Windows.h>
 

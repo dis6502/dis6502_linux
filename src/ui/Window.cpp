@@ -1,3 +1,4 @@
+#include "Font.h"
 #include "StringUtility.h"
 #include "UI.h"
 #include "UIApplication.h"
@@ -5,11 +6,12 @@
 #include <exception>
 #include <memory>
 #include <stdexcept>
-#include <Syntax.h>
+#include "Syntax.h"
 #include <Windows.h>
 
 extern std::unique_ptr<UIApplication> g_UIApplication;
 
+Window* Window::WINDOW_TOP = nullptr;
 
 Window::Window() {
     this->parentWindow = nullptr;
@@ -35,9 +37,9 @@ HWND Window::GetHWnd() const {
     return hWnd;
 }
 
-void Window::CreateWindowControl(wstring_view className, wstring_view windowName, DWORD dwStyle, HMENU hMenu, int x, int y, int nWidth, int nHeight) {
+void Window::CreateWindowControl(wstring_view className, wstring_view windowName, WindowStyle style, HMENU hMenu, int x, int y, int nWidth, int nHeight) {
     HWND hParentWnd = (parentWindow == nullptr) ? NULL_HWND : parentWindow->GetHWnd();
-    HWND hWnd = CreateWindow(wstring(className).c_str(), wstring(windowName).c_str(), dwStyle, x, y, nWidth, nHeight, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle(), nullptr);  // ##c_str() OK
+    HWND hWnd = CreateWindow(wstring(className).c_str(), wstring(windowName).c_str(), style, x, y, nWidth, nHeight, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle(), nullptr);  // ##c_str() OK
 
     if (hWnd == NULL_HWND) {
 
@@ -48,7 +50,7 @@ void Window::CreateWindowControl(wstring_view className, wstring_view windowName
         String::Printf(szMessage,
             L"Error %lu during CreateWindow for window '%s' of class '%s'.\n"
             L"Actual parameters are: dwStyle=%lu hParentWnd=%p hMenu=%p  ::g_Application->GetHInstance()=%p\n",
-            lastError, wstring(windowName).c_str(), wstring(className).c_str(), dwStyle, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle());
+            lastError, wstring(windowName).c_str(), wstring(className).c_str(), style, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle());
         auto message = String::wstring_to_utf8(String::Format(L"Error in CreateWindowControl: %s", szMessage));
         safeExitWithExitCode(message.c_str(), lastError);
     }
@@ -56,14 +58,14 @@ void Window::CreateWindowControl(wstring_view className, wstring_view windowName
     InitControl(className, hWnd);
 
     SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)this);
-    lpWndProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)WindowProc);
+    lpWndProc = (WindowProcedure)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)WindowProc);
 }
 
-void Window::CreateChildControl(wstring_view className, DWORD dwStyle, ChildID childID, int x, int y, int nWidth, int nHeight) {
-    CreateWindowControl(className, L"", dwStyle, (HMENU)(LONG_PTR)childID, x, y, nWidth, nHeight);
+void Window::CreateChildControl(wstring_view className, WindowStyle style, ChildID childID, int x, int y, int nWidth, int nHeight) {
+    CreateWindowControl(className, L"", style, (HMENU)(LONG_PTR)childID, x, y, nWidth, nHeight);
 }
 
-void Window::InitControl(wstring_view className, HWND hWnd) {
+void Window::InitControl(wstring_view className, WindowHandle hWnd) {
     if (!this->className.empty()) {
         throw std::runtime_error("Class name already set.");
     }
@@ -80,12 +82,18 @@ void Window::SetTitle(wstring_view title) {
     SetWindowText(hWnd, wstring(title).c_str());  // ##c_str() OK
 }
 
-void Window::SetFont(HFONT hFont) {
-    SendMessage(hWnd, WM_SETFONT, (WPARAM)hFont, (LPARAM)false);
+void Window::SetFont(Font* font) {
+    if (font != nullptr) {
+        SendMessage(hWnd, WM_SETFONT, (WPARAM)font->hFont, (LPARAM)false);
+    }
+    else {
+        SendMessage(hWnd, WM_SETFONT, (WPARAM)Font::NULL_HFONT, (LPARAM)false);
+    }
 }
 
-void Window::SetPosition(HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags) {
-    SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, uFlags);
+void Window::SetPosition(Window* windowInsertAfter, int X, int Y, int cx, int cy, PositionFlags flags) {
+    auto hWndInsertAfter = (windowInsertAfter == nullptr ? NULL_HWND : windowInsertAfter->GetHWnd());
+    SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, flags);
 }
 
 bool Window::HasFocus() const {
@@ -101,19 +109,19 @@ void  Window::SetDragAcceptFiles(bool bAccept) {
     DragAcceptFiles(hWnd, bAccept);
 }
 
-void Window::SetDropFilesProc(WNDPROC lpWndProc) {
+void Window::SetDropFilesProc(WindowProcedure lpWndProc) {
     lpWM_DROPFILESProc = lpWndProc;
 }
 
-void Window::SetMouseWheelProc(WNDPROC lpWndProc) {
+void Window::SetMouseWheelProc(WindowProcedure lpWndProc) {
     lpWM_MOUSEWHEELProc = lpWndProc;
 }
 
-void Window::SetRButtonDownProc(WNDPROC lpWndProc) {
+void Window::SetRButtonDownProc(WindowProcedure lpWndProc) {
     lpWM_RBUTTONDOWNProc = lpWndProc;
 }
 
-LRESULT CALLBACK Window::WindowProc(HWND hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam) {
+Window::LRESULT CALLBACK Window::WindowProc(WindowHandle hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam) {
     Window* lpWindow = (Window*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
     if (lpWindow != nullptr) {
@@ -128,7 +136,7 @@ LRESULT CALLBACK Window::WindowProc(HWND hWnd, MESSAGE message, WPARAM wParam, L
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-LRESULT Window::WindowProcInstance(HWND hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam) {
+Window::LRESULT Window::WindowProcInstance(WindowHandle hWnd, MESSAGE message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_DROPFILES:
         if (lpWM_DROPFILESProc != nullptr) {
@@ -147,5 +155,5 @@ LRESULT Window::WindowProcInstance(HWND hWnd, MESSAGE message, WPARAM wParam, LP
         }
     }
 
-    return CallWindowProc(lpWndProc, hWnd, message, wParam, lParam);
+    return CallWindowProc((WNDPROC)lpWndProc, hWnd, message, wParam, lParam);
 }

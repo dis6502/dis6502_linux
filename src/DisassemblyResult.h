@@ -1,10 +1,13 @@
 #pragma once
 
+#include "DisassemblyBuffer.h"
 #include "Syntax.h"
 #include "DisassemblySectionType.h"
 #include "DisassemblySection.h"
 #include "SegmentTypes.h"
 #include "Memory.h"
+#include <cstddef>
+#include <memory>
 #include <vector>
 #include <gsl/gsl>
 

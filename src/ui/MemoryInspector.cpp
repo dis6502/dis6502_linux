@@ -4,6 +4,7 @@
 ** Handles the memory inspector window and associated menu.
 */
 #include "Application.h"
+#include "Byte.h"
 #include "DatatypeUtility.h"
 #include "FileHeader.h"
 #include "FindStringDialog.h"
@@ -28,9 +29,9 @@
 #include "SelectSpritesDialog.h"
 #include "StringUtility.h"
 #include "Syntax.h"
+#include "gsl/pointers"
 #include "systems/ComputerSystem.h"
 #include "UIApplication.h"
-#include "Window.h"
 #include "Workspace.h"
 #include <memory>
 #include <string.h>
@@ -55,16 +56,12 @@ MemoryInspector::MemoryInspector() :
 {}
 
 MemoryInspector::~MemoryInspector() {
-    if (popupMenu != nullptr) {
-        delete popupMenu;
-        popupMenu = nullptr;
-    }
 }
 
 void MemoryInspector::CreateControl() {
     memoryInspectorSelection.Clear();
 
-    popupMenu = new MemoryInspectorPopupMenu();
+    popupMenu = std::make_unique<MemoryInspectorPopupMenu>();
     popupMenu->CreateControl();
 }
 

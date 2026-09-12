@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Byte.h"
+#include "ByteSequence.h"
 #include "Syntax.h"
 #include "Comment.h"
 #include "Fixup.h"
 #include "ProcessorType.h"
-#include "InstructionSet.h"
 #include "MemoryBlock.h"
 #include "FileHeader.h"
 #include "Memory.h"
@@ -13,8 +14,8 @@
 #include "Symbol.h"
 #include "XML.h"
 #include "DisassemblyResultTypes.h"
-#include "AddressLabel.h"
 #include "AddressLabelList.h"
+#include <cstddef>
 #include <gsl/gsl>
 
 class InputStream;

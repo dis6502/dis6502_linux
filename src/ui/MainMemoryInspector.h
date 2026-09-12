@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 #include "MainController.h"
+#include "UI.h"
+#include <Windows.h>
 
 class Window;
 

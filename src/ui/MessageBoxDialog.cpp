@@ -1,5 +1,9 @@
 #include "MessageBoxDialog.h"
+#include "Syntax.h"
 #include "UI.h"
+#include "Window.h"
+#include <cstdio>
+#include <cwchar>
 
 MessageBoxDialog::ButtonID  MessageBoxDialog::Show(Window* parentWindow, wstring_view title, wstring_view message, ButtonType buttonType) {
 #ifdef _WIN32

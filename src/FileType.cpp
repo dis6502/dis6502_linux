@@ -1,8 +1,10 @@
 #include <map>
-#include <sstream>  
+#include <stdexcept>
+#include <string>
 
 #include "FileType.h"
 #include "FolderType.h"
+#include "Syntax.h"
 
 FileTypeInfo::FileTypeInfo(FileType fileType,
     wstring_view key,

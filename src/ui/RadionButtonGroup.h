@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Syntax.h"
-#include "UI.h"
 #include "Control.h"
 
 class RadionButtonGroup : public Control {

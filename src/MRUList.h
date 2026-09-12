@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Syntax.h"
+#include <cstddef>
 #include <vector>
 #include <gsl/gsl>
 

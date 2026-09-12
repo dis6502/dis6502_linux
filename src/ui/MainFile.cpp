@@ -34,6 +34,7 @@
 #include <list>
 #include <memory>
 #include <Windows.h>
+#include <string>
 
 extern wstring binPath;
 extern wstring diskPath;

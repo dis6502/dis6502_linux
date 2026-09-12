@@ -1,4 +1,8 @@
 #include "AddressLabelList.h"
+#include "AddressLabel.h"
+#include "Memory.h"
+#include "gsl/pointers"
+#include <memory>
 
 
 void AddressLabelList::Enumerate(AddressLabelVector& addressLabelsVector) const {

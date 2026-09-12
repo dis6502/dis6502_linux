@@ -1,4 +1,7 @@
 #include "Profile.h"
+#include "Encoding.h"
+#include "Syntax.h"
+#include "XML.h"
 
 
 Profile::Profile() noexcept {

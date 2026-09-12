@@ -1,8 +1,13 @@
 #include "AboutDialog.h"
 #include "Application.h"
+#include "ByteArray.h"
+#include "Dialog.h"
 #include "FileIO.h"
 #include "ListBox.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "Text.h"
+#include <memory>
 #include <span> 
 
 extern Application* g_Application;

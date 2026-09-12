@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "Dialog.h"
 #include "Encoding.h"
+#include "Window.h"
 #include <vector>
 
 class ComputerSystemTypeInfo;

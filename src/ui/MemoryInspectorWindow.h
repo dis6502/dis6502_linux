@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "PartWindow.h"
 #include "Memory.h"
 #include "MemoryInspectorControl.h"
+#include "Window.h"
+#include <memory>
 
 class PartLayout;
 class MemoryInspectorSelection;

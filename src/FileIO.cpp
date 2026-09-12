@@ -12,6 +12,7 @@
 #include <filesystem>
 #include <fstream>
 #include <gsl/util>
+#include <ios>
 #include <limits>
 #include <string>
 #include <system_error>
@@ -132,7 +133,7 @@ FILE* FileIO::OpenFile(wstring_view filePath, wstring_view mode) {
 #ifdef _WIN32
     FILE* fd = _wfopen(wstring(filePath).c_str(), wstring(mode).c_str());
 #else
-	auto path=FileIO::ToPath(filePath);
+    auto path = FileIO::ToPath(filePath);
     FILE* fd = fopen(path.c_str(), String::wstring_to_utf8(mode).c_str());
 #endif
 

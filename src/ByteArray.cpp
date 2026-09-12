@@ -1,7 +1,13 @@
+#include "Byte.h"
+#include "ByteSequence.h"
 #include "Syntax.h"
 
+#include <algorithm>
+#include <cstddef>
+#include <cstring>
+#include <memory>
 #include <sstream>
-#include <span>
+#include <stdexcept>
 #include "ByteArray.h"
 #include "DatatypeUtility.h"
 

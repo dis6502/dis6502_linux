@@ -1,4 +1,12 @@
 #include "DisassemblyLine.h"
+#include "Byte.h"
+#include "DisassemblyResultTypes.h"
+#include "Memory.h"
+#include "Syntax.h"
+#include "gsl/pointers"
+#include <cwchar>
+#include <stdexcept>
+#include <string>
 
 DIS_LINE::DIS_LINE(DisassemblySection& section) :
     section(&section),

@@ -3,6 +3,7 @@
 #include "Syntax.h"
 #include "Window.h"
 #include <map>
+#include <memory>
 #include <Windows.h>
 
 /*
@@ -23,7 +24,8 @@ class ListBox;
 class Dialog : public Window {
 public:
 
-    typedef int ITEM_ID;
+    using ITEM_ID = int;
+    using DialogFuncResult = INT_PTR;
 
     ~Dialog() override;
 
@@ -39,7 +41,7 @@ protected:
     HWND hDlg;
 
     Dialog(const Window& parentDialog, wstring_view templateName);
-    INT_PTR ShowDialogBox();
+    DialogFuncResult ShowDialogBox();
 
     virtual bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) = 0;
 
@@ -47,7 +49,7 @@ protected:
     virtual void DeleteControls();
 
     // Returns true as convenience so you can use return EndDialogBox(TRUE)
-    bool EndDialogBox(INT_PTR nResult);
+    bool EndDialogBox(DialogFuncResult nResult);
 
     HWND GetItemHandle(ITEM_ID itemID) const;
 
@@ -56,7 +58,7 @@ private:
 
     wstring templateName;
 
-    std::map<ITEM_ID, Control*> items;
+    std::map<ITEM_ID, std::unique_ptr<Control>> items;
 
-    static INT_PTR CALLBACK DialogFunc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
+    static DialogFuncResult CALLBACK DialogFunc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
 };

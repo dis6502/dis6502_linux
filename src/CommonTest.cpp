@@ -1,8 +1,13 @@
 #include "Assertions.h"
+#include "Byte.h"
 #include "ByteArray.h"
 #include "CommonTest.h"
 #include "DatatypeUtility.h"
 #include "StringUtility.h"
+#include <cstddef>
+#include <cstring>
+#include <memory>
+#include <string>
 #include <vector>
 
 long Allocatable::instanceCount;
@@ -63,12 +68,12 @@ void CommonTest::TestDatatypeUtility() {
     Assert::BoolEquals(DatatypeUtility::ByteArrayFromHexString(byteValueArray, outSize, L"0x"), true);
     Assert::PointerNotNull(byteValueArray);
     Assert::LongEquals(outSize, 0);
-    delete byteValueArray;
+    delete[] byteValueArray;
     Assert::BoolEquals(DatatypeUtility::ByteArrayFromHexString(byteValueArray, outSize, L"0x1"), false);
     Assert::BoolEquals(DatatypeUtility::ByteArrayFromHexString(byteValueArray, outSize, L"0x12"), true);
     Assert::PointerNotNull(byteValueArray);
     Assert::LongEquals(outSize, 1);
-    delete byteValueArray;
+    delete[] byteValueArray;
 
     byte byteValue;
     Assert::BoolEquals(DatatypeUtility::ByteFromString(byteValue, L""), false);

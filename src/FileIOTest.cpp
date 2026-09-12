@@ -4,8 +4,10 @@
 #include "FileIOTest.h"
 #include "StringUtility.h"
 #include "Syntax.h"
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
+#include <ios>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -39,11 +41,12 @@ void FileIOTest::TestFileIO() {
 
     try {
         const auto fileSize = FileIO::GetFileSize(filePath);
-        Assert::Fail(L"Expected IOException instead of file size "+std::to_wstring(fileSize));
+        Assert::Fail(L"Expected IOException instead of file size " + std::to_wstring(fileSize));
     }
     catch (const IOException&) {
         // OK
     }
+
 
     std::ofstream fout;
     fout.open(fileSystemPath, std::ios::binary | std::ios::out);

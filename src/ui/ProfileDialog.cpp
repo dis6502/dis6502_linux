@@ -1,10 +1,13 @@
 #include "Application.h"
 #include "CheckBox.h"
 #include "ComboBox.h"
+#include "Dialog.h"
 #include "EditControl.h"
+#include "Encoding.h"
 #include "Profile.h"
 #include "ProfileDialog.h" 
 #include "ProfilesController.h" 
+#include "Text.h"
 #include "systems/ComputerSystemType.h"
 #include "systems/ComputerSystemType.h"
 

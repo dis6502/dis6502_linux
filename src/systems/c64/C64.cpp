@@ -1,4 +1,5 @@
 #include "C64.h"
+#include "CommonIO.h"
 #include "FileType.h"
 #include "InputStream.h"
 #include "MemoryBlock.h"

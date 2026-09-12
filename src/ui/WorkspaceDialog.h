@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "Dialog.h"
+#include "Window.h"
 
 class Workspace;
 

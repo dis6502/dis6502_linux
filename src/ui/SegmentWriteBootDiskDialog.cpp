@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "Control.h"
+#include "Byte.h"
 
 #include "ByteArray.h"
 #include "CommonIO.h"
@@ -13,11 +13,12 @@
 #include "Segment.h"
 #include "SegmentWriteBootDiskDialog.h"
 #include "Syntax.h"
+#include "gsl/pointers"
 #include "systems/atari800/AtariDiskImage.h"
 #include "systems/atari800/AtariDOS.h"
 #include "Window.h"
 #include <algorithm>
-#include <cstdio>
+#include <cwchar>
 #include <memory>
 #include <string.h>
 #include <Windows.h>

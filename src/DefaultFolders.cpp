@@ -2,7 +2,9 @@
 #include "FileIO.h"
 #include "FolderType.h"
 #include "Syntax.h"
+#include "gsl/pointers"
 #include "systems/ComputerSystemType.h"
+#include <cwchar>
 #include <map>
 #include <memory>
 #include <stdexcept>

@@ -1,9 +1,11 @@
-#include "Application.h"
-
+#include "Control.h"
 #include "StringUtility.h"
 #include "TextLabel.h"
+#include <string>
+#include "Syntax.h"
+#include <wchar.h>
 
-TextLabel::TextLabel(HWND hWnd) : Control(hWnd) {}
+TextLabel::TextLabel(WindowHandle hWnd) : Control(hWnd) {}
 
 
 void TextLabel::SetText(wstring_view text) {

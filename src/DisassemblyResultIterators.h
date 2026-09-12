@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 #include "DisassemblyResultTypes.h"
 #include "DisassemblyBuffer.h"
+#include <cstddef>
 #include <gsl/gsl>
 
 enum class DisassemblySectionType;

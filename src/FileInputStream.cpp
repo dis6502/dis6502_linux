@@ -1,9 +1,14 @@
 #include "FileInputStream.h"
 
 
-#include "Debug.h"
+#include "CommonIO.h"
+#include "FileIO.h"
+#include "Stream.h"
 #include "StringUtility.h"
-#include <sstream>
+#include "Syntax.h"
+#include <ios>
+#include <stdexcept>
+#include <string>
 
 FileInputStream::~FileInputStream() {
     fs.close();

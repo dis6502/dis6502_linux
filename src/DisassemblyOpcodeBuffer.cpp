@@ -1,6 +1,8 @@
 #include "DisassemblyOpcodeBuffer.h"
 
+#include "Byte.h"
 #include "DisassemblyLineWriter.h"
+#include <stdexcept>
 
 void DisassemblyOpcodeBuffer::Clear() {
     opcode0 = opcode1 = opcode2 = 0;

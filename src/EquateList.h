@@ -1,12 +1,16 @@
 #pragma once
 
-#include "DisassemblySectionType.h" // TODO: Separate EquateListType from DisassemblySectionType
 #include "Equate.h"
 #include "EquateListChangedListener.h"
+#include "LabelAccess.h"
+#include "Memory.h"
+#include "Syntax.h"
 #include "WorkspaceTypes.h"
 
+#include <cstddef>
 #include <vector>
 #include "XML.h"
+#include "gsl/pointers"
 
 class Window;
 class InputStream;

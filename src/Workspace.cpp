@@ -11,6 +11,7 @@
 #include "SegmentList.h"
 #include "SegmentTypes.h"
 #include "Syntax.h"
+#include "gsl/pointers"
 #include "systems/ComputerSystem.h"
 #include "systems/ComputerSystemFactory.h"
 #include "systems/ComputerSystemType.h"

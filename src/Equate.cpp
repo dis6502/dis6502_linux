@@ -1,7 +1,15 @@
+#include "Byte.h"
 #include "Character.h"
-#include "Debug.h"
 #include "Equate.h"
+#include "EquateType.h"
+#include "LabelAccess.h"
+#include "Memory.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "XML.h"
+#include <cstddef>
+#include <cwchar>
+#include <stdexcept>
 
 wstring Equate::ExtractAddress(wstring_view label) {
     if (label.length() < 5) {

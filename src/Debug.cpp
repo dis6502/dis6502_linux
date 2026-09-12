@@ -1,4 +1,5 @@
 #include "Debug.h"
+#include "Syntax.h"
 #include <string>
 
 #ifdef _WIN32

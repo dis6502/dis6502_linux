@@ -1,9 +1,13 @@
 #include "Application.h"
+#include "Dialog.h"
+#include "FindStringDialog.h"
 #include "MemoryInspector.h"
 
 #include "MemoryInspectorFindStringDialog.h"
 #include "CheckBox.h"
 #include "Button.h"
+#include "Syntax.h"
+#include "Text.h"
 
 extern Application* g_Application;
 

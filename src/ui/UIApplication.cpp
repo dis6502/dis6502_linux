@@ -3,6 +3,7 @@
 #include "FileIO.h"
 #include "StringUtility.h"
 #include "Syntax.h"
+#include "Text.h"
 #include "UIApplication.h"
 #include <exception>
 #include <filesystem>

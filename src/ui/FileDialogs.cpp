@@ -1,10 +1,14 @@
 #include "DefaultFolders.h"
 #include "FileDialogs.h"
+#include "FileIO.h"
 #include "FileType.h"
+#include "Syntax.h"
 #include "Text.h"
 #include "UIApplication.h"
 #include "Window.h"
 #include <Windows.h>
+#include <memory>
+#include <stdexcept>
 
 extern std::unique_ptr<UIApplication> g_UIApplication;
 

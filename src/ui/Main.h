@@ -3,6 +3,7 @@
 #include "DefaultFolders.h"
 #include "DefaultFoldersLogic.h"
 #include "EquateListLogic.h"
+#include "Font.h"
 #include "Layout.h"
 #include "MainDisassembly.h"
 #include "MainFile.h"
@@ -37,7 +38,7 @@ public:
     Main& operator=(Main&&) = delete;       // move assignment
     ~Main();
 
-    HFONT GetResizedFont();
+    Font* GetResizedFont();
 
     void OpenFileWithDialog(const FileType fileType, bool add);
     void OpenFile(wstring_view filePath, const FileType fileType, bool add);
@@ -61,8 +62,8 @@ public:
 
     int WinMainDelegate(HINSTANCE hInstance, const HINSTANCE hPrevInstance, wstring_view commandLine, int nCmdShow);
 
-    LRESULT MainWndProcDelegate(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
-    static LRESULT CALLBACK MainMouseWheelProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
+    Window::LRESULT MainWndProcDelegate(Window::WindowHandle hWnd, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam);
+    static Window::LRESULT CALLBACK MainMouseWheelProc(Window::WindowHandle hWnd, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam);
 
 private:
     static const UINT WM_OPENCMDLINE = WM_USER + 248;

@@ -1,19 +1,25 @@
 #include "Application.h"
 #include "AssembleDialog.h"
+#include "Byte.h"
 #include "FileDialogs.h"
+#include "FileHeader.h"
+#include "FileIO.h"
 #include "FileType.h"
-#include "FindStringDialog.h"
 #include "Main.h"
+#include "MainController.h"
 #include "MainDisassembly.h"
 #include "MainWindow.h"
+#include "Memory.h"
 #include "MemoryInspector.h"
-#include "MemoryInspectorControl.h"
 #include "MemoryInspectorControlTypes.h"
 #include "MemoryInspectorFindStringDialog.h"
 #include "MemoryInspectorSelection.h"
 #include "MemoryInspectorWindow.h"
+#include "MemoryType.h"
 #include "Resource.h"
-#include "Segment.h"
+#include "UI.h"
+#include <cstdio>
+#include <memory>
 
 
 #include "MainMemoryInspector.h"

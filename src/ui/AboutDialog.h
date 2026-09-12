@@ -5,8 +5,6 @@
 #include "Window.h"
 #include <memory>
 #include <vector>
-#include <Windows.h>
-
 class ListBox;
 
 

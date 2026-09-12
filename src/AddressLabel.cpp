@@ -1,4 +1,7 @@
 #include "AddressLabel.h"
+#include "Memory.h"
+#include "XML.h"
+#include "gsl/pointers"
 
 AddressLabel::AddressLabel(Memory::address address) :
     address(address),

@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Syntax.h"
+#include <cstddef>
 #include <cstdint>
+#include <string>
+#include <string_view>
 
 // Forward-declared instead of including <Windows.h>, to keep this header free of Win32 dependencies.
 extern "C" __declspec(dllimport) int __cdecl wsprintfW(wchar_t*, const wchar_t*, ...);

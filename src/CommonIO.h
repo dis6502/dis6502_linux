@@ -2,6 +2,7 @@
 
 #include "StringUtility.h"
 #include "Syntax.h"
+#include <exception>
 
 class IOException : public std::exception {
 public:

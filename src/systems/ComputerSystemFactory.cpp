@@ -9,7 +9,7 @@
 #include <map>
 #include <memory>
 #include <stdexcept>
-#include <Syntax.h>
+#include "Syntax.h"
 
 
 ComputerSystemFactory::ComputerSystemFactory() {

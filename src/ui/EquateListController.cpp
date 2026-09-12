@@ -7,9 +7,12 @@
 #include "FileDialogs.h"
 #include "FileType.h"
 #include "MessageBoxDialog.h"
+#include "Syntax.h"
+#include "WorkspaceTypes.h"
 #include "systems/ComputerSystem.h"
 #include "Text.h"
 #include "Workspace.h"
+#include <memory>
 
 
 extern std::unique_ptr<FileDialogs> g_FileDialogs;

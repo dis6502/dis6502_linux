@@ -1,4 +1,11 @@
 #include "DisassemblySection.h"
+#include "DisassemblyBuffer.h"
+#include "DisassemblySectionType.h"
+#include "Syntax.h"
+#include "gsl/pointers"
+#include <cstddef>
+#include <memory>
+#include <stdexcept>
 
 
 size_t DisassemblySection::GetIndex(DisassemblySectionType disassemblySectionType) {

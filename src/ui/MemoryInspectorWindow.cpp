@@ -1,11 +1,13 @@
-#include "Application.h"
 #include "Layout.h"
+#include "Memory.h"
 #include "MemoryInspector.h"
 #include "MemoryInspectorControl.h"
 #include "MemoryInspectorSelection.h"
-#include "SpriteControl.h"
-
 #include "MemoryInspectorWindow.h"
+#include "PartWindow.h"
+#include "Window.h"
+#include <memory>
+#include <Windows.h>
 
 extern std::unique_ptr<MemoryInspector> g_MemoryInspector;
 
@@ -13,8 +15,7 @@ extern std::unique_ptr<MemoryInspector> g_MemoryInspector;
 MemoryInspectorWindow::MemoryInspectorWindow(Window& parentWindow, PartLayout& partLayout) : PartWindow(parentWindow, partLayout),
 memoryInspectorControl(nullptr),
 memoryInspectorSelection(nullptr)
-{
-}
+{}
 
 
 void MemoryInspectorWindow::CreateControl(int nMemoryInspectorControlChildId) {
@@ -30,7 +31,7 @@ void MemoryInspectorWindow::ApplyLayout() {
 
     memoryInspectorControl->SetNumberOfBytesPerLine(numberOfBytesPerLine);
     memoryInspectorControl->SetFont(partLayout->GetLayout()->GetFont());
-    memoryInspectorControl->SetPosition(NULL_HWND, partLayout->left, partLayout->top, partLayout->width, partLayout->height, SWP_NOZORDER);
+    memoryInspectorControl->SetPosition(WINDOW_TOP, partLayout->left, partLayout->top, partLayout->width, partLayout->height, SWP_NOZORDER);
 }
 
 MemoryInspectorControl* MemoryInspectorWindow::GetMemoryInspectorControl() const {

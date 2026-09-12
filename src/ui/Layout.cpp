@@ -3,14 +3,15 @@
 * Dynamic layout for main window controls.
 */
 
+#include "gsl/pointers"
 #define NOMINMAX
 
 
 #include "Application.h"
+#include "Font.h"
 #include "Layout.h"
 #include "UI.h"
 #include <algorithm>
-#include <memory>
 #include <Windows.h>
 
 extern Application* g_Application;
@@ -41,14 +42,14 @@ Layout::Layout() :
     disassembly(*this),
     xrefList(*this),
     logList(*this),
-    font(NULL_HFONT) {}
+    font(nullptr) {}
 
-HFONT Layout::GetFont() const {
+Font* Layout::GetFont() const {
     return font;
 }
 
-void Layout::SetFont(HFONT hFont, int fontWidth, int fontHeight) {
-    font = hFont;
+void Layout::SetFont(Font* font, int fontWidth, int fontHeight) {
+    this->font = font;
     this->fontWidth = std::max(8, fontWidth);
     this->fontHeight = std::max(8, fontHeight);
 }

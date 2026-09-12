@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Syntax.h"
-#include "UI.h"
 #include <vector>
+#include <Windows.h>
+
+class Menu;
 
 class MainWindowMenu {
 public:
@@ -14,13 +15,13 @@ public:
 	virtual ~MainWindowMenu();
 
 	void CreateControl(HWND hMainWnd);
-	HMENU GetSubMenuHandle(UINT uMenuPos) const;
+	Menu* GetSubMenuHandle(UINT uMenuPos) const;
 
 	void SetEnabled(UINT uIDEnableItem, bool enabled);
 	void SetChecked(UINT uIDCheckItem, bool checked);
 
 private:
-	HMENU hMenu;
+	Menu* menu;
 	std::vector<HBITMAP> bitmaps;
 
 	HBITMAP MakeBitMapTransparent(HBITMAP hbmSrc);

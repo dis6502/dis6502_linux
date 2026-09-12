@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "Segment.h"
 #include "SegmentList.h"
+#include "Text.h"
+#include "gsl/pointers"
 #include "SegmentListInserter.h"
 #include <cassert>
 

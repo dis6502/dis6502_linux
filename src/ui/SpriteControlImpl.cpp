@@ -3,6 +3,9 @@
 **
 ** Sprite control implementation used to draw a graphic buffer using a specified Atari graphic mode.
 */
+#include "Syntax.h"
+#include <cstddef>
+#include <cstring>
 #define NOMINMAX
 
 

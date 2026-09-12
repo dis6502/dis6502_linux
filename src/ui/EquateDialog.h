@@ -3,6 +3,7 @@
 #include "Dialog.h"
 
 #include "Equate.h"
+#include "Window.h"
 class EquateList;
 class ListBox;
 

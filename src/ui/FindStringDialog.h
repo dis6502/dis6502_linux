@@ -3,6 +3,7 @@
 #include "Syntax.h"
 
 #include "Dialog.h"
+#include "Window.h"
 
 
 class FindStringDialog final {

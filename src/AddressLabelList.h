@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Syntax.h"
 #include "Memory.h"
 #include "AddressLabel.h"
 
+#include <memory>
 #include <vector>
 #include <map>
 #include <gsl/gsl>

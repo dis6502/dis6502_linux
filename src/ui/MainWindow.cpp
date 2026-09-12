@@ -7,7 +7,11 @@
 #include "MemoryInspectorWindow.h"
 #include "SegmentListWindow.h"
 #include "StringUtility.h"
+#include "Syntax.h"
+#include "Text.h"
+#include "UI.h"
 #include "XRefListWindow.h"
+#include <memory>
 
 
 void MainWindow::RegisterClassFor(HINSTANCE hInstance, WNDPROC lpfnWndProc) {

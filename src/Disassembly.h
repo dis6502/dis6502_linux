@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Byte.h"
+#include "DisassemblyBuffer.h"
 #include "DisassemblyLineWriter.h"
 #include "DisassemblyOpcodeBuffer.h"
 #include "DisassemblyResult.h"

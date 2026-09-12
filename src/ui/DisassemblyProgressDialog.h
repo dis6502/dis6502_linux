@@ -1,9 +1,11 @@
 #pragma once
 
+#include "SegmentTypes.h"
 #include "Syntax.h"
 
 #include "Dialog.h"
 #include "DisassemblyProgressMonitor.h"
+#include "Window.h"
 
 class Disassembly;
 

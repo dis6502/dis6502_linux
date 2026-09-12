@@ -1,5 +1,9 @@
 #include "DC.h"
-
+#include "Font.h"
+#include "Syntax.h"
+#include <cstddef>
+#include <stdexcept>
+#include <Windows.h>
 
 HBRUSH DC::GetStockBrush(int i) {
     return ((HBRUSH)GetStockObject(i));
@@ -11,9 +15,11 @@ DC::DC(HDC hDC) : hDC(hDC) {
     }
 }
 
-HFONT DC::SelectFont(HFONT hFont) {
-    return (HFONT)::SelectObject(hDC, hFont);
+Font* DC::SelectFont(Font* font) {
+    auto hFont = (font == nullptr ? Font::NULL_HFONT : font->hFont);
+    return Font::GetInstance((HFONT)::SelectObject(hDC, hFont));
 }
+
 HBRUSH DC::SelectBrush(HBRUSH hBrush) {
     return (HBRUSH)::SelectObject(hDC, hBrush);
 }

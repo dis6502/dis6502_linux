@@ -1,5 +1,6 @@
-#include "Application.h"
+#include "PopupMenu.h"
 #include "Resource.h"
+#include "SegmentTypes.h"
 #include "SegmentListPopupMenu.h"
 
 

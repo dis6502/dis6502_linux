@@ -1,10 +1,13 @@
 #include "DisassemblyResultIterators.h"
 
 #include "DisassemblyLine.h"
-#include "DisassemblySectionType.h"
+#include "DisassemblyResultTypes.h"
 #include "DisassemblySection.h"
 #include "DisassemblyResult.h"
 #include "DisassemblyBuffer.h"
+#include "gsl/pointers"
+#include <cstddef>
+#include <stdexcept>
 
 
 DisassemblyResultAbstractLineIterator::DisassemblyResultAbstractLineIterator(size_t startIndex, size_t endIndex, DisassemblyResultLineCount lineCount) :

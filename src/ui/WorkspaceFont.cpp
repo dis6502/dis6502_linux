@@ -1,9 +1,11 @@
 #include "ComputerFont.h"
+#include "Font.h"
 #include "Workspace.h"
 #include "WorkspaceFont.h"
+
 #include <Windows.h>
 
-HFONT WorkspaceFont::GetResizedFont(const Workspace& workspace) {
+Font* WorkspaceFont::GetResizedFont(const Workspace& workspace) {
 
     return ComputerFont::Get(*workspace.GetComputerSystem()).GetFont(workspace.IsViewDoubleHeight());
 

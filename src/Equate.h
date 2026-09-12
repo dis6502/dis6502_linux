@@ -8,6 +8,7 @@
 #include "Memory.h"
 #include "Syntax.h"
 #include "XML.h"
+#include <cstddef>
 class EquateList;
 
 // One line including the comment and the zero termination

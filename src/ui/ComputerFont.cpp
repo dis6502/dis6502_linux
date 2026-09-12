@@ -1,8 +1,8 @@
 #include "ComputerFont.h"
+#include "Font.h"
 #include "StringUtility.h"
 #include "Syntax.h"
 #include "systems/ComputerSystem.h"
-#include "UI.h"
 #include <ComputerSystemType.h>
 #include <exception>
 #include <map>
@@ -18,8 +18,8 @@ std::map <ComputerSystemType, const std::unique_ptr<ComputerFont>> ComputerFont:
 
 ComputerFont::ComputerFont(int fontHeight) {
     this->fontHeight = fontHeight;
-    hFont = NULL_HFONT;
-    hDoubleHeightFont = NULL_HFONT;
+    font = nullptr;
+    doubleHeightFont = nullptr;
 }
 
 ComputerFont::~ComputerFont() {
@@ -90,18 +90,18 @@ const ComputerFont& ComputerFont::Get(const ComputerSystem& computerSystem) {
 }
 
 
-HFONT ComputerFont::GetFont(bool doubleHeight) const {
-    return doubleHeight ? hDoubleHeightFont : hFont;
+Font* ComputerFont::GetFont(bool doubleHeight) const {
+    return doubleHeight ? doubleHeightFont : font;
 }
 
 
 bool ComputerFont::CreateFonts(int fontHeight, wstring_view fontName) {
     constexpr int doubleHeightFontFactor = 2;
     auto fontNameString = wstring(fontName);
-    hFont = CreateFont(fontHeight, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str());
-    hDoubleHeightFont = CreateFont(fontHeight * doubleHeightFontFactor, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str());
+    font = Font::GetInstance(CreateFont(fontHeight, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str()));
+    doubleHeightFont = Font::GetInstance(CreateFont(fontHeight * doubleHeightFontFactor, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str()));
 
-    const bool result = (hFont != NULL_HFONT && hDoubleHeightFont != NULL_HFONT);
+    const bool result = (font != nullptr && doubleHeightFont != nullptr);
     if (!result) {
         DeleteFonts();
     }
@@ -110,18 +110,18 @@ bool ComputerFont::CreateFonts(int fontHeight, wstring_view fontName) {
 }
 
 void ComputerFont::DeleteFonts() {
-    if (hFont != NULL_HFONT) {
-        const BOOL bResult = DeleteObject(hFont);
-        hFont = NULL_HFONT;
+    if (font != nullptr) {
+        const BOOL bResult = DeleteObject(font->hFont);
+        font = nullptr;
 
         if (!bResult) {
             throw std::runtime_error("Cannot delete font");
         }
     }
 
-    if (hDoubleHeightFont != NULL_HFONT) {
-        const BOOL result = DeleteObject(hDoubleHeightFont);
-        hDoubleHeightFont = NULL_HFONT;
+    if (doubleHeightFont != nullptr) {
+        const BOOL result = DeleteObject(doubleHeightFont->hFont);
+        doubleHeightFont = nullptr;
 
         if (!result) {
             throw std::runtime_error("Cannot delete double height font");

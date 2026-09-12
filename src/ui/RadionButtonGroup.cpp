@@ -1,4 +1,3 @@
-#include "Application.h"
 
 #include "RadionButtonGroup.h"
 #include "Dialog.h"

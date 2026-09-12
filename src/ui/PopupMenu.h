@@ -1,30 +1,35 @@
 #pragma once
 
 #include "Syntax.h"
-#include "UI.h"
+#include <Windows.h>
 
+class Menu;
 class Window;
 
 
 class PopupMenu {
 public:
-	virtual void CreateControl();
 
-	void AddEntry(UINT itemID, wstring_view newItemText);
-	
-	void AddSeparator();
-    void DeleteSepartor(UINT position);
+    using ItemID = unsigned int;
+    using Position = unsigned int;
 
-	void InsertSubMenuAtPosition(UINT position, PopupMenu& subMenu, LPCWSTR szNewItem);
-    void DeleteEntry(UINT itemID);
+    virtual void CreateControl();
 
-    void SetText(UINT itemID, wstring_view newItemText);
-	void SetEnabled(UINT itemID, bool enabled);
-	void SetChecked(UINT itemID, bool checked);
+    void AddEntry(ItemID itemID, wstring_view newItemText);
 
-	// Track a current cursor position or at special position
-	bool Track(const Window& window);
-	bool Track(const Window& window, POINT pt);
+    void AddSeparator();
+    void DeleteSepartor(Position position);
+
+    void InsertSubMenuAtPosition(Position position, PopupMenu& subMenu, wstring_view newItemText);
+    void DeleteEntry(ItemID itemID);
+
+    void SetText(ItemID itemID, wstring_view newItemText);
+    void SetEnabled(ItemID itemID, bool enabled);
+    void SetChecked(ItemID itemID, bool checked);
+
+    // Track a current cursor position or at special position
+    bool Track(const Window& window);
+    bool Track(const Window& window, POINT pt);
 
     PopupMenu(const PopupMenu& a) = delete;           // no copy constructor
     PopupMenu& operator=(const PopupMenu&) = delete;  // no copy assignment
@@ -33,9 +38,10 @@ public:
     virtual ~PopupMenu(); // Must be public
 
 protected:
-	PopupMenu(wstring_view menuName = L"");
+    PopupMenu(wstring_view menuName = L"");
 
 private:
-	HMENU hMenu;
-	HMENU hTrackedMenu;
+    static constexpr UINT_PTR NULL_UINT_PTR = 0;
+    Menu* menu;
+    Menu* trackedMenu;
 };

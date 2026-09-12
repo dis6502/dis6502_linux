@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Syntax.h"
 
 #include "Dialog.h"
 #include "FindStringDialog.h"
+#include "Window.h"
 
 class MemoryInspector;
 

@@ -1,6 +1,10 @@
 #include "LabelAccess.h"
+#include "Syntax.h"
 #include <algorithm>
+#include <iterator>
 #include <map>
+#include <stdexcept>
+#include <vector>
 
 
 const LabelAccessInfo& LabelAccessFactory::GetInfo(wstring_view key) {

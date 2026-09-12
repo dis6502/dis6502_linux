@@ -2,6 +2,7 @@
 
 #include "FileIO.h"
 #include "File.h"
+#include "Syntax.h"
 
 TestUnit::TestUnit(wstring_view basePath, wstring_view areaName, wstring_view unitName): TestUnit() {
     auto areaPath = wstring(basePath) + FileIO::FILE_SEPARATOR + wstring(areaName);

@@ -2,7 +2,8 @@
 
 #include "Syntax.h"
 #include "Byte.h"
-#include <sstream>
+#include <exception>
+#include <stdexcept>
 
 class AssertionError : public std::runtime_error {
 

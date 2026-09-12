@@ -1,6 +1,10 @@
 #include "EquateType.h"
+#include "Syntax.h"
 #include <algorithm>
+#include <iterator>
 #include <map>
+#include <stdexcept>
+#include <vector>
 
 
 const EquateTypeInfo& EquateTypeFactory::GetInfo(wstring_view key) {

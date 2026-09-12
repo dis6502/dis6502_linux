@@ -1,10 +1,11 @@
 #pragma once
 
 #include "ComputerSystemType.h"
+#include "Font.h"
 #include "Syntax.h"
 #include <map>
 #include <memory>
-#include <Windows.h>
+
 class ComputerSystem;
 
 class ComputerFont {
@@ -19,14 +20,14 @@ public:
 
     static const ComputerFont& Get(const ComputerSystem& computerSystem);
 
-    HFONT GetFont(bool doubleHeight) const;
+    Font* GetFont(bool doubleHeight) const;
 
 private:
     static std::map <ComputerSystemType, const std::unique_ptr<ComputerFont>> instances;
 
     int fontHeight;
-    HFONT hFont;
-    HFONT hDoubleHeightFont;
+    Font* font;
+    Font* doubleHeightFont;
 
 
     void Load(wstring_view fontName);

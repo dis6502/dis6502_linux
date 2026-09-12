@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Byte.h"
 #include "ByteSequence.h"
 #include "Memory.h"
 #include "SegmentTypes.h"
-#include "Syntax.h"
+#include <memory>
 
 class Workspace;
 

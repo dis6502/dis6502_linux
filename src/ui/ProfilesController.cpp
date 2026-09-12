@@ -1,6 +1,9 @@
 #include "FileDialogs.h"
 #include "ProfilesController.h"
+#include "FileType.h"
+#include "ProfileLogic.h"
 #include "Window.h"
+#include <memory>
 
 
 extern std::unique_ptr<FileDialogs> g_FileDialogs;

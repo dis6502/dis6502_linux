@@ -3,6 +3,9 @@
 #include "MRUList.h"
 #include "MRUMenu.h"
 #include "Resource.h"
+#include "Syntax.h"
+#include <memory>
+#include <vector>
 
 MRUController::MRUController() :
     workspaceList(std::make_unique<MRUList>(L"RecentWorkspaces", MRU_MAX_ENTRIES)),
@@ -12,10 +15,9 @@ MRUController::MRUController() :
     fileMenu(std::make_unique<MRUMenu>(MRU_FILE_INDEX, std::vector<UINT>{IDM_MRU_FILE_1, IDM_MRU_FILE_2, IDM_MRU_FILE_3, IDM_MRU_FILE_4, IDM_MRU_FILE_5})) {
 }
 
-void MRUController::FillMenu(HMENU hMenu) {
-
-    workspaceMenu->FillMenu(hMenu, *workspaceList);
-    fileMenu->FillMenu(hMenu, *fileList);
+void MRUController::FillMenu(Menu* menu) {
+    workspaceMenu->FillMenu(menu, *workspaceList);
+    fileMenu->FillMenu(menu, *fileList);
 }
 
 void MRUController::Load() {
@@ -50,10 +52,10 @@ wstring MRUController::GetLastFilePath(const FileType fileType) {
     }
 }
 
-const MRUEntry* MRUController::GetMRUEntry(HMENU hMenu, UINT uMenuID) const {
-    const MRUEntry* entry = fileMenu->GetMRUEntry(hMenu, uMenuID);
+const MRUEntry* MRUController::GetMRUEntry(Menu* menu, UINT uMenuID) const {
+    const MRUEntry* entry = fileMenu->GetMRUEntry(menu, uMenuID);
     if (entry == nullptr) {
-        entry = workspaceMenu->GetMRUEntry(hMenu, uMenuID);
+        entry = workspaceMenu->GetMRUEntry(menu, uMenuID);
     }
 
     return entry;

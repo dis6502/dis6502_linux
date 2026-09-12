@@ -3,6 +3,7 @@
 
 ** Segment memoryInspector control implementation used to display a buffer in hexadecimal and in ASCII/ATASCII.
 */
+#include "Byte.h"
 #define NOMINMAX
 
 #include "MemoryInspectorControlImpl.h"

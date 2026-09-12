@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Syntax.h"
+#include "Byte.h"
+#include "Memory.h"
 
-#include "systems/ComputerSystem.h"
 #include "Disassembly.h"
 #include "DisassemblyOpcodeBuffer.h"
 #include "DisassemblyLineWriter.h"
 
-#include "DisassemblySectionType.h"
 #include "MemoryType.h"
 #include "Profile.h"
 #include "Workspace.h"

@@ -2,6 +2,8 @@
 
 #include "Syntax.h"
 #include "DisassemblySectionType.h"
+#include <cstddef>
+#include <memory>
 #include <vector>
 #include "DisassemblyBuffer.h"
 #include <gsl/gsl>

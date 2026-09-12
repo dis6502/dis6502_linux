@@ -1,26 +1,25 @@
 #pragma once
 
 #include "Syntax.h"
-
-#include "Application.h"
 #include "Window.h"
 #include <gsl/pointers>
+#include <Windows.h>
 
 class PartLayout;
 
 
 class PartWindow : public Window {
 public:
-	PartWindow(Window& parentWindow, PartLayout& partLayout);
+    PartWindow(Window& parentWindow, PartLayout& partLayout);
 
-	wstring GetTitle() const;
-	void SetTitle(wstring_view title);
+    wstring GetTitle() const;
+    void SetTitle(wstring_view title);
 
-	virtual void ApplyLayout();
+    virtual void ApplyLayout();
 
 protected:
-	gsl::not_null<PartLayout*> partLayout;
-	wstring title;
+    gsl::not_null<PartLayout*> partLayout;
+    wstring title;
 
-	void CreateControl(wstring_view className, DWORD dwStyle, ChildID childID);
+    void CreateControl(wstring_view className, DWORD dwStyle, ChildID childID);
 };

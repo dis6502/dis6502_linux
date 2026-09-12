@@ -3,6 +3,8 @@
 #include "Equate.h"
 #include "EquateType.h"
 #include "LabelAccess.h"
+#include "Memory.h"
+#include "Syntax.h"
 
 
 wstring GetEquateTypeText(EquateType equateType) {

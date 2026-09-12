@@ -1,28 +1,40 @@
-#include "Application.h"
+#include "Byte.h"
 #include "CommentDialog.h"
-#include "Dialog.h"
 #include "Disassembly.h"
+#include "DisassemblyControlTypes.h"
 #include "DisassemblyFindStringDialog.h"
 #include "DisassemblyLine.h" 
 #include "DisassemblyPopupMenu.h"
 #include "DisassemblyProgressDialog.h"
-#include "DisassemblyProgressMonitor.h"
 #include "DisassemblyResult.h"
 #include "DisassemblyWriter.h"
+#include "Equate.h"
 #include "EquateListController.h"
 #include "FindStringDialog.h"
+#include "InstructionSet.h"
 #include "LowHighByteDialog.h"
 #include "Main.h"
+#include "MainController.h"
 #include "MainDisassembly.h"
 #include "MainWindow.h"
+#include "MainXRef.h"
+#include "Memory.h"
 #include "MemoryInspector.h"
 #include "MemoryInspectorSelection.h"
+#include "MemoryType.h"
 #include "Resource.h"
 #include "Segment.h"
 #include "SegmentList.h"
-#include "SegmentListWindow.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
 #include "Workspace.h"
-#include "WorkspaceFont.h"
+#include "XRef.h"
+#include "gsl/pointers"
+#include <memory>
+#include <string>
+
+#include <vector>
+#include <Windows.h>
 
 extern HWND hDisWnd;
 
@@ -187,12 +199,12 @@ void MainDisassembly::AddComment() {
 
     if ((disSelection.segmentIndex != NO_SEGMENT_INDEX) && (disSelection.offset != 0xFFFF)) { // TODO: Have constant
         CommentDialog dialog(*mainWindow);
-        auto hFont = main->GetResizedFont();
+        auto font = main->GetResizedFont();
 
         if (dialog.Show(*::g_Workspace->GetConstDisassemblyResult(), *::g_Workspace->GetSegmentList(),
             disSelection.segmentIndex,
             disSelection.offset,
-            disSelection.size, hFont)) {
+            disSelection.size, font)) {
             ::g_MemoryInspector->Disassemble();
         }
     }

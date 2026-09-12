@@ -3,6 +3,7 @@
 #include "Memory.h"
 #include "Syntax.h"
 #include "XML.h"
+#include <memory>
 #include <vector>
 
 class Symbol : public XML::Serializable {

@@ -1,6 +1,10 @@
 #include "Application.h"
 #include "Button.h"
+#include "Byte.h"
+#include "Dialog.h"
 #include "EditControl.h"
+#include "MemoryType.h"
+#include "Text.h"
 #include "LowHighByteDialog.h"
 
 extern Application* g_Application;

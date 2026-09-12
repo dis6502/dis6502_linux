@@ -1,6 +1,8 @@
 #include "ComboBox.h"
 #include "Dialog.h"
-#include "StringUtility.h"
+#include "Syntax.h"
+#include "Text.h"
+#include <stdexcept>
 
 ComboBox::ComboBox(HWND hWnd) : Control(hWnd) {}
 

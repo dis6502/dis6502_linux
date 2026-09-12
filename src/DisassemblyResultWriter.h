@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Syntax.h"
-#include <gsl/gsl>
 #include "File.h"
 #include "Profile.h"
 

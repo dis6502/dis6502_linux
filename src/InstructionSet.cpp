@@ -1,4 +1,8 @@
 #include "InstructionSet.h"
+#include "Byte.h"
+#include "LabelAccess.h"
+#include "Syntax.h"
+#include <array>
 
 
 Instruction::Instruction(byte opcode, wstring_view name, bool illegal, LabelAccess labelAccess, OperandMode mode) : opcode(opcode), name(name), illegal(illegal), labelAccess(labelAccess), mode(mode) {

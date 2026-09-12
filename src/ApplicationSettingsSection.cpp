@@ -1,7 +1,7 @@
+#include <cstddef>
 #define NOMINMAX
 
 #include "Application.h"
-
 #include "ApplicationSettingsSection.h"
 #include "Syntax.h"
 #include <Windows.h> // For GetPrivateProfileString/WritePrivateProfileString

@@ -1,18 +1,19 @@
 #pragma once
 
-#include "Syntax.h"
-
-#include "Dialog.h"
-#include "Memory.h"
-#include "Byte.h"
 #include "ByteArray.h"
+#include "Dialog.h"
+#include "Font.h"
+#include "Memory.h"
+#include "Syntax.h"
+#include "Window.h"
+#include <memory>
 
 class MemoryInspectorControl;
 
 
 class RawFileDialog : public Dialog {
 public:
-    RawFileDialog(const Window& parentWindow, HFONT hComputerFont);
+    RawFileDialog(const Window& parentWindow, Font* computerFont);
     ~RawFileDialog() override;
 
     INT_PTR Show(wstring_view filePath);
@@ -27,7 +28,7 @@ protected:
 
 private:
     // Set in constructor.
-    HFONT hComputerFont;
+    Font* computerFont;
 
     // Set in Show().
     wstring filePath;

@@ -6,11 +6,10 @@
  */
 #pragma once
 
-#include "Syntax.h"
 
+#include <cstddef>
 #include <cstdint>
 
-#include "Byte.h"
 #include "ByteSequence.h"
 
 class Profile;

@@ -10,7 +10,6 @@
 #include "Syntax.h"
 #include "systems/ComputerSystemType.h"
 #include "Text.h"
-#include "tinyxml2.h"
 #include "XML.h"
 #include <string>
 
@@ -36,7 +35,7 @@ bool ProfileLogic::Load(Profile& profile, wstring_view filePath) {
         auto byteArray = FileIO::ReadByteArray(filePath);
 
         if (byteArray.empty()) {
-            throw new IOException(FileIO::FormatError(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, filePath));
+            throw IOException(FileIO::FormatError(IDS_FILE_IO_EX_OPENING_FILE_FOR_READ_ACCESS, filePath));
         }
         else {
             if (Profile1X::Load(profile, byteArray)) {
@@ -46,7 +45,7 @@ bool ProfileLogic::Load(Profile& profile, wstring_view filePath) {
                 result = true;
             }
             else {
-                throw new IOException(Text::Format(IDS_ERR_BAD_PROFILE, filePath)); // TODO: Have own text ID
+                throw IOException(Text::Format(IDS_ERR_BAD_PROFILE, filePath)); // TODO: Have own text ID
             }
         }
     }

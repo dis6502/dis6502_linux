@@ -1,11 +1,11 @@
 #pragma once
-#include "Syntax.h"
 #include "XML.h"
 #include "Memory.h"
 #include "MemoryType.h"
 #include "Byte.h"
 #include "ByteArray.h"
 #include "ByteSequence.h"
+#include <cstddef>
 #include <gsl/gsl>
 
 class InputStream;

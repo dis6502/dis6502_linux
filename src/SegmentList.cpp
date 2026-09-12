@@ -20,9 +20,12 @@
 #include "Syntax.h"
 #include "Word.h"
 #include "XML.h"
+#include "gsl/narrow"
+#include "gsl/pointers"
 #include <algorithm>
 #include <exception>
 #include <memory>
+#include <new>
 #include <stdexcept>
 
 SegmentList::SegmentList(Workspace* workspace) {

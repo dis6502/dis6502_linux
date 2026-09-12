@@ -1,6 +1,10 @@
 #include "Encoding.h"
+#include "Syntax.h"
 #include <algorithm>
+#include <iterator>
 #include <map>
+#include <stdexcept>
+#include <vector>
 
 EncodingInfo EncodingFactory::GetInfo(wstring_view key) {
     static std::map<wstring_view, Encoding> lookup = {

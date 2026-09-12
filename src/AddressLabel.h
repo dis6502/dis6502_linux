@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 #include "Memory.h"
 #include "XML.h"
 
-#include <vector>
 #include <gsl/gsl>
 
 class AddressLabel: public XML::Serializable {

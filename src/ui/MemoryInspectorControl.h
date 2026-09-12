@@ -5,7 +5,7 @@
 */
 #pragma once
 
-#include "Syntax.h"
+#include "Byte.h"
 
 #include "Memory.h"
 #include "MemoryType.h"

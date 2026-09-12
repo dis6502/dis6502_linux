@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Syntax.h"
 
 enum class PrintfState {
 	TEXT = 0,

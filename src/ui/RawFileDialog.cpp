@@ -1,25 +1,25 @@
 #include "Application.h"
-#include "Button.h"
 #include "ByteArray.h"
 #include "CommonIO.h"
-#include "Control.h"
 #include "Dialog.h"
 #include "EditControl.h"
 #include "FileIO.h"
+#include "Font.h"
 #include "Memory.h"
 #include "MemoryInspectorControl.h"
 #include "RawFileDialog.h"
 #include "Resource.h"
 #include "Syntax.h"
 #include "Window.h"
+#include <cstddef>
 #include <memory>
 #include <Windows.h>
 
 extern Application* g_Application;
 
 
-RawFileDialog::RawFileDialog(const Window& parentWindow, HFONT hComputerFont) : Dialog(parentWindow, L"OPENRAWFILEBOX") {
-    this->hComputerFont = hComputerFont;
+RawFileDialog::RawFileDialog(const Window& parentWindow, Font* computerFont) : Dialog(parentWindow, L"OPENRAWFILEBOX") {
+    this->computerFont = computerFont;
     Clear();
 
 }
@@ -37,7 +37,7 @@ void RawFileDialog::Clear() {
     wAddr = 0;
 }
 
-INT_PTR RawFileDialog::Show(wstring_view filePath) {
+Window::INT_PTR RawFileDialog::Show(wstring_view filePath) {
     this->filePath = filePath;
     Clear();
 
@@ -115,7 +115,7 @@ void RawFileDialog::CreateControls() {
 
     memoryInspectorControl = std::make_unique<MemoryInspectorControl>(*this, IDC_RAW_FILE_DUMP);
     memoryInspectorControl->BindControl();
-    memoryInspectorControl->SetFont(hComputerFont);
+    memoryInspectorControl->SetFont(computerFont);
     memoryInspectorControl->SetNumberOfBytesPerLine(16);
     memoryInspectorControl->SetBuffer(fileBuffer.get(), fileBuffer.size());
     memoryInspectorControl->ClearSelection();

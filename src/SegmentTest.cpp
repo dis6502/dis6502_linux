@@ -2,6 +2,7 @@
 #include "AddressLabelList.h"
 #include "Assertions.h"
 #include "Segment.h"
+#include "Memory.h"
 #include "SegmentTest.h"
 
 void SegmentTest::TestSegment() {

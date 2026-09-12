@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Syntax.h"
-#include "Memory.h"
 #include "File.h"
 
 class DisassemblyResult;

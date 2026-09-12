@@ -5,15 +5,16 @@
 */
 #pragma once
 
+#include "DisassemblyBuffer.h"
 #define NOMINMAX
-#include <Windows.h>
-
 #include "Control.h"
 #include "DC.h"
-#include "Syntax.h"
-
-#include "DisassemblyControlTypes.h"
 #include "DisassemblyResult.h"
+#include "Font.h"
+#include "Memory.h"
+#include "SegmentTypes.h"
+#include "Window.h"
+#include <Windows.h>
 
 constexpr UINT WM_DIS_BASE = (WM_USER + 1234);
 typedef DWORD* LP_DIS_HISTORY;
@@ -97,8 +98,8 @@ private:
     LRESULT SelectLineWithInfo(SEGMENT_NUMBER segmentNumber, Memory::offset offset);
     LRESULT ExtendSelectionTo(SEGMENT_NUMBER segmentNumber, Memory::offset offset);
 
-    HFONT GetFont() const;
-    void SetFont(HFONT hFont);
+    Font* GetFont() const;
+    void SetFont(Font* font);
     void Size(); // Adapts number of lines to font and visible client area
 
     void Create();

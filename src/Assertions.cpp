@@ -4,6 +4,7 @@
 #include "StringUtility.h"
 #include "Syntax.h"
 #include <cstdio>
+#include <cwchar>
 #include <exception>
 #include <ios>
 #include <stdexcept>

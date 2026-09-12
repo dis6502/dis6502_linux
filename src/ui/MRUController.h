@@ -1,14 +1,16 @@
 #pragma once
 
 #include "Syntax.h"
+#include <memory>
+#include <Windows.h>
 
 enum class FileType;
+class Menu;
 class MRUEntry;
 
 #include "MRUMenu.h" // Because of smart pointer, forward declartion not sufficient
 #include "MRUList.h" // Because of smart pointer, forward declartion not sufficient
 
-#include "Window.h"
 
 class MRUController {
 public:
@@ -17,8 +19,8 @@ public:
 
 	void AddFile(wstring_view filePath, FileType fileType);
 	wstring GetLastFilePath(FileType fileType);
-	void FillMenu(HMENU hMenu);
-	const MRUEntry* GetMRUEntry(HMENU hMenu, UINT uMenuID) const;
+	void FillMenu(Menu* menu);
+	const MRUEntry* GetMRUEntry(Menu* menu, UINT uMenuID) const;
 
 	void Load();
 	void Save();

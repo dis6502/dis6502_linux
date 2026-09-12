@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Syntax.h"
-#include "UI.h"
 #include "PartWindow.h"
+#include "Window.h"
 
 
 class LogListWindow final : public PartWindow {

@@ -1,11 +1,14 @@
-#include "Application.h"
-
+#include "Control.h"
 #include "EditControl.h"
+#include "Memory.h"
 #include "StringUtility.h"
+#include <cstdint>
+#include <cwchar>
+#include <string>
+#include "Syntax.h"
 
-extern Application* g_Application;
 
-EditControl::EditControl(HWND hWnd) : Control(hWnd) {}
+EditControl::EditControl(WindowHandle hWnd) : Control(hWnd) {}
 
 void EditControl::Clear() {
     SetText(L"");

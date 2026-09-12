@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Encoding.h"
 #include "Syntax.h"
 #include "Word.h"
 #include "XML.h"

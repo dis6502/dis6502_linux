@@ -1,11 +1,15 @@
 #pragma once
 
+#include "Byte.h"
 #include "InstructionSet.h"
+#include "LabelAccess.h"
 #include "Memory.h"
 #include "Segment.h"
 #include "SegmentTypes.h"
 #include "Syntax.h"
 #include "XML.h"
+#include "gsl/pointers"
+#include <memory>
 #include <vector>
 
 class SegmentListInserter;

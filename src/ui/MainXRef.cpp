@@ -1,9 +1,12 @@
+#include "MainController.h"
 #include "MainDisassembly.h"
 #include "MainWindow.h"
 #include "MainXRef.h"
-#include "StringUtility.h"
+#include "Syntax.h"
 #include "Text.h"
 #include "XRefListWindow.h"
+#include <string>
+#include <vector>
 
 MainXRef::MainXRef(Main& main) : MainController(main) {
 

@@ -1,7 +1,11 @@
-#include "Debug.h"
+#include "Byte.h"
 #include "DisassemblyBuffer.h"
 #include "DisassemblyLine.h"
-#include "StringUtility.h"
+#include "Syntax.h"
+#include <cstddef>
+#include <cstring>
+#include <cwchar>
+#include <stdexcept>
 
 static constexpr size_t DIS_LINE_SIZE = sizeof(DIS_LINE);
 

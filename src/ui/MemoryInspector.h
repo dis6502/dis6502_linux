@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Byte.h"
 #include "Syntax.h"
-#include "UI.h"
 
 #include "Memory.h"
 #include "MemoryType.h"
@@ -10,6 +10,8 @@
 #include "SegmentTypes.h"
 
 #include <gsl/pointers>
+#include <memory>
+#include <Windows.h>
 
 class MemoryInspector;
 class MemoryInspectorWindow;
@@ -92,7 +94,7 @@ public:
 private:
     friend class MemoryInspectorSelection;
 
-    MemoryInspectorPopupMenu* popupMenu;
+    std::unique_ptr<MemoryInspectorPopupMenu> popupMenu;
 
     MainWindow* mainWindow; // TODO: Event handling should be on the MemoryInspectorWindow instead
     MemoryInspectorWindow* memoryInspectorWindow;

@@ -3,7 +3,6 @@
 #include "StringUtility.h"
 #endif
 #include "Syntax.h"
-#include <cstdlib>
 
 
 int OperatingSystem::ExecuteCommand(wstring_view command) {

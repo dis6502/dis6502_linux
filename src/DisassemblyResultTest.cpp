@@ -8,6 +8,10 @@
 #include "StringUtility.h"
 
 #include "Assertions.h"
+#include "Syntax.h"
+#include "gsl/pointers"
+#include <cstddef>
+#include <string>
 
 void DisassemblyResultTest::TestDisassemblyResult() {
     DisassemblyResult result;
@@ -72,7 +76,7 @@ void DisassemblyResultTest::GenerateDisassemblyResult(DisassemblyResult& result,
         const auto& section = result.AllocSection(disassemblySectionType);
         const auto& buffer = section->AllocBuffer();
         wstring line;
-        for (unsigned short int j = 0; (j < linesPerSection ) && (j < 0xc000 ); j++) {
+        for (unsigned short int j = 0; (j < linesPerSection) && (j < 0xc000); j++) {
             DIS_LINE disLine = DIS_LINE(*section);
             disLine.address = j;
             disLine.systemAddress = 0x1000 + j;

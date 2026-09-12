@@ -1,8 +1,11 @@
 #include "StreamTest.h"
 
-#include "Byte.h"
-#include "InputStream.h"
 #include "Assertions.h"
+#include "Byte.h"
+#include "CommonIO.h"
+#include "InputStream.h"
+#include "Stream.h"
+#include <string>
 
 void StreamTest::AssertInputStreamsEqual(InputStream& actualInputStream, InputStream& expectedInputStream, Stream::stream_size expectedStreamSize) {
     for (InputStream::stream_offset position = 0; position < expectedStreamSize; position++) {

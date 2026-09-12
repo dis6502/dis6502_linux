@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Encoding.h"
-#include "FileIO.h"
 #include "Syntax.h"
+#include <cstdio>
 #include <gsl/gsl>
 
 class OutputStream {

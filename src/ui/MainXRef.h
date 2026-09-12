@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Syntax.h"
-#include <vector>
 #include "MainController.h"
+#include <vector>
+#include <Windows.h>
 
 class MainDisassembly;
 

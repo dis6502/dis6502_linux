@@ -1,5 +1,9 @@
 #include "MemoryBlockIterator.h"
+#include "Byte.h"
+#include "Memory.h"
 #include "MemoryBlock.h"
+#include "MemoryType.h"
+#include <stdexcept>
 
 MemoryBlockIterator::MemoryBlockIterator(const MemoryBlock& memoryBlock) :
     memoryBlock(&memoryBlock),

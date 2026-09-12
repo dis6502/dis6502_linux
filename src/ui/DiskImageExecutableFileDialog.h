@@ -1,16 +1,18 @@
 #pragma once
-#include "Syntax.h"
-
 #include "Dialog.h"
+#include "Font.h"
+#include "Syntax.h"
+#include "Window.h"
+#include <memory>
 
 class ListBox;
 class AtariDisk;
 
 class DiskImageExecutableFileDialog : public Dialog {
 public:
-    DiskImageExecutableFileDialog(const Window& parentWindow, HFONT hComputerFont);
+    DiskImageExecutableFileDialog(const Window& parentWindow, Font* computerFont);
 
-    INT_PTR Show(wstring_view diskImageFilePath);
+    DialogFuncResult Show(wstring_view diskImageFilePath);
     wstring GetExecutableFilePath() const;
 
 protected:
@@ -19,7 +21,7 @@ protected:
     void CreateControls() override;
 
 private:
-    HFONT hComputerFont;
+    Font* computerFont;
 
     std::unique_ptr<AtariDisk> atariDisk;
     wstring executableFilePath;

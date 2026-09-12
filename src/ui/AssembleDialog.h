@@ -2,6 +2,7 @@
 
 #include "Dialog.h"
 #include "Syntax.h"
+#include "Window.h"
 
 class MemoryInspectorControl;
 class Segment;

@@ -1,4 +1,5 @@
 #include "FileIO.h"
+#include "Menu.h"
 #include "MRUEntry.h"
 #include "MRUList.h"
 #include "MRUMenu.h"
@@ -13,14 +14,27 @@
 MRUMenu::MRUMenu(UINT menuPosition, std::vector<UINT> itemIDList) :
     menuPosition(menuPosition), itemIDList(itemIDList) {}
 
-void MRUMenu::FillMenu(HMENU hMenu, const MRUList& mruList) {
+MRUMenu::~MRUMenu() {
+    ClearMenuEntries();
+}
+
+void MRUMenu::ClearMenuEntries() {
+    for (auto menuEntry : menuEntries) {
+        delete menuEntry;
+    }
+    menuEntries.clear();
+}
+
+void MRUMenu::FillMenu(Menu* menu, const MRUList& mruList) {
+
+    ClearMenuEntries();
 
     const auto entries = mruList.GetEntries();
     // Enable menu item.
-    EnableMenuItem(hMenu, menuPosition, MF_BYPOSITION | (!entries.empty() ? MF_ENABLED : MF_GRAYED));
+    EnableMenuItem(menu->hMenu, menuPosition, MF_BYPOSITION | (!entries.empty() ? MF_ENABLED : MF_GRAYED));
 
     // Fill sub menu.
-    auto hSubMenu = GetSubMenu(hMenu, menuPosition);
+    auto hSubMenu = GetSubMenu(menu->hMenu, menuPosition);
     if (hSubMenu == NULL_HMENU) {
         throw std::exception("No submenu for MRU at specified position");
     }
@@ -44,10 +58,10 @@ void MRUMenu::FillMenu(HMENU hMenu, const MRUList& mruList) {
 }
 
 
-const MRUEntry* MRUMenu::GetMRUEntry(HMENU hMenu, UINT itemID) const {
+const MRUEntry* MRUMenu::GetMRUEntry(Menu* menu, UINT itemID) const {
     constexpr int MAX_LENGTH = 3 + FileIO::FILE_PATH_SIZE;
     std::unique_ptr<wchar_t[]> szBuffer = std::make_unique<wchar_t[]>(MAX_LENGTH);
-    auto hSubMenu = GetSubMenu(hMenu, menuPosition);
+    auto hSubMenu = GetSubMenu(menu->hMenu, menuPosition);
     GetMenuString(hSubMenu, itemID, szBuffer.get(), MAX_LENGTH - 1, MF_BYCOMMAND);
 
     for (auto menuEntry : menuEntries) {

@@ -3,6 +3,7 @@
 #include "Syntax.h"
 
 #include "Byte.h"
+#include <cstddef>
 #include <memory>
 
 class ByteSequence {

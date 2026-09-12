@@ -1,7 +1,13 @@
+#include "ByteArray.h"
+#include "ByteSequence.h"
 #include "Debug.h"
+#include "Memory.h"
 #include "Segment.h"
+#include "SegmentTypes.h"
 #include "Workspace.h"
 #include "DatatypeUtility.h"
+#include <memory>
+#include <stdexcept>
 #include "MemoryInspectorSelection.h"
 
 

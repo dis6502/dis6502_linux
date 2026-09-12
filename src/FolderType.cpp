@@ -1,6 +1,8 @@
 #include "FolderType.h"
+#include "Syntax.h"
 
 #include <map>
+#include <stdexcept>
 
 FolderTypeInfo FolderTypeFactory::GetInfo(wstring_view key) {
 	static std::map<wstring_view, FolderType> typeLookup = {

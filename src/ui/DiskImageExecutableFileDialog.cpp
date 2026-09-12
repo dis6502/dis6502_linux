@@ -1,28 +1,27 @@
 #include "Application.h"
 #include "Button.h"
-#include "Control.h"
 #include "Dialog.h"
 #include "DiskImageExecutableFileDialog.h"
 #include "EditControl.h"
 #include "ListBox.h"
+#include "Resource.h"
+#include "StringUtility.h"
+#include "Syntax.h"
 #include "systems/atari800/AtariDOS.h"
 #include "TextLabel.h"
 #include "Window.h"
-#include <cstdarg>
+#include <cstdint>
 #include <memory>
-#include <Resource.h>
-#include <StringUtility.h>
-#include <Syntax.h>
 #include <Windows.h>
 
 extern Application* g_Application;
 
 
-DiskImageExecutableFileDialog::DiskImageExecutableFileDialog(const Window& parentWindow, HFONT hComputerFont) : Dialog(parentWindow, L"OPENDISKIMAGEEXECUTABLEFILEBOX") {
-    this->hComputerFont = hComputerFont;
+DiskImageExecutableFileDialog::DiskImageExecutableFileDialog(const Window& parentWindow, Font* computerFont) : Dialog(parentWindow, L"OPENDISKIMAGEEXECUTABLEFILEBOX") {
+    this->computerFont = computerFont;
 }
 
-INT_PTR DiskImageExecutableFileDialog::Show(wstring_view diskImageFilePath) {
+Window::INT_PTR DiskImageExecutableFileDialog::Show(wstring_view diskImageFilePath) {
     atariDisk = AtariDOS::OpenAtariDisk(diskImageFilePath);
     executableFilePath = L"";
 
@@ -115,9 +114,9 @@ bool DiskImageExecutableFileDialog::ProcessDialogMessage(MESSAGE message, WPARAM
 }
 
 void DiskImageExecutableFileDialog::CreateControls() {
-    GetTextLabel(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST_HEADER).SetFont(hComputerFont);
+    GetTextLabel(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST_HEADER).SetFont(computerFont);
 
-    GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).SetFont(hComputerFont);
+    GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).SetFont(computerFont);
 
     GetEditControl(IDC_DISK_IMAGE_EXECUTABLE_FILE_DISK_IMAGE_FILE_PATH).SetText(atariDisk->GetDiskImageFilePath());
     GetEditControl(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILE_NAME).Clear();

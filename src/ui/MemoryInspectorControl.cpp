@@ -1,8 +1,14 @@
 
 
+#include "Byte.h"
+#include "Memory.h"
 #include "MemoryInspectorControl.h"
 #include "MemoryInspectorControlImpl.h"
 #include "MemoryInspectorControlTypes.h"
+#include "MemoryType.h"
+#include "Window.h"
+#include <stdexcept>
+#include <Windows.h>
 
 
 void MemoryInspectorControl::RegisterClassFor(HINSTANCE hInstance) {
@@ -31,7 +37,7 @@ void MemoryInspectorControl::BindControl() {
     GetWindowRect(hWnd, &Rect);
 
     MapWindowPoints(HWND_DESKTOP, hParentWnd, (LPPOINT)&Rect, 2);
-    SetPosition(HWND_TOP, Rect.left, Rect.top, Rect.right - Rect.left + 1, Rect.bottom - Rect.top + 1, SWP_NOZORDER);
+    SetPosition(WINDOW_TOP, Rect.left, Rect.top, Rect.right - Rect.left + 1, Rect.bottom - Rect.top + 1, SWP_NOZORDER);
 }
 
 void MemoryInspectorControl::SetNumberOfBytesPerLine(int nNumberOfBytesPerLine) {

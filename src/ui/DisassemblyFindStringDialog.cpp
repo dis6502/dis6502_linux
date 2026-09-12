@@ -1,6 +1,9 @@
 #include "Application.h"
 #include "Button.h"
+#include "Dialog.h"
 #include "EditControl.h"
+#include "Syntax.h"
+#include "Text.h"
 #include "DisassemblyFindStringDialog.h"
 
 

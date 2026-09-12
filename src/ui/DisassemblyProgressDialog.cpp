@@ -1,8 +1,13 @@
-#include "Application.h"
+#include "Dialog.h"
 #include "Disassembly.h"
 #include "DisassemblyProgressDialog.h"
-#include "StringUtility.h"
+#include "Resource.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
 #include "TextLabel.h"
+#include "UI.h"
+#include "Window.h"
+#include <string>
 
 
 DisassemblyProgressDialog::DisassemblyProgressDialog(Window& parentWindow) : Dialog(parentWindow, L"DISPROCESSBOX") {

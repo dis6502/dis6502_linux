@@ -1,5 +1,8 @@
 #pragma once
+#include "Byte.h"
+#include "SegmentTypes.h"
 #include "Syntax.h"
+#include <cstddef>
 #include <gsl/gsl>
 #include "Memory.h"
 #include "MemoryType.h"
