@@ -13,6 +13,7 @@
 #include <cstring>
 #include <cwchar>
 #include <cwctype>
+#include <iconv.h>
 #include <string>
 #include <strings.h>
 
@@ -26,27 +27,24 @@ inline int wcsncpy_s(wchar_t* dest, size_t destSize, const wchar_t* src, size_t 
 }
 
 // ---- UTF-8 <-> wstring conversion (moved up front: several shims below depend on it) ----
+// Uses iconv (POSIX) rather than mbsrtowcs, so decoding doesn't depend on
+// the process locale being set to a UTF-8 one. "WCHAR_T" is glibc's
+// pseudo-charset for the platform's native wchar_t encoding, so this
+// doesn't need to assume UTF-32 itself.
 inline std::wstring Utf8ToWStringCompat(std::string_view str) {
-    std::wstring result;
-    result.reserve(str.size());
-    size_t i = 0;
-    while (i < str.size()) {
-        unsigned char c0 = static_cast<unsigned char>(str[i]);
-        char32_t cp = 0;
-        size_t extra = 0;
-        if ((c0 & 0x80) == 0) { cp = c0; extra = 0; }
-        else if ((c0 & 0xE0) == 0xC0) { cp = c0 & 0x1F; extra = 1; }
-        else if ((c0 & 0xF0) == 0xE0) { cp = c0 & 0x0F; extra = 2; }
-        else if ((c0 & 0xF8) == 0xF0) { cp = c0 & 0x07; extra = 3; }
-        else { cp = 0xFFFD; extra = 0; } // invalid lead byte
-        i++;
-        for (size_t k = 0; k < extra && i < str.size(); k++, i++) {
-            unsigned char cx = static_cast<unsigned char>(str[i]);
-            if ((cx & 0xC0) != 0x80) { cp = 0xFFFD; break; }
-            cp = (cp << 6) | (cx & 0x3F);
-        }
-        result.push_back(static_cast<wchar_t>(cp));
-    }
+    iconv_t cd = iconv_open("WCHAR_T", "UTF-8");
+    if (cd == (iconv_t)-1) { return {}; }
+
+    std::wstring result(str.size(), L'\0'); // worst case: 1 wchar_t per input byte
+    char* inBuf = const_cast<char*>(str.data());
+    size_t inBytes = str.size();
+    char* outBuf = reinterpret_cast<char*>(result.data());
+    size_t outBytes = result.size() * sizeof(wchar_t);
+
+    iconv(cd, inBytes ? &inBuf : nullptr, &inBytes, &outBuf, &outBytes);
+    iconv_close(cd);
+
+    result.resize(result.size() - outBytes / sizeof(wchar_t));
     return result;
 }
 
