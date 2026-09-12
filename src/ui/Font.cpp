@@ -12,6 +12,10 @@ Font::Font(HFONT hFont) : hFont(hFont) {
 };
 
 Font::~Font() {
+    if (hFont != NULL_HFONT) {
+        DeleteObject(hFont);
+    }
+
     // Debug::Log(String::Format(L"Font {0} deleted.", std::to_wstring((unsigned long long)hFont)));
 
 };

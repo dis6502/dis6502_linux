@@ -1,9 +1,10 @@
 #include "MainWindowMenu.h"
 #include "Menu.h"
-#include "Text.h"
+#include "Resource.h"
 #include "UI.h"
 #include "UIApplication.h"
 #include <memory>
+#include <Windows.h>
 
 extern std::unique_ptr<UIApplication> g_UIApplication;
 

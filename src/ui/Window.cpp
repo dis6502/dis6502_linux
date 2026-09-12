@@ -1,12 +1,13 @@
 #include "Font.h"
+#include "Menu.h"
 #include "StringUtility.h"
+#include "Syntax.h"
 #include "UI.h"
 #include "UIApplication.h"
 #include "Window.h"
 #include <exception>
 #include <memory>
 #include <stdexcept>
-#include "Syntax.h"
 #include <Windows.h>
 
 extern std::unique_ptr<UIApplication> g_UIApplication;
@@ -37,8 +38,9 @@ HWND Window::GetHWnd() const {
     return hWnd;
 }
 
-void Window::CreateWindowControl(wstring_view className, wstring_view windowName, WindowStyle style, HMENU hMenu, int x, int y, int nWidth, int nHeight) {
+void Window::CreateWindowControl(wstring_view className, wstring_view windowName, WindowStyle style, Menu* menu, int x, int y, int nWidth, int nHeight) {
     HWND hParentWnd = (parentWindow == nullptr) ? NULL_HWND : parentWindow->GetHWnd();
+    auto hMenu = (menu == nullptr ? Menu::NULL_HMENU : menu->hMenu);
     HWND hWnd = CreateWindow(wstring(className).c_str(), wstring(windowName).c_str(), style, x, y, nWidth, nHeight, hParentWnd, hMenu, ::g_UIApplication->GetInstanceHandle(), nullptr);  // ##c_str() OK
 
     if (hWnd == NULL_HWND) {
@@ -62,7 +64,7 @@ void Window::CreateWindowControl(wstring_view className, wstring_view windowName
 }
 
 void Window::CreateChildControl(wstring_view className, WindowStyle style, ChildID childID, int x, int y, int nWidth, int nHeight) {
-    CreateWindowControl(className, L"", style, (HMENU)(LONG_PTR)childID, x, y, nWidth, nHeight);
+    CreateWindowControl(className, L"", style, Menu::GetInstance((HMENU)(LONG_PTR)childID), x, y, nWidth, nHeight);
 }
 
 void Window::InitControl(wstring_view className, WindowHandle hWnd) {
@@ -83,12 +85,8 @@ void Window::SetTitle(wstring_view title) {
 }
 
 void Window::SetFont(Font* font) {
-    if (font != nullptr) {
-        SendMessage(hWnd, WM_SETFONT, (WPARAM)font->hFont, (LPARAM)false);
-    }
-    else {
-        SendMessage(hWnd, WM_SETFONT, (WPARAM)Font::NULL_HFONT, (LPARAM)false);
-    }
+    auto hFont = (font == nullptr ? Font::NULL_HFONT : font->hFont);
+    SendMessage(hWnd, WM_SETFONT, (WPARAM)hFont, (LPARAM)false);
 }
 
 void Window::SetPosition(Window* windowInsertAfter, int X, int Y, int cx, int cy, PositionFlags flags) {

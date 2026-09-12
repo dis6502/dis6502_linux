@@ -1,7 +1,6 @@
 #include "DC.h"
 #include "Font.h"
 #include "Syntax.h"
-#include <cstddef>
 #include <stdexcept>
 #include <Windows.h>
 

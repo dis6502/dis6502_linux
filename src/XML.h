@@ -1,15 +1,13 @@
 #pragma once
 
+#include "Byte.h"
+#include "OutputStream.h"
 #include "Syntax.h"
 #include "PlatformCompat.h"	// _stricmp
 
 #include "tinyxml2.h"	// tinyxml2::...
-#include <cstddef>
-#include <gsl/gsl>
-
-#include "OutputStream.h"
-#include "Byte.h"
 #include "Word.h"
+#include <gsl/gsl>
 
 
 /*

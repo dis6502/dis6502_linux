@@ -34,13 +34,8 @@ void Control::SetEnabled(bool enabled) {
 }
 
 void Control::SetFont(Font* font) {
-    if (font != nullptr) {
-        SendMessage(hWnd, WM_SETFONT, (WPARAM)font->hFont, (LPARAM)FALSE);
-    }
-    else {
-        SendMessage(hWnd, WM_SETFONT, (WPARAM)Font::NULL_HFONT, (LPARAM)FALSE);
-
-    }
+    auto hFont = (font == nullptr ? Font::NULL_HFONT : font->hFont);
+    SendMessage(hWnd, WM_SETFONT, (WPARAM)hFont, (LPARAM)false);
 }
 
 bool Control::HasFocus() const {

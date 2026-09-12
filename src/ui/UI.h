@@ -6,7 +6,6 @@ constexpr HACCEL NULL_HACCEL = 0;
 constexpr HBITMAP NULL_HBITMAP = 0;
 constexpr HDC NULL_HDC = 0;
 constexpr HINSTANCE NULL_HINSTANCE = 0;
-constexpr HMENU NULL_HMENU = 0;
 constexpr HRGN NULL_HRGN = 0;
 constexpr HWND NULL_HWND = 0;
 

@@ -32,5 +32,4 @@ private:
 
     void Load(wstring_view fontName);
     bool CreateFonts(int fontHeight, wstring_view fontName);
-    void DeleteFonts();
 };

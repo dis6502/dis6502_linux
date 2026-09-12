@@ -2,6 +2,7 @@
 
 #include "Syntax.h"
 #include <Windows.h>
+class Menu;
 
 class AbstractWindow {
 public:
@@ -54,7 +55,7 @@ protected:
     Window(const Window& parentWindow);
     virtual ~Window();
 
-    void CreateWindowControl(wstring_view className, wstring_view windowName, WindowStyle style, HMENU hMenu, int x, int y, int nWidth, int nHeight);
+    void CreateWindowControl(wstring_view className, wstring_view windowName, WindowStyle style, Menu* menu, int x, int y, int nWidth, int nHeight);
     void CreateChildControl(wstring_view className, WindowStyle style, ChildID childID, int X, int Y, int nWidth, int nHeight);
     void InitControl(wstring_view className, WindowHandle hWnd);
 

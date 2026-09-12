@@ -35,7 +35,7 @@ void MRUMenu::FillMenu(Menu* menu, const MRUList& mruList) {
 
     // Fill sub menu.
     auto hSubMenu = GetSubMenu(menu->hMenu, menuPosition);
-    if (hSubMenu == NULL_HMENU) {
+    if (hSubMenu == Menu::NULL_HMENU) {
         throw std::exception("No submenu for MRU at specified position");
     }
 

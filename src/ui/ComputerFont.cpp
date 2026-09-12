@@ -1,17 +1,13 @@
 #include "ComputerFont.h"
 #include "Font.h"
-#include "StringUtility.h"
 #include "Syntax.h"
 #include "systems/ComputerSystem.h"
 #include <ComputerSystemType.h>
-#include <exception>
 #include <map>
 #include <memory>
 #include <stdexcept>
 #include <utility>
 #include <Windows.h>
-
-// TODO: FontFactory (/ RemoveFontResource(fontFilePath.c_str());
 
 std::map <ComputerSystemType, const std::unique_ptr<ComputerFont>> ComputerFont::instances;
 
@@ -22,15 +18,7 @@ ComputerFont::ComputerFont(int fontHeight) {
     doubleHeightFont = nullptr;
 }
 
-ComputerFont::~ComputerFont() {
-    try {
-        DeleteFonts();
-    }
-    catch (const std::exception& ex) {
-        auto message = String::wstring_to_utf8(String::Format(L"Error Deleting Fonts. %s", String::utf8_to_wstring(ex.what())));
-        safeExit(message.c_str());
-    }
-}
+ComputerFont::~ComputerFont() {}
 
 
 void ComputerFont::Load(wstring_view fontName) {
@@ -102,29 +90,6 @@ bool ComputerFont::CreateFonts(int fontHeight, wstring_view fontName) {
     doubleHeightFont = Font::GetInstance(CreateFont(fontHeight * doubleHeightFontFactor, 0, 0, 0, 0, 0, 0, 0, OEM_CHARSET, 0, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, fontNameString.c_str()));
 
     const bool result = (font != nullptr && doubleHeightFont != nullptr);
-    if (!result) {
-        DeleteFonts();
-    }
-
     return result;
 }
 
-void ComputerFont::DeleteFonts() {
-    if (font != nullptr) {
-        const BOOL bResult = DeleteObject(font->hFont);
-        font = nullptr;
-
-        if (!bResult) {
-            throw std::runtime_error("Cannot delete font");
-        }
-    }
-
-    if (doubleHeightFont != nullptr) {
-        const BOOL result = DeleteObject(doubleHeightFont->hFont);
-        doubleHeightFont = nullptr;
-
-        if (!result) {
-            throw std::runtime_error("Cannot delete double height font");
-        }
-    }
-}

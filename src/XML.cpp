@@ -8,7 +8,6 @@
 #include "tinyxml2.h"
 #include "Word.h"
 #include "XML.h"
-#include <cstddef>
 
 gsl::not_null<XML::Element*> XML::AddChildElement(Element& element, wstring_view elementName) {
     auto childElement = element.GetDocument()->NewElement(StringToUTF8String(elementName).c_str());
