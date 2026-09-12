@@ -2,18 +2,26 @@
 #include "Debug.h"
 #include "StringUtility.h"
 #include "Syntax.h"
-#include <Windows.h>
 #include <cstddef>
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <cstdio>
+#include <iostream>
+#endif
 
 Console::Console() : allocated(false) {
 
 }
 
 void Console::Allocate() {
+#ifdef _WIN32
     if (!allocated) {
         AllocConsole();
         allocated = true;
     }
+#endif
 }
 
 void Console::WriteLine(wstring_view message) {
@@ -25,10 +33,14 @@ void Console::WriteLine(wstring_view message) {
     // Output within the Visual Studio output window.
     Debug::Log(messageString);
 
+#ifdef _WIN32
     // Output within the command line window.
     DWORD dwBuff = 0;
     auto hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     WriteConsole(hStdOut, messageString.c_str(), messageString.length(), &dwBuff, NULL);  // #.c_str() OK
+#else
+    std::fwprintf(stdout, L"%ls", messageString.c_str());
+#endif
 
 }
 
@@ -43,6 +55,7 @@ void  Console::Write(wstring_view pattern, wstring_view v0, wstring_view v1, wst
 
 string Console::ReadLine() {
 
+#ifdef _WIN32
     constexpr int BUFFER_LENGTH = 1024;
     constexpr auto STD_HANDLE = STD_INPUT_HANDLE;
     CHAR szBuffer[BUFFER_LENGTH] = {};
@@ -58,4 +71,9 @@ string Console::ReadLine() {
         // Loop until RETURN pressed
     }
     return string(szBuffer);
+#else
+    string line;
+    std::getline(std::cin, line);
+    return line;
+#endif
 }
