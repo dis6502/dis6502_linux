@@ -16,8 +16,6 @@
 #include <string>
 #include <strings.h>
 
-std::wstring RewriteBareWideStringSpecifiers(const wchar_t* format);
-
 #define _TRUNCATE ((size_t)-1)
 
 inline int wcsncpy_s(wchar_t* dest, size_t destSize, const wchar_t* src, size_t count) {
@@ -79,15 +77,6 @@ inline std::string WStringToUtf8Compat(std::wstring_view str) {
     return result;
 }
 
-
-inline int wsprintf(wchar_t* buffer, const wchar_t* format, ...) {
-    std::wstring fixedFormat = RewriteBareWideStringSpecifiers(format);
-    va_list args;
-    va_start(args, format);
-    int result = std::vswprintf(buffer, 1024, fixedFormat.c_str(), args);
-    va_end(args);
-    return result;
-}
 
 // ---- _MAX_PATH: Windows CRT max-path-length constant ----
 #include <climits>
