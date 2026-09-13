@@ -4,7 +4,9 @@
 #include "Application.h"
 #include "ApplicationSettingsSection.h"
 #include "Syntax.h"
+#ifdef _WIN32
 #include <Windows.h> // For GetPrivateProfileString/WritePrivateProfileString
+#endif
 
 ApplicationSettingsSection::ApplicationSettingsSection(Application& application, wstring_view settingsFilePath, wstring_view name) :
     application(&application), settingsFilePath(settingsFilePath), name(name) {}

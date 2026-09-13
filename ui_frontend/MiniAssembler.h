@@ -12,6 +12,7 @@
 #include "Workspace.h"
 #include "Character.h"
 #include "Memory.h"
+#include "StringUtility.h"
 
 // Ported from AssembleDialog.cpp (ui_todo/) - a small interactive
 // assembler: given one line of 6502 assembly text and a position in a
@@ -172,10 +173,10 @@ inline Result Assemble(wstring_view instructionText, Segment& segment, Memory::o
         ptr = detail::ParseExpressionValue(ptr, workspace, value, error);
 
         if (*ptr == L'\0') {
-            if (!_wcsicmp(instName, L"BEQ") || !_wcsicmp(instName, L"BNE") ||
-                !_wcsicmp(instName, L"BCS") || !_wcsicmp(instName, L"BCC") ||
-                !_wcsicmp(instName, L"BPL") || !_wcsicmp(instName, L"BMI") ||
-                !_wcsicmp(instName, L"BVC") || !_wcsicmp(instName, L"BVS")) {
+            if (String::EqualsIgnoreCase(instName, L"BEQ") || String::EqualsIgnoreCase(instName, L"BNE") ||
+                String::EqualsIgnoreCase(instName, L"BCS") || String::EqualsIgnoreCase(instName, L"BCC") ||
+                String::EqualsIgnoreCase(instName, L"BPL") || String::EqualsIgnoreCase(instName, L"BMI") ||
+                String::EqualsIgnoreCase(instName, L"BVC") || String::EqualsIgnoreCase(instName, L"BVS")) {
                 mode = OperandMode::Relative;
                 int offset = static_cast<int>(value) - static_cast<int>(currentAddress) - 2;
                 if (offset < -127 || offset > 127) {
@@ -196,7 +197,7 @@ inline Result Assemble(wstring_view instructionText, Segment& segment, Memory::o
             } else if (*ptr == L'Y' || *ptr == L'y') {
                 ptr++;
                 while (*ptr == L' ') ptr++;
-                mode = (value < 256 && _wcsicmp(instName, L"LDA")) ? OperandMode::ZeroPageY : OperandMode::AbsoluteY;
+                mode = (value < 256 && !String::EqualsIgnoreCase (instName, L"LDA")) ? OperandMode::ZeroPageY : OperandMode::AbsoluteY;
                 if (*ptr != L'\0') error = L"ERROR: garbage at end of line";
             } else {
                 error = L"ERROR: X or Y expected";
@@ -224,7 +225,7 @@ inline Result Assemble(wstring_view instructionText, Segment& segment, Memory::o
     const auto& instructionSet = workspace.GetInstructionSet(segment.processorType);
     for (const auto& instruction : instructionSet->GetInstructions()) {
         wstring instructionName(instruction.GetName());
-        if (!_wcsicmp(instructionName.c_str(), instName) &&
+        if (String::EqualsIgnoreCase(instructionName.c_str(), instName) &&
             instruction.GetOperandMode() == mode &&
             !instruction.IsUnsupportedInstruction()) {
 
