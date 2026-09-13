@@ -14,6 +14,9 @@
 #include "gsl/util"
 #include "Workspace1X.h"
 #include <string.h>
+#ifndef _WIN32
+#include "PlatformCompat.h"
+#endif
 
 static constexpr size_t MAX_SEGMENTS10 = 256;
 static constexpr size_t MAX_SEGMENTS14 = 256;
