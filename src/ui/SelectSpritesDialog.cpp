@@ -115,97 +115,105 @@ void SelectSpritesDialog::Free() {
     comboBox.reset();
 }
 
+bool SelectSpritesDialog::InitDialog() {
+    Init();
+    return true;
+}
+
+bool SelectSpritesDialog::OnOK() {
+    const auto wIndex = spriteControl->GetIndex();
+    auto wEnd = spriteControl->GetSelection();
+
+    if ((wEnd != SPRITE_NO_SELECTION) && (wEnd >= wIndex)) {
+        wBegin = wIndex;
+    }
+    else {
+        wBegin = wEnd = dis_k::DUMP_NO_SELECTION;
+    }
+
+    wSpriteMode = spriteControl->GetMode();
+    wSpriteNbBytes = spriteControl->GetNumberOfBytesPerLine();
+
+    return EndDialogBox(TRUE);
+}
+
 bool SelectSpritesDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
     switch (message) {
-    case WM_INITDIALOG:
-        Init();
-        return true;
-
     case WM_DESTROY:
         Free();
         return true;
 
     case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-        case IDOK:
-        {
-            const auto wIndex = spriteControl->GetIndex();
-            auto wEnd = spriteControl->GetSelection();
+        return ProcessCommand((COMMAND)LOWORD(wParam), wParam, lParam);
 
-            if ((wEnd != SPRITE_NO_SELECTION) && (wEnd >= wIndex)) {
-                wBegin = wIndex;
-            }
-            else {
-                wBegin = wEnd = dis_k::DUMP_NO_SELECTION;
-            }
-
-            wSpriteMode = spriteControl->GetMode();
-            wSpriteNbBytes = spriteControl->GetNumberOfBytesPerLine();
-
-            return EndDialogBox(TRUE);
-        }
-
-        case IDCANCEL: {
-            return EndDialogBox(FALSE);
-        }
-
-        case IDC_GRAPHICCOMBO: {
-            switch (HIWORD(wParam)) {
-            case CBN_SELCHANGE: {
-                const auto index = GetComboBox(IDC_GRAPHICCOMBO).GetSelectedIndex(); 
-                if (index != LB_ERR) {
-                    SelectMode((WORD)(index + 8));
-                    spriteControl->Refresh();
-                }
-
-                return true;
-            }
-
-            default:
-                return false;
-            }
-            break;
-        }
-
-        case IDC_GRAPHIC: {
-            switch (HIWORD(wParam)) {
-            case SPRITE_INDEX_CHANGED:
-            case SPRITE_SELECTION_CHANGED: {
-                const auto wIndex = spriteControl->GetIndex();
-                const auto wEnd = spriteControl->GetSelection();
-                ITEM_LINE szLine;
-                // TODO Have dedicated memory formatter, see memory:to_hex_string
-                if ((wEnd != SPRITE_NO_SELECTION) && (wEnd >= wIndex)) {
-                    String::Printf(szLine, L"$%04hX - $%04hX", memoryInspectorSelection->segment->wBegin + wIndex, memoryInspectorSelection->segment->wBegin + wEnd);
-                }
-                else {
-                    String::Printf(szLine, L"$%04hX", memoryInspectorSelection->segment->wBegin + wIndex);
-                }
-
-                GetEditControl(IDC_ADDRESSSTART).SetText(szLine);
-                return true;
-            }
-
-            case SPRITE_NBBYTES_CHANGED: {
-                GetTextLabel(IDC_SPRITEWIDTH).SetNumber(spriteControl->GetNumberOfBytesPerLine());
-                return true;
-            }
-
-            default:
-                return false;
-            }
-            break;
-        default:
-            return false;
-        }
-        }
-        break;
     default:
         return false;
 
     }
 
+}
+
+bool SelectSpritesDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
+    case IDOK:
+        return OnOK();
+
+    case IDCANCEL:
+        return OnCancel();
+
+    case IDC_GRAPHICCOMBO: {
+        switch (HIWORD(wParam)) {
+        case CBN_SELCHANGE: {
+            const auto index = GetComboBox(IDC_GRAPHICCOMBO).GetSelectedIndex();
+            if (index != LB_ERR) {
+                SelectMode((WORD)(index + 8));
+                spriteControl->Refresh();
+            }
+
+            return true;
+        }
+
+        default:
+            return false;
+        }
+        break;
+    }
+
+    case IDC_GRAPHIC: {
+        switch (HIWORD(wParam)) {
+        case SPRITE_INDEX_CHANGED:
+        case SPRITE_SELECTION_CHANGED: {
+            const auto wIndex = spriteControl->GetIndex();
+            const auto wEnd = spriteControl->GetSelection();
+            ITEM_LINE szLine;
+            // TODO Have dedicated memory formatter, see memory:to_hex_string
+            if ((wEnd != SPRITE_NO_SELECTION) && (wEnd >= wIndex)) {
+                String::Printf(szLine, L"$%04hX - $%04hX", memoryInspectorSelection->segment->wBegin + wIndex, memoryInspectorSelection->segment->wBegin + wEnd);
+            }
+            else {
+                String::Printf(szLine, L"$%04hX", memoryInspectorSelection->segment->wBegin + wIndex);
+            }
+
+            GetEditControl(IDC_ADDRESSSTART).SetText(szLine);
+            return true;
+        }
+
+        case SPRITE_NBBYTES_CHANGED: {
+            GetTextLabel(IDC_SPRITEWIDTH).SetNumber(spriteControl->GetNumberOfBytesPerLine());
+            return true;
+        }
+
+        default:
+            return false;
+        }
+        break;
+    default:
+        return false;
+    }
+    }
+
+    return false;
 }
 
 void SelectSpritesDialog::SelectMode(WORD wMode) {

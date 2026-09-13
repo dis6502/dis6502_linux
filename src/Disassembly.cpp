@@ -617,8 +617,7 @@ void Disassembly::AddOrgOrBlock(SEGMENT_INDEX segmentIndex, Memory::address wPC)
         wstring label;
         if (equate == nullptr) {
             const auto& labelSegment = segmentList->FindBySDXBlockNumber(segment->bSDXBlockNumber);
-            String::Printf(String::szBuffer, Segment::szDefaultLabelFormat, segmentList->GetSegmentIndex(labelSegment), segment->wBegin);
-            label = String::Format();
+            label = String::Printf(Segment::szDefaultLabelFormat, segmentList->GetSegmentIndex(labelSegment), segment->wBegin);
         }
         else {
             label = equate->GetLabel();
@@ -1742,8 +1741,7 @@ void Disassembly::Pass5() {
                 AddOrgOrBlock(segmentIndex, 0);
                 AddLineWriter();
                 AddEmptyCommentLine();
-                String::Printf(String::szBuffer, L"S%03hXEND", segmentIndex);
-                auto endLabel = String::Format();
+                auto endLabel = String::Printf(L"S%03hXEND", segmentIndex);
                 lineWriter.Clear().String(endLabel);
                 if (profile->showColonAfterLabel) {
                     lineWriter.Char(':');
@@ -1901,8 +1899,7 @@ void Disassembly::GenerateCodeEquates() {
     AddressLabelList::AddressLabelVector addressLabelsVector;
     segment->GetAddressLabels()->Enumerate(addressLabelsVector);
     for (const auto& addressLabel : addressLabelsVector) {
-        String::Printf(String::szBuffer, L"L%04hX", addressLabel->GetAddress());
-        AddLabel(String::Format(), addressLabel->GetAddress(), DisassemblySectionType::CODE_EQUATES, String::Empty());
+        AddLabel(String::Printf(L"L%04hX", addressLabel->GetAddress()), addressLabel->GetAddress(), DisassemblySectionType::CODE_EQUATES, String::Empty());
     }
 }
 

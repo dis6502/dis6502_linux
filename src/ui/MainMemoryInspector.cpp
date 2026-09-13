@@ -1,6 +1,4 @@
-#include "Application.h"
 #include "AssembleDialog.h"
-#include "Byte.h"
 #include "FileDialogs.h"
 #include "FileHeader.h"
 #include "FileIO.h"
@@ -8,6 +6,7 @@
 #include "Main.h"
 #include "MainController.h"
 #include "MainDisassembly.h"
+#include "MainMemoryInspector.h"
 #include "MainWindow.h"
 #include "Memory.h"
 #include "MemoryInspector.h"
@@ -17,12 +16,8 @@
 #include "MemoryInspectorWindow.h"
 #include "MemoryType.h"
 #include "Resource.h"
-#include "UI.h"
 #include <cstdio>
 #include <memory>
-
-
-#include "MainMemoryInspector.h"
 
 extern std::unique_ptr<Main> g_Main;
 extern std::unique_ptr<FileDialogs> g_FileDialogs;
@@ -32,7 +27,7 @@ MainMemoryInspector::MainMemoryInspector(Main& main) : MainController(main) {
 
 }
 
-long MainMemoryInspector::Proc(HWND hWnd, WPARAM wParam) {
+long MainMemoryInspector::Proc(HWND hWnd, Window::WPARAM wParam) {
     switch (HIWORD(wParam)) {
         // User has changed the selection.
     case static_cast<unsigned short>(MemoryInspectorNotification::SELECTION_CHANGED): {

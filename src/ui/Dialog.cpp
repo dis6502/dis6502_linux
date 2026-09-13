@@ -50,6 +50,38 @@ Dialog::DialogFuncResult Dialog::ShowDialogBox() {
     return result;
 }
 
+bool Dialog::InitDialog() {
+    return true;
+}
+
+bool Dialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+    switch (message) {
+    case WM_COMMAND:
+        return ProcessCommand((COMMAND)LOWORD(wParam), wParam, lParam);
+
+    default:
+        return false;
+    }
+}
+
+bool Dialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    return false;
+}
+
+bool Dialog::OnOK() {
+    return EndDialogBox(true);
+}
+
+bool Dialog::OnCancel() {
+    return EndDialogBox(false);
+}
+
+void Dialog::SendErrorMessage(wstring_view title, wstring_view message) {
+    messageDialogVisible = true;
+    MessageBoxDialog::ShowAlert(this, title, message);
+    messageDialogVisible = false;
+}
+
 void Dialog::CreateControls() {}
 
 void Dialog::DeleteControls() {
@@ -94,21 +126,22 @@ Dialog::DialogFuncResult CALLBACK Dialog::DialogFunc(HWND hDlg, MESSAGE message,
         }
 
         dialog->hDlg = hDlg;
-        break; // This means the WM_INITDIALOG message will also be passed to the dialog instance
+        return dialog->InitDialog();
 
     default:
         if (!instances.contains(hDlg)) {
             return NULL_INT_PTR; // Do not call DefWindowProc(hDlg, message, wParam, lParam);
         }
         dialog = instances.at(hDlg);
-        break;
+    }
+
+    // If there is another message dialog popup, process its messages separately.
+    if (dialog->messageDialogVisible) {
+        return DefWindowProc(hDlg, message, wParam, lParam);
     }
 
     try {
-        INT_PTR  nResult = 0;
-        if (message == WM_INITDIALOG) {
-            nResult = TRUE; // Default for automatic keyboard focus
-        }
+        DialogFuncResult  nResult = 0;
         if (dialog->ProcessDialogMessage(message, wParam, lParam, nResult)) {
             Debug::Log(String::Format(L"hDlg={0} message={1} wParam={2} lParam={3}",
                 std::to_hex_string((uintmax_t)hDlg), std::to_hex_string((uintmax_t)message), std::to_hex_string((uintmax_t)wParam), std::to_hex_string((uintmax_t)lParam)));

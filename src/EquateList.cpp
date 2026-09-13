@@ -159,9 +159,9 @@ void EquateList::SetRange(wstring_view label, Memory::address labelAddress, Memo
 void EquateList::AddRange(wstring_view label, Memory::address labelAddress, Memory::address startAddress, Memory::address endAddress) {
 
     for (auto address = startAddress; address <= endAddress; address++) {
-        swprintf(String::szBuffer, String::BUFFER_SIZE, L"%s%s$%04hX", wstring(label).c_str(), (address > labelAddress ? "+" : "-"), abs(address - labelAddress));
+        auto rangeLabel = String::Printf(L"%s%s$%04hX", wstring(label).c_str(), (address > labelAddress ? L"+" : L"-"), abs(address - labelAddress));
         auto equate = AddEquate();
-        equate->Init(EquateType::LABEL, String::Format(), LabelAccess::READ_WRITE, address, L"");
+        equate->Init(EquateType::LABEL, rangeLabel, LabelAccess::READ_WRITE, address, L"");
     }
 }
 

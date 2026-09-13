@@ -30,6 +30,10 @@ private:
     Font* doubleHeightFont;
 
 
-    void Load(wstring_view fontName);
+    void Load(wstring_view fontFilePath);
     bool CreateFonts(int fontHeight, wstring_view fontName);
+
+    // Registers fontFilePath as a private font resource and returns the face name
+    // it was registered under, or an empty string if the file could not be loaded.
+    static wstring RegisterFontResource(wstring_view fontFilePath);
 };

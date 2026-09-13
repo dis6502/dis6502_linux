@@ -57,28 +57,36 @@ bool DisassemblyProgressDialog::IsCancelled() {
 */
 bool DisassemblyProgressDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
 
-    static constexpr int WM_USER_COMMAND = WM_USER + 4321;
-
     switch (message) {
-    case WM_INITDIALOG:
-        RedrawScreen(hDlg);
-        PostMessage(hDlg, WM_USER_COMMAND, 0, 0L);
-        return true;
-
     case WM_USER_COMMAND:
         disassembly->DisassembleInternal();
         return EndDialogBox(true);
 
     case WM_COMMAND:
-        if (LOWORD(wParam) == IDCANCEL) {
-            cancelled = true;
-            return true;
-        }
+        return ProcessCommand((COMMAND)LOWORD(wParam), wParam, lParam);
     default:
         break;
     }
 
     return false;
+}
+
+bool DisassemblyProgressDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    if (command == IDCANCEL) {
+        return OnCancel();
+    }
+    return false;
+}
+
+bool DisassemblyProgressDialog::InitDialog() {
+    RedrawScreen(hDlg);
+    PostMessage(hDlg, WM_USER_COMMAND, 0, 0L);
+    return true;
+}
+
+bool DisassemblyProgressDialog::OnCancel() {
+    cancelled = true;
+    return true;
 }
 
 void DisassemblyProgressDialog::RedrawScreen(HWND hDlg) {

@@ -3,7 +3,6 @@
 #include "MainController.h"
 #include "SegmentListPopupMenu.h"
 #include "SegmentTypes.h"
-#include "UI.h"
 #include "Window.h"
 #include <memory>
 #include <Windows.h>
@@ -18,11 +17,11 @@ public:
 
     void UpdateList();
 
-    long Proc(HWND hWnd, WPARAM wParam);
+    long Proc(Window::WindowHandle hWnd, Window::WPARAM wParam);
     void PerformCommands(COMMAND command, bool editMode);
 
-    static LRESULT CALLBACK DropFilesProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
-    static LRESULT CALLBACK RButtonDownProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam);
+    static Window::LRESULT CALLBACK DropFilesProc(Window::WindowHandle hWnd, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam);
+    static Window::LRESULT CALLBACK RButtonDownProc(Window::WindowHandle hWnd, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam);
 
 private:
     SegmentList* segmentList;

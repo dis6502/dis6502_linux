@@ -1,8 +1,20 @@
-#include "PlatformCompat.h"
+// wcscasecmp() lives in <wchar.h> and is gated behind POSIX.1-2008
+// visibility, which -std=c++20 (strict mode) doesn't turn on by default.
+// This must be defined before the first system header is pulled in
+// (including transitively via <string>), or the header guard in
+// wchar.h locks in the lower visibility for the rest of the translation
+// unit.
+#ifndef _WIN32
+#ifndef _XOPEN_SOURCE
+#define _XOPEN_SOURCE 700
+#endif
+#endif
+
 #include "StringUtility.h"
 #include "Syntax.h"
 #include <algorithm>
 #include <cctype>
+#include <cstdarg>
 #include <cstdint>
 #include <format>
 #include <ios>
@@ -14,9 +26,68 @@
 #include <wchar.h>
 #ifdef _WIN32
 #include <Windows.h>
+#else
+#include <iconv.h>
 #endif
 
 #include "Assertions.h"
+
+wchar_t* String::szBuffer = new wchar_t[BUFFER_SIZE];
+
+#ifndef _WIN32
+// ---- UTF-8 <-> wstring conversion ----
+// Uses iconv (POSIX) rather than mbsrtowcs, so decoding doesn't depend on
+// the process locale being set to a UTF-8 one. "WCHAR_T" is glibc's
+// pseudo-charset for the platform's native wchar_t encoding, so this
+// doesn't need to assume UTF-32 itself.
+static std::wstring Utf8ToWStringCompat(std::string_view str) {
+    iconv_t cd = iconv_open("WCHAR_T", "UTF-8");
+    if (cd == (iconv_t)-1) { return {}; }
+
+    std::wstring result(str.size(), L'\0'); // worst case: 1 wchar_t per input byte
+    char* inBuf = const_cast<char*>(str.data());
+    size_t inBytes = str.size();
+    char* outBuf = reinterpret_cast<char*>(result.data());
+    size_t outBytes = result.size() * sizeof(wchar_t);
+
+    iconv(cd, inBytes ? &inBuf : nullptr, &inBytes, &outBuf, &outBytes);
+    iconv_close(cd);
+
+    result.resize(result.size() - outBytes / sizeof(wchar_t));
+    return result;
+}
+
+static std::string WStringToUtf8Compat(std::wstring_view str) {
+    std::string result;
+    result.reserve(str.size());
+    for (wchar_t wc : str) {
+        char32_t cp = static_cast<char32_t>(wc);
+        if (cp <= 0x7F) {
+            result.push_back(static_cast<char>(cp));
+        }
+        else if (cp <= 0x7FF) {
+            result.push_back(static_cast<char>(0xC0 | (cp >> 6)));
+            result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+        else if (cp <= 0xFFFF) {
+            result.push_back(static_cast<char>(0xE0 | (cp >> 12)));
+            result.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+        else {
+            result.push_back(static_cast<char>(0xF0 | (cp >> 18)));
+            result.push_back(static_cast<char>(0x80 | ((cp >> 12) & 0x3F)));
+            result.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+    }
+    return result;
+}
+
+static int _wcsicmp(const wchar_t* a, const wchar_t* b) {
+    return wcscasecmp(a, b);
+}
+#endif
 
 
 void strclr(char* szString) {
@@ -113,13 +184,6 @@ bool String::EndsWith(wstring_view s, wstring_view suffix) {
     return false;
 }
 
-wchar_t* String::szBuffer = new wchar_t[BUFFER_SIZE];
-
-wstring String::Format() {
-    return wstring(szBuffer);
-}
-
-
 wstring String::Trim(wstring_view s) {
     static const wchar_t* whitespaces = L" \n\r\t\f\v";
     const auto start = s.find_first_not_of(whitespaces);
@@ -197,4 +261,15 @@ string String::wstring_to_utf8(wstring_view str) {
 #else
     return WStringToUtf8Compat(str);
 #endif
+}
+
+void String::FormatV(wchar_t* buffer, wchar_t const* format, ...) {
+    // wsprintfW itself has no caller-supplied size and an undocumented ~1024-wchar_t internal
+    // cap; this mirrors that instead of pretending to be safe with an unknown buffer size.
+    constexpr size_t MAX_LEGACY_FORMAT_LENGTH = 1024;
+
+    va_list args;
+    va_start(args, format);
+    vswprintf(buffer, MAX_LEGACY_FORMAT_LENGTH, format, args);
+    va_end(args);
 }

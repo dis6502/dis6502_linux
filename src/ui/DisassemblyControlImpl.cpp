@@ -14,15 +14,15 @@
 #include "DisassemblySectionType.h"
 #include "Font.h"
 #include "Memory.h"
+#include "SegmentTypes.h"
 #include "StringUtility.h"
 #include "Syntax.h"
 #include "Window.h"
+#include "XRef.h"
 #include <algorithm>
-#include "SegmentTypes.h"
 #include <stdexcept>
 #include <wchar.h>
 #include <Windows.h>
-#include "XRef.h"
 
 /*
 ** maximum history size.
@@ -709,10 +709,6 @@ void DisassemblyControlImpl::PrintOneLineInColor(DC dc, WORD wFontHeight, bool s
     HBRUSH hBrush;
     RECT rc;
 
-    // Use shared buffer
-    auto szBuf = String::szBuffer;
-    szBuf[0] = 0;
-
     // fill background in yellow if line is selected
     if (selected) {
         GetClientRect(hWnd, &rc);
@@ -732,6 +728,9 @@ void DisassemblyControlImpl::PrintOneLineInColor(DC dc, WORD wFontHeight, bool s
         dc.SetBkMode(OPAQUE);
     }
 
+    // Use shared buffer
+    auto szBuf = String::szBuffer;
+    szBuf[0] = 0;
     if (lineNumbersActive) {
         c = szText[wSrcIndex++];
         while ((c >= '0') && (c <= '9')) {

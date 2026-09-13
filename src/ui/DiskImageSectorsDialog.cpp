@@ -3,6 +3,8 @@
 #include "DiskImage.h"
 #include "DiskImageSectorsDialog.h"
 #include "EditControl.h"
+#include "Font.h"
+#include "gsl/pointers"
 #include "ListBox.h"
 #include "Memory.h"
 #include "MemoryInspectorControl.h"
@@ -12,8 +14,6 @@
 #include "TextLabel.h"
 #include "Window.h"
 #include "Word.h"
-#include "gsl/pointers"
-#include "Font.h"
 #include <cwchar>
 #include <list>
 #include <memory>
@@ -28,7 +28,7 @@ DiskImageSectorsDialog::DiskImageSectorsDialog(const Window& parentWindow, Font*
     nCurrentSectorSize = -1;
 }
 
-Window::INT_PTR DiskImageSectorsDialog::Show(wstring_view diskImageFilePath) {
+Dialog::DialogFuncResult DiskImageSectorsDialog::Show(wstring_view diskImageFilePath) {
     this->diskImageFilePath = diskImageFilePath;
 
     DiskImage::GetInfo(diskImageFilePath, diskImageInfo);
@@ -44,108 +44,9 @@ Window::INT_PTR DiskImageSectorsDialog::Show(wstring_view diskImageFilePath) {
 }
 
 bool DiskImageSectorsDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
-    word wAddr;
-    ITEM_LINE szItemLine;
-    int nItemCount;
-    bool bSelected;
-
     switch (message) {
-    case WM_INITDIALOG:
-        CreateControls();
-        ReadAndDisplaySector(1);
-        return true;
-
     case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-        case IDOK: {
-            const auto& sectorsListBox = GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST);
-            nItemCount = sectorsListBox.GetCount();
-
-            for (int iItem = 0; iItem < nItemCount; iItem++) {
-                auto item = std::make_unique<Item>();
-
-                auto itemText = sectorsListBox.GetStringAtIndex(iItem);
-                swscanf(itemText.c_str(), ITEM_LINE_FORMAT, &item->wSector, &item->wAddr, &item->wBegin, &item->wSize);
-
-                items.push_back(std::move(item));
-            }
-
-            return EndDialogBox(TRUE);
-        }
-
-        case IDCANCEL:
-            return EndDialogBox(FALSE);
-
-        case IDC_DISK_IMAGE_SECTORS_ADDRESS:
-            if (HIWORD(wParam) == EN_CHANGE) {
-                auto hexAddr = GetEditControl(IDC_DISK_IMAGE_SECTORS_ADDRESS).GetText(); // TODO Have IsAddressValid
-                const bool bValid = (swscanf(hexAddr.c_str(), L"%hX", &wAddr) == 1);
-                GetButton(IDC_DISK_IMAGE_SECTORS_ADD_SECTOR).SetEnabled(bValid);
-            }
-
-            return true;
-
-        case IDC_DISK_IMAGE_SECTORS_ADD_SECTOR: {
-            auto hexAddr = GetEditControl(IDC_DISK_IMAGE_SECTORS_ADDRESS).GetText();
-
-            const bool valid = (swscanf(hexAddr.c_str(), L"%hX", &wAddr) == 1);
-            if (valid) {
-                Memory::offset wBegin = 0, wEnd = 0;
-                memoryInspectorControl->GetSelection(wBegin, wEnd, true);
-
-                const Memory::size wSize = wEnd - wBegin + 1;
-                String::Printf(szItemLine, ITEM_LINE_FORMAT, wCurrentSectorNumber, wAddr, wBegin, wSize);
-
-                GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST).AddString(szItemLine);
-
-                GetButton(IDOK).SetEnabled(true);
-
-                wAddr += wSize;
-
-                GetEditControl(IDC_DISK_IMAGE_SECTORS_ADDRESS).SetAddress(wAddr);
-
-                if (wCurrentSectorNumber != diskImageInfo.wSectors) {
-                    ReadAndDisplaySector(wCurrentSectorNumber + 1);
-                }
-            }
-
-            return true;
-        }
-
-        case IDC_DISK_IMAGE_SECTORS_REMOVE_SECTOR: {
-            auto& sectorsListBox = GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST);
-            nItemCount = sectorsListBox.GetCount();
-            for (int iItem = nItemCount - 1; iItem >= 0; iItem--) {
-                if (sectorsListBox.IsSelectedIndex(iItem)) {
-                    sectorsListBox.DeleteStringAtIndex(iItem);
-                }
-            }
-
-            GetButton(IDC_DISK_IMAGE_SECTORS_REMOVE_SECTOR).SetEnabled(false);
-            GetButton(IDOK).SetEnabled(sectorsListBox.GetCount() > 0);
-
-            return true;
-        }
-
-        case IDC_DISK_IMAGE_SECTORS_SECTORS_LIST: {
-            if (HIWORD(wParam) == LBN_SELCHANGE) {
-                const auto& sectorsListBox = GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST);
-                nItemCount = sectorsListBox.GetCount();
-                bSelected = false;
-
-                for (int iItem = 0; !bSelected && iItem < nItemCount; iItem++)
-                    if (sectorsListBox.IsSelectedIndex(iItem)) {
-                        bSelected = true;
-                        break;
-                    }
-
-                GetButton(IDC_DISK_IMAGE_SECTORS_REMOVE_SECTOR).SetEnabled(bSelected);
-            }
-
-            return true;
-        }
-        }
-        break;
+        return ProcessCommand((COMMAND)LOWORD(wParam), wParam, lParam);
 
     case WM_HSCROLL:
         Scroll(wParam);
@@ -153,6 +54,114 @@ bool DiskImageSectorsDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam
     }
 
     return false;
+}
+
+bool DiskImageSectorsDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    word wAddr;
+    ITEM_LINE szItemLine;
+    int nItemCount;
+    bool bSelected;
+
+    switch (command) {
+    case IDOK:
+        return OnOK();
+
+    case IDCANCEL:
+        return OnCancel();
+
+    case IDC_DISK_IMAGE_SECTORS_ADDRESS:
+        if (HIWORD(wParam) == EN_CHANGE) {
+            auto hexAddr = GetEditControl(IDC_DISK_IMAGE_SECTORS_ADDRESS).GetText(); // TODO Have IsAddressValid
+            const bool bValid = (swscanf(hexAddr.c_str(), L"%hX", &wAddr) == 1);
+            GetButton(IDC_DISK_IMAGE_SECTORS_ADD_SECTOR).SetEnabled(bValid);
+        }
+
+        return true;
+
+    case IDC_DISK_IMAGE_SECTORS_ADD_SECTOR: {
+        auto hexAddr = GetEditControl(IDC_DISK_IMAGE_SECTORS_ADDRESS).GetText();
+
+        const bool valid = (swscanf(hexAddr.c_str(), L"%hX", &wAddr) == 1);
+        if (valid) {
+            Memory::offset wBegin = 0, wEnd = 0;
+            memoryInspectorControl->GetSelection(wBegin, wEnd, true);
+
+            const Memory::size wSize = wEnd - wBegin + 1;
+            String::Printf(szItemLine, ITEM_LINE_FORMAT, wCurrentSectorNumber, wAddr, wBegin, wSize);
+
+            GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST).AddString(szItemLine);
+
+            GetButton(IDOK).SetEnabled(true);
+
+            wAddr += wSize;
+
+            GetEditControl(IDC_DISK_IMAGE_SECTORS_ADDRESS).SetAddress(wAddr);
+
+            if (wCurrentSectorNumber != diskImageInfo.wSectors) {
+                ReadAndDisplaySector(wCurrentSectorNumber + 1);
+            }
+        }
+
+        return true;
+    }
+
+    case IDC_DISK_IMAGE_SECTORS_REMOVE_SECTOR: {
+        auto& sectorsListBox = GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST);
+        nItemCount = sectorsListBox.GetCount();
+        for (int iItem = nItemCount - 1; iItem >= 0; iItem--) {
+            if (sectorsListBox.IsSelectedIndex(iItem)) {
+                sectorsListBox.DeleteStringAtIndex(iItem);
+            }
+        }
+
+        GetButton(IDC_DISK_IMAGE_SECTORS_REMOVE_SECTOR).SetEnabled(false);
+        GetButton(IDOK).SetEnabled(sectorsListBox.GetCount() > 0);
+
+        return true;
+    }
+
+    case IDC_DISK_IMAGE_SECTORS_SECTORS_LIST: {
+        if (HIWORD(wParam) == LBN_SELCHANGE) {
+            const auto& sectorsListBox = GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST);
+            nItemCount = sectorsListBox.GetCount();
+            bSelected = false;
+
+            for (int iItem = 0; !bSelected && iItem < nItemCount; iItem++)
+                if (sectorsListBox.IsSelectedIndex(iItem)) {
+                    bSelected = true;
+                    break;
+                }
+
+            GetButton(IDC_DISK_IMAGE_SECTORS_REMOVE_SECTOR).SetEnabled(bSelected);
+        }
+
+        return true;
+    }
+    }
+
+    return false;
+}
+
+bool DiskImageSectorsDialog::InitDialog() {
+    CreateControls();
+    ReadAndDisplaySector(1);
+    return true;
+}
+
+bool DiskImageSectorsDialog::OnOK() {
+    const auto& sectorsListBox = GetListBox(IDC_DISK_IMAGE_SECTORS_SECTORS_LIST);
+    const auto nItemCount = sectorsListBox.GetCount();
+
+    for (int iItem = 0; iItem < nItemCount; iItem++) {
+        auto item = std::make_unique<Item>();
+
+        auto itemText = sectorsListBox.GetStringAtIndex(iItem);
+        swscanf(itemText.c_str(), ITEM_LINE_FORMAT, &item->wSector, &item->wAddr, &item->wBegin, &item->wSize);
+
+        items.push_back(std::move(item));
+    }
+
+    return EndDialogBox(TRUE);
 }
 
 void DiskImageSectorsDialog::CreateControls() {

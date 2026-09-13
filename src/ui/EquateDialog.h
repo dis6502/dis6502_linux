@@ -14,7 +14,9 @@ public:
 	bool Show(EquateList& equateList, bool editable, wstring_view address);
 
 protected:
-	bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+	bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+	bool InitDialog() override;
+	bool OnOK() override;
 
 	VOID CreateControls() override;
 

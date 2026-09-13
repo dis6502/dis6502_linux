@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Syntax.h"
 #include "MainController.h"
+#include "Syntax.h"
 #include <vector>
-#include <Windows.h>
 
 class MainDisassembly;
 
@@ -12,7 +11,7 @@ public:
     MainXRef(Main& main);
     void SetMainDisassembly(MainDisassembly& mainDisassembly);
 
-    long Proc(HWND hWnd, WPARAM wParam);
+    long Proc(Window::WindowHandle hWnd, Window::WPARAM wParam);
 
     void UpdateList(wstring_view findStrin, std::vector<wstring> references);
 

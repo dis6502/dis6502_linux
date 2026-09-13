@@ -32,85 +32,81 @@ wstring DiskImageExecutableFileDialog::GetExecutableFilePath() const {
     return executableFilePath;
 }
 
-bool DiskImageExecutableFileDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool DiskImageExecutableFileDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
     AtariFile info;
-    AtariError error;
     bool bOK;
 
-    switch (message) {
-    case WM_INITDIALOG: {
-        CreateControls();
+    switch (command) {
+    case IDOK:
+        return OnOK();
 
-        error = atariDisk->FindFirst(info);
-        while (error == AtariError::OK) {
-            String::Printf(String::szBuffer, L" %s %s %4hu %4hu", (info.IsLocked() ? L"*" : L" "), info.GetFileName83().c_str(), info.GetSectorCount(), info.GetStartSectorNumber());
+    case IDCANCEL:
+        return OnCancel();
 
-            GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).AddString(String::Format(), (void*)(uintptr_t)info.GetDirectoryIndex());
-            error = atariDisk->FindNext(info);
+    case IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST: {
+        switch (HIWORD(wParam)) {
+            // the user has selected a file.
+        case LBN_SELCHANGE: {
+            bOK = false;
+            auto index = GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).GetSelectedIndex();
+
+            if (index != LB_ERR) {
+                AtariDOS::directory_index directoryIndex = SendDlgItemMessage(hDlg, IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST, LB_GETITEMDATA, (WORD)index, 0L);
+                if (atariDisk->GetFileFromIndex(info, directoryIndex) != AtariError::OK)
+                    ::g_Application->SendErrorMessageWithID(IDS_ERR_ATARI_FILE);
+                else {
+                    bOK = true;
+                }
+            }
+
+            GetTextLabel(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILE_NAME).SetText(bOK ? info.GetFileName() : L"");
+            GetButton(IDOK).SetEnabled(bOK);
+            break;
         }
+
+                          // the user has double-clicked on a file.
+        case LBN_DBLCLK: {
+            auto index = GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).GetSelectedIndex();
+
+            if ((index != LB_ERR) && (IsWindowEnabled(GetDlgItem(hDlg, IDOK)))) { // TODO: Have GetButton(IDOK).IsEnabled()
+                PostMessage(hDlg, WM_COMMAND, IDOK, 0);
+            }
+            break;
+        }
+        }
+
         return true;
-    }
-
-    case WM_COMMAND: {
-        switch (LOWORD(wParam)) {
-        case IDOK: {
-            auto object = GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).GetSelectedObject();
-            if (object != nullptr) {
-                const auto directoryIndex = (AtariDOS::directory_index)(uintptr_t)object;
-
-                if (atariDisk->GetFileFromIndex(info, directoryIndex) == AtariError::OK) {
-                    executableFilePath = info.GetFileName();
-                    return EndDialogBox(TRUE);
-                }
-            }
-
-            return true;
-        }
-
-        case IDCANCEL: {
-            return EndDialogBox(FALSE);
-        }
-
-        case IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST: {
-            switch (HIWORD(wParam)) {
-                // the user has selected a file.
-            case LBN_SELCHANGE: {
-                bOK = false;
-                auto index = GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).GetSelectedIndex();
-
-                if (index != LB_ERR) {
-                    AtariDOS::directory_index directoryIndex = SendDlgItemMessage(hDlg, IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST, LB_GETITEMDATA, (WORD)index, 0L);
-                    if (atariDisk->GetFileFromIndex(info, directoryIndex) != AtariError::OK)
-                        ::g_Application->SendErrorMessageWithID(IDS_ERR_ATARI_FILE);
-                    else {
-                        bOK = true;
-                    }
-                }
-
-                GetTextLabel(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILE_NAME).SetText(bOK ? info.GetFileName() : L"");
-                GetButton(IDOK).SetEnabled(bOK);
-                break;
-            }
-
-                              // the user has double-clicked on a file.
-            case LBN_DBLCLK: {
-                auto index = GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).GetSelectedIndex();
-
-                if ((index != LB_ERR) && (IsWindowEnabled(GetDlgItem(hDlg, IDOK)))) { // TODO: Have GetButton(IDOK).IsEnabled()
-                    PostMessage(hDlg, WM_COMMAND, IDOK, 0);
-                }
-                break;
-            }
-            }
-
-            return true;
-        }
-                                                      break;
-        }
     }
     }
 
     return false;
+}
+
+bool DiskImageExecutableFileDialog::InitDialog() {
+    CreateControls();
+
+    AtariFile info;
+    auto error = atariDisk->FindFirst(info);
+    while (error == AtariError::OK) {
+        GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).AddString(String::Printf(L" %s %s %4hu %4hu", (info.IsLocked() ? L"*" : L" "), info.GetFileName83().c_str(), info.GetSectorCount(), info.GetStartSectorNumber()), (void*)(uintptr_t)info.GetDirectoryIndex());
+        error = atariDisk->FindNext(info);
+    }
+    return true;
+}
+
+bool DiskImageExecutableFileDialog::OnOK() {
+    auto object = GetListBox(IDC_DISK_IMAGE_EXECUTABLE_FILE_FILES_LIST).GetSelectedObject();
+    if (object != nullptr) {
+        const auto directoryIndex = (AtariDOS::directory_index)(uintptr_t)object;
+
+        AtariFile info;
+        if (atariDisk->GetFileFromIndex(info, directoryIndex) == AtariError::OK) {
+            executableFilePath = info.GetFileName();
+            return EndDialogBox(TRUE);
+        }
+    }
+
+    return true;
 }
 
 void DiskImageExecutableFileDialog::CreateControls() {

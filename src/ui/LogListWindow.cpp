@@ -1,8 +1,7 @@
-#include "Application.h"
-
 #include "LogListWindow.h"
 #include "PartWindow.h"
 #include "Syntax.h"
+#include <string>
 
 
 LogListWindow::LogListWindow(Window& parentWindow, PartLayout& partLayout) : PartWindow(parentWindow, partLayout) {}

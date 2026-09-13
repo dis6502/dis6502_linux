@@ -37,61 +37,54 @@ void SegmentWriteBootDiskDialog::Show(gsl::not_null<const Segment*> segment, boo
     ShowDialogBox();
 }
 
-bool SegmentWriteBootDiskDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool SegmentWriteBootDiskDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
+    case IDC_BOOTLOADADDR:
+    case IDC_BOOTINITADDR: {
+        if (HIWORD(wParam) == EN_CHANGE) {
+            bool selected = false;
 
-    switch (message) {
-    case WM_INITDIALOG: {
-        GetEditControl(IDC_BOOTLOADADDR).SetAddress(segment->wBegin);
+            if (GetEditControl(IDC_BOOTLOADADDR).HasText() &&
+                GetEditControl(IDC_BOOTINITADDR).HasText()) {
+                selected = true;
+            }
 
-        if (withInitAddress) {
-            GetEditControl(IDC_BOOTINITADDR).SetAddress(initAddress);
+            GetButton(IDOK).SetEnabled(selected);
         }
 
         return true;
     }
 
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-        case IDC_BOOTLOADADDR:
-        case IDC_BOOTINITADDR: {
-            if (HIWORD(wParam) == EN_CHANGE) {
-                bool selected = false;
+    case IDOK:
+        return OnOK();
 
-                if (GetEditControl(IDC_BOOTLOADADDR).HasText() &&
-                    GetEditControl(IDC_BOOTINITADDR).HasText()) {
-                    selected = true;
-                }
-
-                GetButton(IDOK).SetEnabled(selected);
-            }
-
-            return true;
-        }
-
-        case IDOK: {
-            auto result = ::g_FileDialogs->ChooseSaveFileName(*this, L"", FileType::DISK_IMAGE_BOOT_SECTORS);
-            if (result.success) {
-                WriteBootDisk(hDlg, result.filePath);
-                return EndDialogBox(true);
-            }
-
-            return true;
-        }
-
-        case IDCANCEL: {
-            return EndDialogBox(false);
-        }
-
-        default:
-            break;
-        }
-        break;
+    case IDCANCEL:
+        return OnCancel();
 
     default:
         break;
     }
-
     return false;
+}
+
+bool SegmentWriteBootDiskDialog::InitDialog() {
+    GetEditControl(IDC_BOOTLOADADDR).SetAddress(segment->wBegin);
+
+    if (withInitAddress) {
+        GetEditControl(IDC_BOOTINITADDR).SetAddress(initAddress);
+    }
+
+    return true;
+}
+
+bool SegmentWriteBootDiskDialog::OnOK() {
+    auto result = ::g_FileDialogs->ChooseSaveFileName(*this, L"", FileType::DISK_IMAGE_BOOT_SECTORS);
+    if (result.success) {
+        WriteBootDisk(hDlg, result.filePath);
+        return EndDialogBox(true);
+    }
+
+    return true;
 }
 
 void SegmentWriteBootDiskDialog::WriteBootDisk(HWND hDlg, wstring_view filePath) {

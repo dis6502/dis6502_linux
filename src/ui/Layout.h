@@ -6,14 +6,12 @@
 #pragma once
 
 #include <gsl/pointers>
-#include <Windows.h>
 
 class Layout;
 class Font;
 
 class PartLayout {
 public:
-    HWND hWnd;
     int left;		// Pixels
     int top;		// Pixels
     int columns;	// Characters

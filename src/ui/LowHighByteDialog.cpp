@@ -31,37 +31,35 @@ byte LowHighByteDialog::GetUnknownByte() const {
     return unknownByte;
 }
 
-bool LowHighByteDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool LowHighByteDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
 
-    switch (message) {
-    case WM_INITDIALOG: {
-        GetEditControl(knownByteId).SetEnabled(false);
-        GetEditControl(knownByteId).SetByte(knownByte);
-        GetButton(IDOK).SetEnabled(false);
-        return true;
-    }
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
+    case IDOK:
+        return OnOK();
 
-        case IDOK: {
-            unknownByte = GetEditControl(unknownByteId).GetByte();
-            return EndDialogBox(true);
-        }
+    case IDCANCEL:
+        return OnCancel();
 
-        case IDCANCEL:
-            return EndDialogBox(false);
-
-        case IDC_LOBYTE:
-        case IDC_HIBYTE:
-            if (LOWORD(wParam) == unknownByteId)
-                if (HIWORD(wParam) == EN_CHANGE) {
-                    GetButton(IDOK).SetEnabled(GetEditControl(unknownByteId).HasText());
-                }
-            break;
-            return true;
-        }
+    case IDC_LOBYTE:
+    case IDC_HIBYTE:
+        if (command == unknownByteId)
+            if (HIWORD(wParam) == EN_CHANGE) {
+                GetButton(IDOK).SetEnabled(GetEditControl(unknownByteId).HasText());
+            }
         break;
     }
 
     return false;
+}
+
+bool LowHighByteDialog::InitDialog() {
+    GetEditControl(knownByteId).SetEnabled(false);
+    GetEditControl(knownByteId).SetByte(knownByte);
+    GetButton(IDOK).SetEnabled(false);
+    return true;
+}
+
+bool LowHighByteDialog::OnOK() {
+    unknownByte = GetEditControl(unknownByteId).GetByte();
+    return EndDialogBox(true);
 }

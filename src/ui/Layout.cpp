@@ -2,23 +2,14 @@
 * Layout.h
 * Dynamic layout for main window controls.
 */
-
-#include "gsl/pointers"
 #define NOMINMAX
-
-
-#include "Application.h"
 #include "Font.h"
+#include "gsl/pointers"
 #include "Layout.h"
-#include "UI.h"
 #include <algorithm>
 #include <Windows.h>
 
-extern Application* g_Application;
-
-
 PartLayout::PartLayout(Layout& layout) :
-    hWnd(NULL_HWND),
     left(0),
     top(0),
     columns(0),

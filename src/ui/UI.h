@@ -11,7 +11,3 @@ constexpr HWND NULL_HWND = 0;
 
 
 constexpr INT_PTR NULL_INT_PTR = 0;
-
-using COMMAND = WORD;
-
-

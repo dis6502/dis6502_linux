@@ -43,7 +43,15 @@ protected:
     Dialog(const Window& parentDialog, wstring_view templateName);
     DialogFuncResult ShowDialogBox();
 
-    virtual bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) = 0;
+    // ProcessDialogMessage return true, if the message was process.
+    // If false is returned, the default window procedure will be called.
+    // Default implementation only dispatches WM_COMMAND to ProcessCommand; override for other messages.
+    virtual bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult);
+
+    virtual bool InitDialog(); // Return true for default keyboard focus.
+    virtual bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam);
+    virtual bool OnOK();
+    virtual bool OnCancel();
 
     virtual void CreateControls();
     virtual void DeleteControls();
@@ -53,6 +61,10 @@ protected:
 
     HWND GetItemHandle(ITEM_ID itemID) const;
 
+    // Shows a modal alert. Guards messageDialogVisible while the alert's nested message loop runs.
+    void SendErrorMessage(wstring_view title, wstring_view message);
+
+
 private:
     static std::map<HWND, Dialog*> instances;
 
@@ -61,4 +73,8 @@ private:
     std::map<ITEM_ID, std::unique_ptr<Control>> items;
 
     static DialogFuncResult CALLBACK DialogFunc(HWND hDlg, MESSAGE message, WPARAM wParam, LPARAM lParam);
+
+    // Set while SendErrorMessage's nested message loop runs, so overrides of ProcessDialogMessage
+    // can forward re-entrant messages to DefWindowProc instead of processing them again.
+    bool messageDialogVisible = false;
 };

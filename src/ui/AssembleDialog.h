@@ -3,6 +3,7 @@
 #include "Dialog.h"
 #include "Syntax.h"
 #include "Window.h"
+#include "Word.h"
 
 class MemoryInspectorControl;
 class Segment;
@@ -15,11 +16,13 @@ public:
     bool Show(Segment* segment, MemoryInspectorControl* memoryInspectorControl);
 
 protected:
-    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+    bool InitDialog() override;
+    bool OnOK() override;
 
 private:
     Segment* segment;
     MemoryInspectorControl* memoryInspectorControl;
 
-    LPCWSTR GetExpressionValue(LPCWSTR ptr, WORD* value, wstring& error);
+    LPCWSTR GetExpressionValue(LPCWSTR ptr, word* value, wstring& error);
 };

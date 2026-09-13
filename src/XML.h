@@ -3,8 +3,6 @@
 #include "Byte.h"
 #include "OutputStream.h"
 #include "Syntax.h"
-#include "PlatformCompat.h"	// _stricmp
-
 #include "tinyxml2.h"	// tinyxml2::...
 #include "Word.h"
 #include <gsl/gsl>
@@ -23,8 +21,8 @@ class XML {
 
 #define GetBoolAttribute(ATTR, FIELD)               { auto szValue =  element.Attribute( #ATTR ); \
 	                                                  if (szValue) { \
-                                                        if (_stricmp(szValue,"true")==0) { FIELD=true; } \
-                                                        if (_stricmp(szValue,"false")==0) { FIELD=false; } \
+                                                        if (strcmp(szValue,"true")==0) { FIELD=true; } \
+                                                        if (strcmp(szValue,"false")==0) { FIELD=false; } \
                                                       } \
                                                     }
 #define GetByteAttribute(ATTR, FIELD)               { XML::ByteFromUTF8String(b##ATTR, element.Attribute( #ATTR )); }
@@ -79,7 +77,7 @@ public:
     static bool SizeFromUTF8String(size_t& value, string_view stringValue);
 
     static bool ByteArrayFromUTF8String(byte*& valueArray, size_t& size, string_view stringValue);
-    
+
     static string StringToUTF8String(wstring_view value);
     static string ByteToUTF8HexString(byte value, bool withPrefix);
     static string WordToUTF8HexString(word value, bool withPrefix);

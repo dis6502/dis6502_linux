@@ -21,8 +21,13 @@ public:
     
 protected:
     bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+    bool InitDialog() override;
+    bool OnCancel() override;
 
 private:
+	static constexpr int WM_USER_COMMAND = WM_USER + 4321;
+
 	Disassembly* disassembly;
 	bool cancelled ;
 	int updateCount;

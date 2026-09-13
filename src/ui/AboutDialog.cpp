@@ -24,17 +24,8 @@ void AboutDialog::Show() {
 
 bool AboutDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
     switch (message) {
-    case WM_INITDIALOG: {
-        CreateControls();
-        GetAllModuleVersions();
-        return true;
-    }
-
-    case WM_COMMAND: {
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL) {
-            return EndDialogBox(true);
-        }
-    }
+    case WM_COMMAND:
+        return ProcessCommand((COMMAND)LOWORD(wParam), wParam, lParam);
 
     case WM_CTLCOLORSTATIC:
     case WM_CTLCOLORBTN:
@@ -51,6 +42,19 @@ bool AboutDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lP
 
     return false;
 
+}
+
+bool AboutDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    if (command == IDOK || command == IDCANCEL) {
+        return EndDialogBox(true);
+    }
+    return false;
+}
+
+bool AboutDialog::InitDialog() {
+    CreateControls();
+    GetAllModuleVersions();
+    return true;
 }
 
 /*

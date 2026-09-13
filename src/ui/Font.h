@@ -9,7 +9,7 @@ class Font
 
 public:
 
-    Font(HFONT hFont);
+    Font();
     ~Font();
 
     static Font* GetInstance(HFONT hFont);

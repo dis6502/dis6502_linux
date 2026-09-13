@@ -33,29 +33,26 @@ bool CommentDialog::Show(const DisassemblyResult& disassemblyResult, SegmentList
     return result;
 }
 
-bool CommentDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
-    switch (message) {
-    case WM_INITDIALOG:
-        GetEditControl(IDC_COMMENT).SetFont(font);
-        GetEditControl(IDC_COMMENT).SetText(comment);
-        return true;
+bool CommentDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
+    case IDOK:
+        return OnOK();
 
-    case WM_COMMAND: {
-        switch (LOWORD(wParam)) {
-        case IDOK:
-            comment = GetEditControl(IDC_COMMENT).GetText();
-            return EndDialogBox(true);
-
-        case IDCANCEL:
-            return EndDialogBox(false);
-
-        default:
-            return false;
-        }
+    case IDCANCEL:
+        return OnCancel();
 
     default:
         return false;
     }
+}
 
-    }
+bool CommentDialog::InitDialog() {
+    GetEditControl(IDC_COMMENT).SetFont(font);
+    GetEditControl(IDC_COMMENT).SetText(comment);
+    return true;
+}
+
+bool CommentDialog::OnOK() {
+    comment = GetEditControl(IDC_COMMENT).GetText();
+    return EndDialogBox(true);
 }

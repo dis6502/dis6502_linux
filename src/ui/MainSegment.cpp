@@ -65,7 +65,7 @@ void MainSegment::UpdateList() {
     updateCounter--;
 }
 
-long MainSegment::Proc(HWND hWnd, WPARAM wParam) {
+long MainSegment::Proc(Window::WindowHandle hWnd, Window::WPARAM wParam) {
     switch (HIWORD(wParam)) {
         // the user has selected a segment.
     case LBN_SELCHANGE: {
@@ -140,7 +140,7 @@ void MainSegment::PerformCommands(COMMAND wCommand, bool editMode) {
 /*
 ** WM_DROPFILES message, static callback
 */
-LRESULT CALLBACK MainSegment::DropFilesProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
+Window::LRESULT CALLBACK MainSegment::DropFilesProc(Window::WindowHandle, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam) {
     instance->DropFilesProc(reinterpret_cast<HDROP>(wParam));
     return 0;
 }
@@ -162,7 +162,7 @@ void MainSegment::DropFilesProc(HDROP hDrop) {
 /*
 ** WM_RBUTTONDOWN message, static callback
 */
-LRESULT CALLBACK MainSegment::RButtonDownProc(HWND hWnd, Window::MESSAGE message, WPARAM wParam, LPARAM lParam) {
+Window::LRESULT CALLBACK MainSegment::RButtonDownProc(Window::WindowHandle hWnd, Window::MESSAGE message, Window::WPARAM wParam, Window::LPARAM lParam) {
     instance->RButtonDownProc();
     return 0;
 }

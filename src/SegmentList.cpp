@@ -465,10 +465,10 @@ wstring SegmentList::BuildAddress(SEGMENT_INDEX segmentIndex, Memory::address wA
         if ((addressLabel->IsAligned()) || (wAddr == wNearestAddr) || (wNearestAddr == 0) || (bNoNearest)) {
             wAddr = addressLabel->GetAddress();
             if (segment->IsSDX()) {
-                String::Printf(String::szBuffer, Segment::szDefaultLabelFormat, segmentIndex, wAddr);
+                return String::Printf(Segment::szDefaultLabelFormat, segmentIndex, wAddr);
             }
             else {
-                String::Printf(String::szBuffer, L"L%04hX", wAddr);
+                return String::Printf(L"L%04hX", wAddr);
             }
         }
         else {
@@ -476,23 +476,21 @@ wstring SegmentList::BuildAddress(SEGMENT_INDEX segmentIndex, Memory::address wA
             auto equate = workspace->GetUserEquateList()->FindEquateByAddress(wNearestAddr, labelAccess, true);
             if (equate) {
                 equate->AddLabelReference(labelAccess);
-                String::Printf(String::szBuffer, L"%s+%hu", equate->GetLabel(), wAddr - wNearestAddr);
+                return String::Printf(L"%s+%hu", equate->GetLabel(), wAddr - wNearestAddr);
             }
             else {
                 if (segment->IsSDX()) {
-                    String::Printf(String::szBuffer, Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, wAddr - wNearestAddr);
+                    return String::Printf(Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, wAddr - wNearestAddr);
                 }
                 else {
-                    String::Printf(String::szBuffer, L"L%04hX+%hu", wNearestAddr, wAddr - wNearestAddr);
+                    return String::Printf(L"L%04hX+%hu", wNearestAddr, wAddr - wNearestAddr);
                 }
             }
         }
-        return String::Format();
     }
     addressLabel = globalSegment.GetAddressLabels()->FindAddressLabel(wAddr);
     if (addressLabel) {
-        String::Printf(String::szBuffer, L"L%04hX", wAddr);
-        return String::Format();;
+        return String::Printf(L"L%04hX", wAddr);
     }
     return String::Empty();;
 }
@@ -536,7 +534,7 @@ wstring SegmentList::GetLabelAtAddressInternal(SEGMENT_INDEX segmentIndex, Memor
             const auto wNearestAddr = addressLabel->GetNearestAddress();
             if ((addressLabel->IsAligned()) || (wAddr == wNearestAddr)) {
                 wAddr = addressLabel->GetAddress();
-                String::Printf(String::szBuffer, Segment::szDefaultLabelFormat, segmentIndex, wAddr);
+                return String::Printf(Segment::szDefaultLabelFormat, segmentIndex, wAddr);
             }
             else {
                 wAddr = addressLabel->GetAddress();
@@ -544,13 +542,12 @@ wstring SegmentList::GetLabelAtAddressInternal(SEGMENT_INDEX segmentIndex, Memor
                 const Memory::offset offset = wAddr - wNearestAddr;
                 if (equate) {
                     equate->AddLabelReference(labelAccess);
-                    String::Printf(String::szBuffer, L"%s+%hu", equate->GetLabel(), offset);
+                    return String::Printf(L"%s+%hu", equate->GetLabel(), offset);
                 }
                 else {
-                    String::Printf(String::szBuffer, Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, offset);
+                    return String::Printf(Segment::szDefaultLabelOffsetFormat, segmentIndex, wNearestAddr, offset);
                 }
             }
-            return String::Format();
         }
         return String::Empty();
     }

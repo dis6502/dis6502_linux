@@ -1,29 +1,30 @@
 #pragma once
 
-#include "Syntax.h"
-
-#include "Dialog.h"
-#include "SegmentTypes.h"
 #include "ByteArray.h"
+#include "Dialog.h"
 #include "Memory.h"
+#include "SegmentTypes.h"
+#include "Syntax.h"
 #include "Window.h"
 #include <gsl/gsl>
 
-class SegmentWriteBootDiskDialog: public Dialog {
+class SegmentWriteBootDiskDialog : public Dialog {
 public:
-	SegmentWriteBootDiskDialog(const Window& parentWindow);
+    SegmentWriteBootDiskDialog(const Window& parentWindow);
 
-	void Show(gsl::not_null<const Segment*> segment, bool withInitAddress, Memory::address initAddress);
+    void Show(gsl::not_null<const Segment*> segment, bool withInitAddress, Memory::address initAddress);
 
 protected:
-	bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+    bool InitDialog() override;
+    bool OnOK() override;
 
 private:
     const Segment* segment;
-	bool withInitAddress;
-	Memory::address initAddress;
+    bool withInitAddress;
+    Memory::address initAddress;
     ByteArray sector;
 
 
-	void WriteBootDisk(HWND hDlg, wstring_view filePath);
+    void WriteBootDisk(HWND hDlg, wstring_view filePath);
 };

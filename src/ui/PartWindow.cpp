@@ -14,8 +14,8 @@ wstring PartWindow::GetTitle() const {
 void PartWindow::SetTitle(wstring_view title) {
     this->title = wstring(title);
 }
-void PartWindow::CreateControl(wstring_view className, DWORD dwStyle, ChildID childID) {
-    Window::CreateChildControl(className, dwStyle, childID, partLayout->left, partLayout->top, partLayout->width, partLayout->height);
+void PartWindow::CreateControl(wstring_view className, WindowStyle style, ChildID childID) {
+    Window::CreateChildControl(className, style, childID, partLayout->left, partLayout->top, partLayout->width, partLayout->height);
 }
 
 void PartWindow::ApplyLayout() {

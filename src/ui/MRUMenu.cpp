@@ -4,7 +4,6 @@
 #include "MRUList.h"
 #include "MRUMenu.h"
 #include "StringUtility.h"
-#include "UI.h"
 #include <exception>
 #include <memory>
 #include <sstream>
@@ -31,17 +30,17 @@ void MRUMenu::FillMenu(Menu* menu, const MRUList& mruList) {
 
     const auto entries = mruList.GetEntries();
     // Enable menu item.
-    EnableMenuItem(menu->hMenu, menuPosition, MF_BYPOSITION | (!entries.empty() ? MF_ENABLED : MF_GRAYED));
+    menu->EnableItem(menuPosition, MF_BYPOSITION | (!entries.empty() ? MF_ENABLED : MF_GRAYED));
 
     // Fill sub menu.
-    auto hSubMenu = GetSubMenu(menu->hMenu, menuPosition);
-    if (hSubMenu == Menu::NULL_HMENU) {
+    auto subMenu = menu->GetSubMenu(menuPosition);
+    if (subMenu == nullptr) {
         throw std::exception("No submenu for MRU at specified position");
     }
 
-    auto index = GetMenuItemCount(hSubMenu);
+    auto index = subMenu->GetMenuItemCount();
     while (index > 0) {
-        DeleteMenu(hSubMenu, 0, MF_BYPOSITION);
+        subMenu->DeleteItem(0, MF_BYPOSITION);
         index--;
     }
 
@@ -53,7 +52,7 @@ void MRUMenu::FillMenu(Menu* menu, const MRUList& mruList) {
         menuEntry->menuText = ss.str();
         menuEntry->mruEntry = entry;
         menuEntries.push_back(menuEntry);
-        AppendMenu(hSubMenu, MF_ENABLED | MF_STRING, itemIDList.at(index), menuEntry->menuText.c_str());
+        subMenu->AppendItem(MF_ENABLED | MF_STRING, itemIDList.at(index), menuEntry->menuText);
     }
 }
 
@@ -61,8 +60,8 @@ void MRUMenu::FillMenu(Menu* menu, const MRUList& mruList) {
 const MRUEntry* MRUMenu::GetMRUEntry(Menu* menu, UINT itemID) const {
     constexpr int MAX_LENGTH = 3 + FileIO::FILE_PATH_SIZE;
     std::unique_ptr<wchar_t[]> szBuffer = std::make_unique<wchar_t[]>(MAX_LENGTH);
-    auto hSubMenu = GetSubMenu(menu->hMenu, menuPosition);
-    GetMenuString(hSubMenu, itemID, szBuffer.get(), MAX_LENGTH - 1, MF_BYCOMMAND);
+    auto subMenu = menu->GetSubMenu(menuPosition);
+    subMenu->GetItemString(itemID, MF_BYCOMMAND, szBuffer.get(), MAX_LENGTH - 1);
 
     for (auto menuEntry : menuEntries) {
         if (String::EqualsIgnoreCase(menuEntry->menuText, szBuffer.get())) {

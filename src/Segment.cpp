@@ -96,49 +96,39 @@ bool Segment::IsSDX() const {
 wstring Segment::ToString() const {
     wstring symbol = L"";
     const auto size = GetSize();
-    auto szBuffer = String::szBuffer;
 
     // Read the header depending on the type.
     switch (wHeader) {
     case FileHeader::SDX_RELOC_BLK:
-        String::Printf(szBuffer, L"%s blk %hu $%04hX-$%04hX len %hu mem $%02hX", wstring(GetSDXBlockType()).c_str(), (unsigned int)bSDXBlockNumber, wBegin, wEnd, size, (Memory::word)bSDXControlByte);
-        break;
+        return String::Printf(L"%s blk %hu $%04hX-$%04hX len %hu mem $%02hX", wstring(GetSDXBlockType()).c_str(), (unsigned int)bSDXBlockNumber, wBegin, wEnd, size, (Memory::word)bSDXControlByte);
 
     case FileHeader::SDX_FIX_UP_BLK:
-        String::Printf(szBuffer, L"Fixups blk %hu len %hu", (unsigned int)bSDXBlockNumber, size);
-        break;
+        return String::Printf(L"Fixups blk %hu len %hu", (unsigned int)bSDXBlockNumber, size);
 
     case FileHeader::SDX_SYM_REQUIRED:
         // trim trailing whitespaces
         symbol = String::Trim(szSDXSymbol);
-        String::Printf(szBuffer, L"SymReq fixup len %-4hu %s", size, symbol.c_str());
-        break;
+        return String::Printf(L"SymReq fixup len %-4hu %s", size, symbol.c_str());
 
     case FileHeader::SDX_SYM_DEFINED:
         // trim trailing whitespaces
         symbol = String::Trim(szSDXSymbol);
-        String::Printf(szBuffer, L"SymDef blk %hu ofs $%04hX %s", (unsigned int)bSDXBlockNumber, wBegin, symbol.c_str());
-        break;
+        return String::Printf(L"SymDef blk %hu ofs $%04hX %s", (unsigned int)bSDXBlockNumber, wBegin, symbol.c_str());
 
     case FileHeader::ATARI_BINARY:
-        String::Printf(szBuffer, L"StdBin %04hX-$%04hX len %04hX (%hu)", wBegin, wEnd, size, size);
-        break;
+        return String::Printf(L"StdBin %04hX-$%04hX len %04hX (%hu)", wBegin, wEnd, size, size);
 
     case FileHeader::SDX_FIXED_BLK:
-        String::Printf(szBuffer, L"StdBlk $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
-        break;
+        return String::Printf(L"StdBlk $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
 
     default:
         if (bBinary) {
-            String::Printf(szBuffer, L"Binary $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
+            return String::Printf(L"Binary $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
         }
         else {
-            String::Printf(szBuffer, L"Raw    $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
+            return String::Printf(L"Raw    $%04hX-$%04hX len $%04hX (%hu)", wBegin, wEnd, size, size);
         }
-        break;
     }
-
-    return String::Format();
 }
 
 bool Segment::IsSplittable() const {

@@ -1,14 +1,12 @@
 #pragma once
 
 #include "Byte.h"
-#include "Syntax.h"
-
 #include "Memory.h"
-#include "MemoryType.h"
 #include "MemoryInspectorSelection.h"
 #include "MemoryInspectorStack.h"
+#include "MemoryType.h"
 #include "SegmentTypes.h"
-
+#include "Syntax.h"
 #include <gsl/pointers>
 #include <memory>
 #include <Windows.h>

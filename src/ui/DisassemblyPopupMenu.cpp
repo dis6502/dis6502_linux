@@ -8,10 +8,9 @@
 #include "Syntax.h"
 #include "Text.h"
 
-DisassemblyPopupMenu::DisassemblyPopupMenu() : PopupMenu(L"DISASSEMBLY_POPUP_MENU") {
-}
+DisassemblyPopupMenu::DisassemblyPopupMenu() : PopupMenu(L"DISASSEMBLY_POPUP_MENU") {}
 
-void DisassemblyPopupMenu::Update(bool canFindNext, wstring_view labelDefinition, wstring_view labelReference, DWORD historyIndex, const DIS_LINE* lpLine, bool instructionHasImmediateOperand, bool charAllowed, MemoryType immediateMemoryType)
+void DisassemblyPopupMenu::Update(bool canFindNext, wstring_view labelDefinition, wstring_view labelReference, size_t historyIndex, const DIS_LINE* lpLine, bool instructionHasImmediateOperand, bool charAllowed, MemoryType immediateMemoryType)
 {
     bool isLabelDefinition = false;
     bool isLabelReference = false;

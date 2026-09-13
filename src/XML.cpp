@@ -2,7 +2,6 @@
 #include "DatatypeUtility.h"
 #include "gsl/pointers"
 #include "OutputStream.h"
-#include "PlatformCompat.h"
 #include "StringUtility.h"
 #include "Syntax.h"
 #include "tinyxml2.h"

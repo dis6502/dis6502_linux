@@ -1,5 +1,6 @@
 #pragma once
 
+//#include "Point.h"
 #include "Syntax.h"
 #include <Windows.h>
 
@@ -41,7 +42,6 @@ protected:
     PopupMenu(wstring_view menuName = L"");
 
 private:
-    static constexpr UINT_PTR NULL_UINT_PTR = 0;
     Menu* menu;
     Menu* trackedMenu;
 };

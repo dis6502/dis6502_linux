@@ -1,96 +1,85 @@
-#include "Application.h"
+#include "Button.h"
+#include "CheckBox.h"
 #include "Dialog.h"
 #include "FindStringDialog.h"
 #include "MemoryInspector.h"
-
 #include "MemoryInspectorFindStringDialog.h"
-#include "CheckBox.h"
-#include "Button.h"
 #include "Syntax.h"
 #include "Text.h"
 
-extern Application* g_Application;
 
 
 MemoryInspectorFindStringDialog::MemoryInspectorFindStringDialog(Window& parentWindow) :
-	Dialog(parentWindow, L"DUMPFINDSTRINGBOX"), findStringDialog(FindStringDialog(MAX_CHARS)) {
-}
+    Dialog(parentWindow, L"DUMPFINDSTRINGBOX"), findStringDialog(FindStringDialog(MAX_CHARS)) {}
 
 bool MemoryInspectorFindStringDialog::Show(MemoryInspector& memoryInspector) {
-	this->lpMemoryInspector = &memoryInspector;
-	this->recursion = false;
+    this->lpMemoryInspector = &memoryInspector;
 
-	return ShowDialogBox();
+    return ShowDialogBox();
 }
 
-bool MemoryInspectorFindStringDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool MemoryInspectorFindStringDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    bool find = false;
 
-	// Recursion triggered by event?
-	if (recursion) {
-		return false;
-	}
+    switch (command) {
+    case IDC_FINDHEX:
+        if ((HIWORD(wParam) == EN_CHANGE)) {
+            find = findStringDialog.HexStringToAsciiString(*this);
+            GetButton(IDOK).SetEnabled(find);
+        }
+        break;
 
-	recursion = true;
-	bool result = false;
-	bool find = false;
+    case IDC_FINDASCII:
+        if ((HIWORD(wParam) == EN_CHANGE)) {
+            find = findStringDialog.AsciiStringToHexString(*this);
+            GetButton(IDOK).SetEnabled(find);
+        }
+        break;
 
-	switch (message) {
-	case WM_INITDIALOG: {
-		wstring findString;
-		bool allSegments = false;
+    case IDCANCEL:
+        return OnCancel();
 
-		lpMemoryInspector->GetFindParameters(findString, allSegments);
+    case IDOK:
+        return OnOK();
+    }
 
-		// TODO Remember String/hex selection as byte array instead, store hex to support 00 also
-		findStringDialog.SetAsciiString(*this, findString);
+    return false;
+}
 
-		find = findStringDialog.AsciiStringToHexString(*this);
+bool MemoryInspectorFindStringDialog::InitDialog() {
+    wstring findString;
+    bool allSegments = false;
 
-		CheckRadioButton(hDlg, IDC_RADIO_ALL, IDC_RADIO_SELECTED, (allSegments ? IDC_RADIO_ALL : IDC_RADIO_SELECTED));
-		GetButton(IDOK).SetEnabled(find);
+    lpMemoryInspector->GetFindParameters(findString, allSegments);
 
-		result = true;
-	}
+    // TODO Remember String/hex selection as byte array instead, store hex to support 00 also
+    findStringDialog.SetAsciiString(*this, findString);
 
-	case WM_COMMAND:
-		switch (LOWORD(wParam)) {
-		case IDC_FINDHEX:
-			if ((HIWORD(wParam) == EN_CHANGE)) {
-				find = findStringDialog.HexStringToAsciiString(*this);
-				GetButton(IDOK).SetEnabled(find);
-			}
-			break;
+    const auto find = findStringDialog.AsciiStringToHexString(*this);
 
-		case IDC_FINDASCII:
-			if ((HIWORD(wParam) == EN_CHANGE)) {
-				find = findStringDialog.AsciiStringToHexString(*this);
-				GetButton(IDOK).SetEnabled(find);
-			}
-			break;
+    CheckRadioButton(hDlg, IDC_RADIO_ALL, IDC_RADIO_SELECTED, (allSegments ? IDC_RADIO_ALL : IDC_RADIO_SELECTED));
+    GetButton(IDOK).SetEnabled(find);
 
-		case IDCANCEL:
-			EndDialog(hDlg, false);
-			result = true;
-			break;
+    return true;
+}
 
-		case IDOK:
-			find = findStringDialog.HexStringToAsciiString(*this);
-			if (find) {
+bool MemoryInspectorFindStringDialog::OnOK() {
+    const auto find = findStringDialog.HexStringToAsciiString(*this);
+    if (find) {
+        const auto allSegments = GetCheckBox(IDC_RADIO_ALL).IsChecked();
 
-				const auto allSegments = GetCheckBox(IDC_RADIO_ALL).IsChecked();
+        const auto found = lpMemoryInspector->FindString(findStringDialog.GetAsciiString(), allSegments);
+        if (found) {
+            EndDialog(hDlg, true);
+        }
 
-				const auto found = lpMemoryInspector->FindString(findStringDialog.GetAsciiString(), allSegments);
-				if (found) {
-					EndDialog(hDlg, true);
-				}
+        return true;
+    }
 
-				result = true;
-			}
-		}
-		break;
-	}
+    return false;
+}
 
-	recursion = false;
-
-	return result;
+bool MemoryInspectorFindStringDialog::OnCancel() {
+    EndDialog(hDlg, false);
+    return true;
 }

@@ -20,7 +20,7 @@ public:
 
     DiskImageSectorsDialog(const Window& parentWindow, Font* computerFont);
 
-    INT_PTR Show(wstring_view diskImageFilePath);
+    DialogFuncResult Show(wstring_view diskImageFilePath);
 
     std::list<gsl::not_null<Item*>> GetItems();
 
@@ -28,6 +28,9 @@ public:
 
 protected:
     bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+    bool InitDialog() override;
+    bool OnOK() override;
 
     void CreateControls() override;
     void DeleteControls() override;

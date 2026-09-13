@@ -17,7 +17,7 @@
 #include <Windows.h>
 
 constexpr UINT WM_DIS_BASE = (WM_USER + 1234);
-typedef DWORD* LP_DIS_HISTORY;
+using LP_DIS_HISTORY = DWORD*;
 
 /*
 ** messages to set or get sprite control parameters

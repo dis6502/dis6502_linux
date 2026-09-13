@@ -41,6 +41,6 @@ private:
 
     void SplitFilePath(wstring_view filePath, wstring& initialFolderPath, wstring& resultFilePath, FolderType folderType);
 
-    FileDialogResult GetOpenFileName_(const Window& parentWindow, wstring_view filePath, wstring_view title, FileTypeInfo::FilterPattern filterPattern, FolderType folderType);
+    FileDialogResult ChooseOpenFileName(const Window& parentWindow, wstring_view filePath, wstring_view title, FileTypeInfo::FilterPattern filterPattern, FolderType folderType);
     FileDialogResult ChooseSaveFileName(const Window& parentWindow, wstring_view filePath, wstring_view title, FileTypeInfo::FilterPattern filterPattern, FolderType folderType, wstring_view defaultExtension);
 };

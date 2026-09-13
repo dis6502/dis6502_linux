@@ -17,7 +17,7 @@ void MainXRef::SetMainDisassembly(MainDisassembly& mainDisassembly) {
     this->mainDisassembly = &mainDisassembly;
 }
 
-long MainXRef::Proc(HWND hWnd, WPARAM wParam) {
+long MainXRef::Proc(Window::WindowHandle hWnd, Window::WPARAM wParam) {
     switch (HIWORD(wParam)) {
         // the user has selected a reference.
     case LBN_SELCHANGE:

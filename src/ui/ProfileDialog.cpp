@@ -160,64 +160,47 @@ void ProfileDialog::GetDialogValues(Profile& profile) {
     profile.directiveINCLUDEMaximumNumberOfLinesPerFile = GetEditControl(IDC_MAXINCLUDELINES).GetNumber();
 }
 
-bool ProfileDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool ProfileDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
+    case IDOK:
+        return OnOK();
 
-    switch (message) {
-    case WM_INITDIALOG:
-        SetDialogValues(*profile);
+    case IDCANCEL:
+        return OnCancel();
+
+    case ID_LOAD_PROFILE: {
+        Profile tempProfile;
+
+        if (profilesController->Load(tempProfile, *computerSystemTypeInfo, *this)) {
+            SetDialogValues(tempProfile);
+        }
+
         return true;
+    }
 
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-        case IDOK: {
+    case ID_SAVE_PROFILE: {
+        Profile tempProfile;
+
+        GetDialogValues(tempProfile);
+        profilesController->Save(tempProfile, *this);
+
+        return true;
+    }
+
+    case IDC_USEHEX:
+    case IDC_SHOWZPASBYTE:
+    case IDC_SBYTEALLOWED:
+    case IDC_WORDALLOWED:
+    case IDC_DSALLOWED:
+    case IDC_INCLUDEALLOWED:
+    case IDC_RADIOINCLUDE_ONE_FILE:
+    case IDC_RADIOINCLUDE_ALL_FILES:
+    case IDC_RADIOINCLUDE_NEXT_FILE:
+        // Prevent recursion by triggering "value changed" events.
+        if (HIWORD(wParam) == BN_CLICKED) {
+            // Get current values and update enabled states.
             GetDialogValues(*profile);
-            EndDialog(hDlg, true);
-            return true;
-        }
-
-        case IDCANCEL: {
-            EndDialog(hDlg, false);
-            return true;
-        }
-
-        case ID_LOAD_PROFILE: {
-            Profile tempProfile;
-
-            if (profilesController->Load(tempProfile, *computerSystemTypeInfo, *this)) {
-                SetDialogValues(tempProfile);
-            }
-
-            return true;
-        }
-
-        case ID_SAVE_PROFILE: {
-            Profile tempProfile;
-
-            GetDialogValues(tempProfile);
-            profilesController->Save(tempProfile, *this);
-
-            return true;
-        }
-
-        case IDC_USEHEX:
-        case IDC_SHOWZPASBYTE:
-        case IDC_SBYTEALLOWED:
-        case IDC_WORDALLOWED:
-        case IDC_DSALLOWED:
-        case IDC_INCLUDEALLOWED:
-        case IDC_RADIOINCLUDE_ONE_FILE:
-        case IDC_RADIOINCLUDE_ALL_FILES:
-        case IDC_RADIOINCLUDE_NEXT_FILE:
-            // Prevent recursion by triggering "value changed" events.
-            if (HIWORD(wParam) == BN_CLICKED) {
-                // Get current values and update enabled states.
-                GetDialogValues(*profile);
-                SetDialogValues(*profile);
-            }
-            break;
-
-        default:
-            break;
+            SetDialogValues(*profile);
         }
         break;
 
@@ -226,4 +209,20 @@ bool ProfileDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM 
     }
 
     return false;
+}
+
+bool ProfileDialog::InitDialog() {
+    SetDialogValues(*profile);
+    return true;
+}
+
+bool ProfileDialog::OnOK() {
+    GetDialogValues(*profile);
+    EndDialog(hDlg, true);
+    return true;
+}
+
+bool ProfileDialog::OnCancel() {
+    EndDialog(hDlg, false);
+    return true;
 }

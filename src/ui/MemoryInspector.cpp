@@ -8,6 +8,7 @@
 #include "DatatypeUtility.h"
 #include "FileHeader.h"
 #include "FindStringDialog.h"
+#include "gsl/pointers"
 #include "InstructionSet.h"
 #include "LowHighByteDialog.h"
 #include "Main.h"
@@ -29,7 +30,6 @@
 #include "SelectSpritesDialog.h"
 #include "StringUtility.h"
 #include "Syntax.h"
-#include "gsl/pointers"
 #include "systems/ComputerSystem.h"
 #include "UIApplication.h"
 #include "Workspace.h"
@@ -55,8 +55,7 @@ MemoryInspector::MemoryInspector() :
     memoryInspectorSelection(*g_Workspace)
 {}
 
-MemoryInspector::~MemoryInspector() {
-}
+MemoryInspector::~MemoryInspector() {}
 
 void MemoryInspector::CreateControl() {
     memoryInspectorSelection.Clear();

@@ -40,11 +40,11 @@ FileDialogResult FileDialogs::ChooseOpenFileName(const Window& parentWindow, wst
 
     auto fti = FileTypeFactory::GetInfo(fileType);
     auto title = Text::Format(IDS_FILE_SYSTEM_LOGIC_OPEN_FILE_TITLE, fti.text);
-    auto result = this->GetOpenFileName_(parentWindow, filePath, title, fti.GetFilterPattern(), fti.folderType);
+    auto result = this->ChooseOpenFileName(parentWindow, filePath, title, fti.GetFilterPattern(), fti.folderType);
     return result;
 }
 
-FileDialogResult FileDialogs::GetOpenFileName_(const Window& parentWindow, wstring_view filePath, wstring_view title, FileTypeInfo::FilterPattern filterPattern, FolderType folderType) {
+FileDialogResult FileDialogs::ChooseOpenFileName(const Window& parentWindow, wstring_view filePath, wstring_view title, FileTypeInfo::FilterPattern filterPattern, FolderType folderType) {
     wstring initialFolderPath = L".";
     wstring resultFilePath;
 

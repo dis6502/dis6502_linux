@@ -6,9 +6,6 @@
 #include <string>
 #include <string_view>
 
-// Forward-declared instead of including <Windows.h>, to keep this header free of Win32 dependencies.
-extern "C" __declspec(dllimport) int __cdecl wsprintfW(wchar_t*, const wchar_t*, ...);
-
 // TODO: Replace remaining usage of char array by strings
 void strclr(char* szString);
 void strclr(wchar_t* szString);
@@ -53,13 +50,16 @@ public:
     // Format a string pattern of the form "Foo {0} bar {1}..."
     static wstring Format(wstring_view pattern, wstring_view v0 = L"", wstring_view v1 = L"", wstring_view v2 = L"", wstring_view v3 = L"", wstring_view v4 = L"", wstring_view v5 = L"", wstring_view v6 = L"", wstring_view v7 = L"", wstring_view v8 = L"", wstring_view v9 = L"");
 
-    // Workaround for using sprintf
-    static const size_t BUFFER_SIZE = 1000;
+    // Workaround for using Printf directly to a buffer.
+    static constexpr size_t BUFFER_SIZE = 1000;
     static wchar_t* szBuffer;
-    static wstring Format();
 
     // Drop-in replacement for wsprintf
-    template <typename ... Args> static void Printf(wchar_t* buffer, wchar_t const* const format, Args const& ... args) { wsprintfW(buffer, format, Argument(args) ...); }
+    template <typename ... Args> static void Printf(wchar_t* buffer, wchar_t const* const format, Args const& ... args) { FormatV(buffer, format, Argument(args) ...); }
+
+    // Like Printf, but formats into szBuffer and returns the result, so callers who
+    // immediately turn the formatted buffer into a wstring don't need a separate Format() call.
+    template <typename ... Args> static wstring Printf(wchar_t const* const format, Args const& ... args) { FormatV(szBuffer, format, Argument(args) ...); return wstring(szBuffer); }
 
     // Transition to Unicode
     static string wstring_to_ansi(wstring_view s);
@@ -70,4 +70,11 @@ public:
 
     // convert wstring to UTF-8 string
     static string wstring_to_utf8(wstring_view str);
+
+private:
+
+    // Mimics wsprintfW: formats into buffer without a caller-supplied size, like every existing
+    // call site assumes. Bounded to MAX_LEGACY_FORMAT_LENGTH to match wsprintfW's own undocumented
+    // internal cap, rather than writing past the buffer unbounded.
+    static void FormatV(wchar_t* buffer, wchar_t const* format, ...);
 };

@@ -343,24 +343,20 @@ void Equate::DeserializeFrom(const XML::Element& element) {
 wstring Equate::ToString() const {
     switch (equateType) {
     case EquateType::EMPTY:
-        break;
+        return L"";
 
     case EquateType::COMMENT:
-        String::Printf(String::szBuffer, L"; %s", GetComment());
-        break;
+        return String::Printf(L"; %s", GetComment());
 
     case EquateType::LABEL:
         if (!comment.empty()) {
-            String::Printf(String::szBuffer, L"%s %s $%04hX; %s", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue(), GetComment());
+            return String::Printf(L"%s %s $%04hX; %s", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue(), GetComment());
         }
         else {
-            String::Printf(String::szBuffer, L"%s %s $%04hX", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue());
+            return String::Printf(L"%s %s $%04hX", GetLabel(), LabelAccessFactory::GetQualifier(labelAccess), GetLabelValue());
         }
-        break;
 
     default:
         throw std::runtime_error("Unsupported equate type");
-        break;
     }
-    return String::Format();
 }

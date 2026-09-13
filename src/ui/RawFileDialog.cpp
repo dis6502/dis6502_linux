@@ -66,48 +66,42 @@ void RawFileDialog::GetResult(Memory::offset& nBegin, Memory::size& nSize, Memor
     wAddr = this->wAddr;
 }
 
-bool RawFileDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
+bool RawFileDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
 
-    switch (message) {
-    case WM_INITDIALOG:
-        CreateControls();
+    case IDOK:
+        return OnOK();
+
+    case IDCANCEL:
+        return OnCancel();
+
+    case IDC_RAW_FILE_ADDRESS: {
+        if (HIWORD(wParam) == EN_CHANGE) {
+            // TODO use/create EditoControl->IsValidAddress
+            GetButton(IDOK).SetEnabled(GetEditControl(IDC_RAW_FILE_ADDRESS).HasText());
+        }
         return true;
-
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-
-        case IDOK: {
-            wAddr = GetEditControl(IDC_RAW_FILE_ADDRESS).GetAddress();
-            Memory::offset nEnd;
-            memoryInspectorControl->GetSelection(nBegin, nEnd, true);
-            nSize = nEnd - nBegin + 1;
-
-            return EndDialogBox(true);
-        }
-
-        case IDCANCEL: {
-            return EndDialogBox(false);
-        }
-
-        case IDC_RAW_FILE_ADDRESS: {
-            if (HIWORD(wParam) == EN_CHANGE) {
-                // TODO use/create EditoControl->IsValidAddress
-                GetButton(IDOK).SetEnabled(GetEditControl(IDC_RAW_FILE_ADDRESS).HasText());
-            }
-            return true;
-        }
-
-        default:
-            break;
-
-        }
-        break;
+    }
 
     default:
         break;
-    }
 
+    }
     return false;
+}
+
+bool RawFileDialog::InitDialog() {
+    CreateControls();
+    return true;
+}
+
+bool RawFileDialog::OnOK() {
+    wAddr = GetEditControl(IDC_RAW_FILE_ADDRESS).GetAddress();
+    Memory::offset nEnd;
+    memoryInspectorControl->GetSelection(nBegin, nEnd, true);
+    nSize = nEnd - nBegin + 1;
+
+    return EndDialogBox(true);
 }
 
 void RawFileDialog::CreateControls() {

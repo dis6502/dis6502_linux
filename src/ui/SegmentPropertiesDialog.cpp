@@ -27,53 +27,48 @@ bool SegmentPropertiesDialog::Show(Segment& segment) {
     return ShowDialogBox();
 }
 
-bool SegmentPropertiesDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
-    switch (message) {
+bool SegmentPropertiesDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
 
-    case WM_INITDIALOG:
-        CreateControls();
-        GetEditControl(IDC_ADDRSEGMENT).SetAddress(segment->wBegin);
-        GetCheckBox(IDC_CHECKBINARY).SetChecked(segment->bBinary);
-        GetEditControl(IDC_LABELPREFIX).SetText(segment->szLabelPrefix);
-        return true;
+    case IDOK:
+        return OnOK();
 
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-
-        case IDOK: {
-
-            const auto wBegin = GetEditControl(IDC_ADDRSEGMENT).GetAddress();
-            const Memory::address wEnd = wBegin + segment->GetSize() - 1;
-
-            if (wBegin > wEnd) { // In case of 64K overflow // TODO Will not work with >64K
-                MessageBoxDialog::ShowAlert(this, L"Segment Properties", Text::Get(IDS_ERR_SEGMENT_OVERLAP));
-                return true;
-            }
-
-            segment->wBegin = wBegin;
-            segment->wEnd = wEnd;
-
-            segment->bBinary = GetCheckBox(IDC_CHECKBINARY).IsChecked();
-            segment->szLabelPrefix = GetEditControl(IDC_LABELPREFIX).GetText();
-
-            auto index = GetComboBox(IDC_PROCESSORCOMBO).GetSelectedIndex();
-
-            segment->processorType = processorTypes.at(index);
-
-            return EndDialogBox(true);
-        }
-
-        case IDCANCEL:
-            return EndDialogBox(false);
-
-        default:
-            return false;
-        }
+    case IDCANCEL:
+        return OnCancel();
 
     default:
         return false;
     }
+}
 
+bool SegmentPropertiesDialog::InitDialog() {
+    CreateControls();
+    GetEditControl(IDC_ADDRSEGMENT).SetAddress(segment->wBegin);
+    GetCheckBox(IDC_CHECKBINARY).SetChecked(segment->bBinary);
+    GetEditControl(IDC_LABELPREFIX).SetText(segment->szLabelPrefix);
+    return true;
+}
+
+bool SegmentPropertiesDialog::OnOK() {
+    const auto wBegin = GetEditControl(IDC_ADDRSEGMENT).GetAddress();
+    const Memory::address wEnd = wBegin + segment->GetSize() - 1;
+
+    if (wBegin > wEnd) { // In case of 64K overflow // TODO Will not work with >64K
+        MessageBoxDialog::ShowAlert(this, L"Segment Properties", Text::Get(IDS_ERR_SEGMENT_OVERLAP));
+        return true;
+    }
+
+    segment->wBegin = wBegin;
+    segment->wEnd = wEnd;
+
+    segment->bBinary = GetCheckBox(IDC_CHECKBINARY).IsChecked();
+    segment->szLabelPrefix = GetEditControl(IDC_LABELPREFIX).GetText();
+
+    auto index = GetComboBox(IDC_PROCESSORCOMBO).GetSelectedIndex();
+
+    segment->processorType = processorTypes.at(index);
+
+    return EndDialogBox(true);
 }
 
 void SegmentPropertiesDialog::CreateControls() {

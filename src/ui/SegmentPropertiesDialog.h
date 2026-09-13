@@ -15,7 +15,9 @@ public:
 	bool Show(Segment& lpSegment);
 
 protected:
-    bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+    bool InitDialog() override;
+    bool OnOK() override;
 
 	void CreateControls() override;
 

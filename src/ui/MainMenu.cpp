@@ -1,7 +1,6 @@
 #include "AboutDialog.h"
 #include "Application.h"
 #include "DefaultFolders.h"
-#include "EquateList.h"
 #include "EquateListController.h"
 #include "FileType.h"
 #include "Main.h"
@@ -19,9 +18,8 @@
 #include "SegmentList.h"
 #include "SegmentTypes.h"
 #include "SegmentWriteBootDiskDialog.h"
-#include "Text.h"
-#include "UI.h"
 #include "systems/ComputerSystem.h"
+#include "Text.h"
 #include "Workspace.h"
 #include "WorkspaceDialog.h"
 #include <memory>

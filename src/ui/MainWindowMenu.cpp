@@ -52,15 +52,15 @@ void MainWindowMenu::CreateControl(HWND hMainWnd) {
 }
 
 Menu* MainWindowMenu::GetSubMenuHandle(UINT uMenuPos) const {
-    return Menu::GetInstance(GetSubMenu(menu->hMenu, uMenuPos));
+    return menu->GetSubMenu(uMenuPos);
 }
 
 void MainWindowMenu::SetEnabled(UINT uIDEnableItem, bool enabled) {
-    EnableMenuItem(menu->hMenu, uIDEnableItem, MF_BYCOMMAND | (enabled ? MF_ENABLED : MF_GRAYED));
+    menu->EnableItem(uIDEnableItem, MF_BYCOMMAND | (enabled ? MF_ENABLED : MF_GRAYED));
 }
 
 void MainWindowMenu::SetChecked(UINT uIDCheckItem, bool checked) {
-    CheckMenuItem(menu->hMenu, uIDCheckItem, MF_BYCOMMAND | (checked ? MF_CHECKED : MF_UNCHECKED));
+    menu->CheckItem(uIDCheckItem, MF_BYCOMMAND | (checked ? MF_CHECKED : MF_UNCHECKED));
 }
 
 HBITMAP MainWindowMenu::MakeBitMapTransparent(HBITMAP hbmSrc) {
@@ -101,6 +101,6 @@ void MainWindowMenu::AddIconToMenu(UINT uPosition, int nIconId) {
     GetIconInfo(hIcon, &iconinfo);
     auto hBitmap = iconinfo.hbmColor;
     hBitmap = MakeBitMapTransparent(hBitmap);
-    SetMenuItemBitmaps(menu->hMenu, uPosition, MF_BITMAP | MF_BYCOMMAND, hBitmap, hBitmap);
+    menu->SetItemBitmaps(uPosition, MF_BITMAP | MF_BYCOMMAND, hBitmap, hBitmap);
     bitmaps.push_back(hBitmap);
 }

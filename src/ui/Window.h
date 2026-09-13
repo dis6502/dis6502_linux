@@ -11,6 +11,7 @@ public:
     using WPARAM = unsigned __int64;
     using LPARAM = __int64;
     using LRESULT = __int64;
+    using COMMAND = unsigned short;
     using INT_PTR = __int64;
     using ChildID = int;
     using WindowStyle = unsigned long;

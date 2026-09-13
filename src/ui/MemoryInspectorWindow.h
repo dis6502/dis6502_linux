@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include "PartWindow.h"
 #include "Memory.h"
 #include "MemoryInspectorControl.h"
+#include "PartWindow.h"
 #include "Window.h"
 #include <memory>
 
@@ -14,18 +14,18 @@ class SpriteControl;
 
 class MemoryInspectorWindow : public PartWindow {
 public:
-	MemoryInspectorWindow(Window& parentWindow, PartLayout& partLayout);
+    MemoryInspectorWindow(Window& parentWindow, PartLayout& partLayout);
 
-	void CreateControl(int nMemoryInspectorControlChildId);
-	void ApplyLayout() override;
+    void CreateControl(int nMemoryInspectorControlChildId);
+    void ApplyLayout() override;
 
 
-	MemoryInspectorControl* GetMemoryInspectorControl() const;
+    MemoryInspectorControl* GetMemoryInspectorControl() const;
 
-	void ClearSelection();
-	void SetSelection(Memory::offset nBegin, Memory::offset nEnd);
+    void ClearSelection();
+    void SetSelection(Memory::offset nBegin, Memory::offset nEnd);
 
 private:
-	std::unique_ptr<MemoryInspectorControl> memoryInspectorControl;
-	MemoryInspectorSelection* memoryInspectorSelection;
+    std::unique_ptr<MemoryInspectorControl> memoryInspectorControl;
+    MemoryInspectorSelection* memoryInspectorSelection;
 };

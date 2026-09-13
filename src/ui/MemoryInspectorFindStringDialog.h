@@ -10,17 +10,19 @@ class MemoryInspector;
 
 class MemoryInspectorFindStringDialog : public Dialog {
 public:
-	MemoryInspectorFindStringDialog(Window& parentWindow);
+    MemoryInspectorFindStringDialog(Window& parentWindow);
 
-	bool Show(MemoryInspector& memoryInspector);
+    bool Show(MemoryInspector& memoryInspector);
 
 protected:
-	bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+    bool InitDialog() override;
+    bool OnOK() override;
+    bool OnCancel() override;
 
 private:
-	static constexpr int MAX_CHARS = 64;
-	FindStringDialog findStringDialog;
+    static constexpr int MAX_CHARS = 64;
+    FindStringDialog findStringDialog;
 
-	MemoryInspector* lpMemoryInspector = nullptr;
-	bool recursion = false;
+    MemoryInspector* lpMemoryInspector = nullptr;
 };

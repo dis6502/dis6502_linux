@@ -3,7 +3,6 @@
 #include "Syntax.h"
 #include "Window.h"
 #include <gsl/pointers>
-#include <Windows.h>
 
 class PartLayout;
 
@@ -21,5 +20,5 @@ protected:
     gsl::not_null<PartLayout*> partLayout;
     wstring title;
 
-    void CreateControl(wstring_view className, DWORD dwStyle, ChildID childID);
+    void CreateControl(wstring_view className, WindowStyle style, ChildID childID);
 };

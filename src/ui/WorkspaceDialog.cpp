@@ -19,37 +19,32 @@ bool WorkspaceDialog::Show() {
     return (ShowDialogBox() == TRUE);
 }
 
-bool WorkspaceDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
-    switch (message) {
+bool WorkspaceDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
 
-    case WM_INITDIALOG:
-        CreateControls();
-        return true;
+    case IDOK:
+        return OnOK();
 
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-
-        case IDOK: {
-            auto object = (ComputerSystemTypeInfo*)GetComboBox(IDC_WORKSPACE_COMPUTER_SYSTEM).GetSelectedObject();
-            if (object != nullptr) {
-                ::g_Workspace->SetComputerSystemType(object->type);
-            }
-            return EndDialogBox(true);
-        }
-
-        case IDCANCEL: {
-            return EndDialogBox(false);
-        }
-
-        default:
-            break;
-        }
+    case IDCANCEL:
+        return OnCancel();
 
     default:
         break;
     }
-
     return false;
+}
+
+bool WorkspaceDialog::InitDialog() {
+    CreateControls();
+    return true;
+}
+
+bool WorkspaceDialog::OnOK() {
+    auto object = (ComputerSystemTypeInfo*)GetComboBox(IDC_WORKSPACE_COMPUTER_SYSTEM).GetSelectedObject();
+    if (object != nullptr) {
+        ::g_Workspace->SetComputerSystemType(object->type);
+    }
+    return EndDialogBox(true);
 }
 
 void WorkspaceDialog::CreateControls() {

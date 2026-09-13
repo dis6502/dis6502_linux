@@ -24,69 +24,66 @@ bool DefaultFoldersDialog::Show(HWND hWndParent, DefaultFolders& defaultFolders)
     return ShowDialogBox();
 }
 
-bool DefaultFoldersDialog::ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) {
-    switch (message) {
-    case WM_INITDIALOG: {
-        auto& text = defaultFolders->GetComputerSystemTypeInfo()->text;
-        auto title = Text::Format(IDS_DEFAULT_FOLDERS_DIALOG_TITLE, text);
-        SetTitle(title);
-        SetDialogValues(*defaultFolders);
+bool DefaultFoldersDialog::ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) {
+    switch (command) {
+    case IDOK:
+        return OnOK();
+
+    case IDCANCEL:
+        return OnCancel();
+
+    case IDC_BUTTON_RAW:
+        SelectFolder(FolderType::RAW_FILES, IDC_PATH_RAW);
         return true;
-    }
 
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-        case IDOK:
-            GetDialogValues(*defaultFolders);
-            return EndDialogBox(true);
+    case IDC_BUTTON_BIN:
+        SelectFolder(FolderType::EXECUTABLE_FILES, IDC_PATH_BIN);
+        return true;
 
-        case IDCANCEL:
-            return EndDialogBox(false);
+    case IDC_BUTTON_ROM:
+        SelectFolder(FolderType::ROM_IMAGE_FILES, IDC_PATH_ROM);
+        return true;
 
-        case IDC_BUTTON_RAW:
-            nResult = SelectFolder(FolderType::RAW_FILES, IDC_PATH_RAW);
-            return true;
+    case IDC_BUTTON_CAS:
+        SelectFolder(FolderType::CASSETTE_IMAGE_FILES, IDC_PATH_CAS);
+        return true;
 
-        case IDC_BUTTON_BIN:
-            nResult = SelectFolder(FolderType::EXECUTABLE_FILES, IDC_PATH_BIN);
-            return true;
+    case IDC_BUTTON_DSK:
+        SelectFolder(FolderType::DISK_IMAGE_FILES, IDC_PATH_DSK);
+        return true;
 
-        case IDC_BUTTON_ROM:
-            nResult = SelectFolder(FolderType::ROM_IMAGE_FILES, IDC_PATH_ROM);
-            return true;
+    case IDC_BUTTON_WRK:
+        SelectFolder(FolderType::WORKSPACE_FILES, IDC_PATH_WRK);
+        return true;
 
-        case IDC_BUTTON_CAS:
-            nResult = SelectFolder(FolderType::CASSETTE_IMAGE_FILES, IDC_PATH_CAS);
-            return true;
+    case IDC_BUTTON_EQU:
+        SelectFolder(FolderType::EQUATES_FILES, IDC_PATH_EQU);
+        return true;
 
-        case IDC_BUTTON_DSK:
-            nResult = SelectFolder(FolderType::DISK_IMAGE_FILES, IDC_PATH_DSK);
-            return true;
+    case IDC_BUTTON_PRF:
+        SelectFolder(FolderType::PROFILE_FILES, IDC_PATH_PRF);
+        return true;
 
-        case IDC_BUTTON_WRK:
-            nResult = SelectFolder(FolderType::WORKSPACE_FILES, IDC_PATH_WRK);
-            return true;
-
-        case IDC_BUTTON_EQU:
-            nResult = SelectFolder(FolderType::EQUATES_FILES, IDC_PATH_EQU);
-            return true;
-
-        case IDC_BUTTON_PRF:
-            nResult = SelectFolder(FolderType::PROFILE_FILES, IDC_PATH_PRF);
-            return true;
-
-        case IDC_BUTTON_ASM:
-            nResult = SelectFolder(FolderType::DISASSEMBLY_FILES, IDC_PATH_ASM);
-            return true;
-
-        default:
-            return false;
-
-        }
+    case IDC_BUTTON_ASM:
+        SelectFolder(FolderType::DISASSEMBLY_FILES, IDC_PATH_ASM);
+        return true;
 
     default:
         return false;
     }
+}
+
+bool DefaultFoldersDialog::InitDialog() {
+    auto& text = defaultFolders->GetComputerSystemTypeInfo()->text;
+    auto title = Text::Format(IDS_DEFAULT_FOLDERS_DIALOG_TITLE, text);
+    SetTitle(title);
+    SetDialogValues(*defaultFolders);
+    return true;
+}
+
+bool DefaultFoldersDialog::OnOK() {
+    GetDialogValues(*defaultFolders);
+    return EndDialogBox(true);
 }
 
 void DefaultFoldersDialog::SetDialogValues(const DefaultFolders& defaultFolders) {

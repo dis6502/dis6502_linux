@@ -6,10 +6,7 @@
 
 std::map <HFONT, const std::unique_ptr<Font>> Font::instances;
 
-Font::Font(HFONT hFont) : hFont(hFont) {
-    // Debug::Log(String::Format(L"Font {0} created.", std::to_wstring((unsigned long long)hFont)));
-
-};
+Font::Font() {};
 
 Font::~Font() {
     if (hFont != NULL_HFONT) {
@@ -30,9 +27,11 @@ Font* Font::GetInstance(HFONT hFont) {
     if (i != instances.end()) {
         return i->second.get();
     }
-    instances.insert(std::make_pair(hFont, std::make_unique<Font>(hFont)));
+    instances.insert(std::make_pair(hFont, std::make_unique<Font>()));
     const auto j = instances.find(hFont);
-    return j->second.get();
+    auto result = j->second.get();
+    result->hFont = hFont;
+    return result;
 }
 
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Window.h"
 
 class Application;
 class Main;
@@ -11,6 +12,8 @@ class MainWindow;
 class MainController // abstract
 {
 public:
+    using COMMAND = Window::COMMAND;
+
     ~MainController() = default;
 
     bool IsEditMode() const;

@@ -2,14 +2,37 @@
 #include "Font.h"
 #include "Syntax.h"
 #include "systems/ComputerSystem.h"
+#include <algorithm>
 #include <ComputerSystemType.h>
 #include <map>
 #include <memory>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 #include <Windows.h>
 
 std::map <ComputerSystemType, const std::unique_ptr<ComputerFont>> ComputerFont::instances;
+
+namespace {
+
+    int CALLBACK CollectFaceName(const LOGFONTW* logFont, const TEXTMETRICW*, DWORD, LPARAM lParam) {
+        static_cast<std::vector<wstring>*>((void*)lParam)->push_back(logFont->lfFaceName);
+        return 1;
+    }
+
+    // Enumerates the face names of all fonts currently known to GDI, so a newly
+    // added private font resource can be identified by diffing before and after.
+    std::vector<wstring> GetInstalledFaceNames() {
+        std::vector<wstring> faceNames;
+        LOGFONTW logFont{};
+        logFont.lfCharSet = DEFAULT_CHARSET;
+        const auto hDC = GetDC(NULL);
+        EnumFontFamiliesExW(hDC, &logFont, CollectFaceName, (LPARAM)&faceNames, 0);
+        ReleaseDC(NULL, hDC);
+        return faceNames;
+    }
+
+}
 
 
 ComputerFont::ComputerFont(int fontHeight) {
@@ -21,9 +44,10 @@ ComputerFont::ComputerFont(int fontHeight) {
 ComputerFont::~ComputerFont() {}
 
 
-void ComputerFont::Load(wstring_view fontName) {
+void ComputerFont::Load(wstring_view fontFilePath) {
 
-    if (CreateFonts(fontHeight, fontName)) {
+    const auto faceName = RegisterFontResource(fontFilePath);
+    if (!faceName.empty() && CreateFonts(fontHeight, faceName)) {
         return;
     }
 
@@ -45,6 +69,22 @@ void ComputerFont::Load(wstring_view fontName) {
     throw std::runtime_error("Cannot load any font.");
 }
 
+wstring ComputerFont::RegisterFontResource(wstring_view fontFilePath) {
+    const auto faceNamesBefore = GetInstalledFaceNames();
+
+    if (AddFontResourceExW(wstring(fontFilePath).c_str(), FR_PRIVATE, 0) == 0) {
+        return wstring(); // Font file not found or invalid.
+    }
+
+    for (const auto& faceName : GetInstalledFaceNames()) {
+        if (std::find(faceNamesBefore.begin(), faceNamesBefore.end(), faceName) == faceNamesBefore.end()) {
+            return faceName;
+        }
+    }
+
+    return wstring(); // Registered, but the resulting face name could not be determined.
+}
+
 const ComputerFont& ComputerFont::Get(const ComputerSystem& computerSystem) {
 
     const auto& i = instances.find(computerSystem.GetType());
@@ -56,25 +96,6 @@ const ComputerFont& ComputerFont::Get(const ComputerSystem& computerSystem) {
     auto fontFilePath = computerSystem.GetResourceFilePathByExtension(L".fon");
     j->second->Load(fontFilePath);
     return *(j->second);
-
-    // Load font.
-    //fontFilePath = GetResourceFilePath("AtariClassic-Regular.ttf");
-    //string fontName = "Atari Classic";
-    //if (FileIO::FileExists(fontFilePath)) {
-
-    // TODO: Currently TTF is not yet supported as it would required Unicode. 
-    // See https://sourceforge.net/p/dis6502/bugs/33/
-    // TODO: This means we can try this now!
-//    auto fontFilePath = computerSystem.GetResourceFilePathByExtension(L".fon");
-//    wstring fontName = L"Atari800";
-//
-//    if (AddFontResource(fontFilePath.c_str()) == 0) {
-//        // TODO: Raise Exception
-//        auto message = String::Format(L"Font file '{0}' not found.", fontFilePath);
-//        MessageBoxDialog::ShowAlert(nullptr, computerSystem.GetTypeInfo()->id, message);
-//        return;
-//    }
-//    Load(fontName);
 }
 
 

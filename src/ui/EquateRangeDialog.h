@@ -1,7 +1,7 @@
 #pragma once
+#include "Dialog.h"
 #include "Memory.h"
 #include "Syntax.h"
-#include "Dialog.h"
 
 #include "Equate.h"
 #include "Window.h"
@@ -15,6 +15,9 @@ public:
 
 protected:
     bool ProcessDialogMessage(MESSAGE message, WPARAM wParam, LPARAM lParam, INT_PTR& nResult) override;
+    bool ProcessCommand(COMMAND command, WPARAM wParam, LPARAM lParam) override;
+    bool InitDialog() override;
+    bool OnOK() override;
 
     void CreateControls() override;
 
@@ -24,12 +27,10 @@ private:
     EquateList* equateList = nullptr;
     bool addressSpecified = false;
     Memory::address address;
-    bool dialogVisible = false;
 
 
     typedef CHAR ITEM_LINE[128];
 
-    void SendErrorMessage(LPCWSTR szMessage);
     void FillCombobox(const EquateList& equateList);
 
 };
