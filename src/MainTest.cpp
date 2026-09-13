@@ -108,7 +108,7 @@ static void AssertAddressEquals(Memory::address current, Memory::address expecte
 }
 
 wstring MainTest::GetSuitePath() {
-    return g_Application->GetModuleFilePath(L"..\\..\\..\\tst\\suite");
+    return g_Application->GetModuleFilePath(L"../../../tst/suite");
 }
 
 void MainTest::SetupUnit(wstring_view areaName, wstring_view unitName) {
