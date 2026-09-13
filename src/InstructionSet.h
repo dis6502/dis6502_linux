@@ -2,13 +2,14 @@
 
 #include <array>
 
-#include "Syntax.h"
 #include "Byte.h"
+#include "Syntax.h"
 
 #include "LabelAccess.h"
 
 
 enum class OperandMode {
+    Unknown,
     Immediate,
     Absolute,
     ZeroPage,

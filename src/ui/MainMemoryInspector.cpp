@@ -16,12 +16,14 @@
 #include "MemoryInspectorWindow.h"
 #include "MemoryType.h"
 #include "Resource.h"
+#include "Workspace.h"
 #include <cstdio>
 #include <memory>
 
 extern std::unique_ptr<Main> g_Main;
 extern std::unique_ptr<FileDialogs> g_FileDialogs;
 extern std::unique_ptr<MemoryInspector> g_MemoryInspector;
+extern std::unique_ptr<Workspace> g_Workspace;
 
 MainMemoryInspector::MainMemoryInspector(Main& main) : MainController(main) {
 
@@ -108,7 +110,7 @@ void MainMemoryInspector::PerformCommands(COMMAND command, bool editMode) {
     case IDM_DUMP_ASSEMBLE:
         if (::g_MemoryInspector->GetMemoryInspectorSelection()->HasSelection()) {
             AssembleDialog dialog(*mainWindow);
-            dialog.Show(::g_MemoryInspector->GetConstMemoryInspectorSelection()->segment, mainWindow->memoryInspectorWindow->GetMemoryInspectorControl());
+            dialog.Show(*::g_Workspace, *::g_MemoryInspector->GetConstMemoryInspectorSelection()->segment, *mainWindow->memoryInspectorWindow->GetMemoryInspectorControl());
             UpdateDisassembly();
         }
         return;
