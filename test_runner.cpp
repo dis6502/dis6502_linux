@@ -1,3 +1,9 @@
+// readlink() in <unistd.h> is gated behind POSIX.1-2008 visibility, which
+// -std=c++20 (strict mode) doesn't turn on by default. Must be defined
+// before the first system header is pulled in.
+#ifndef _XOPEN_SOURCE
+#define _XOPEN_SOURCE 700
+#endif
 
 #include <climits>
 #include <cstdio>
