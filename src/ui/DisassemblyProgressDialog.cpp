@@ -89,7 +89,7 @@ bool DisassemblyProgressDialog::OnCancel() {
     return true;
 }
 
-void DisassemblyProgressDialog::RedrawScreen(HWND hDlg) {
+void DisassemblyProgressDialog::RedrawScreen(WindowHandle hDlg) {
     MSG msg;
 
     SetCapture(hDlg);
